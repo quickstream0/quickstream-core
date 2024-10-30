@@ -1,0 +1,91 @@
+{% extends 'auth-layout.html' %}
+{% block content %}
+    <div class="container form signup">
+        <header class="pb-2 mb-2">Register</header>
+        <form action="{{ url_for('auth_view.register') }}" method="post">
+            {{ form.hidden_tag() }}
+            {% if errors %}
+            <div class="error-text my-3">
+                {% for error in errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="mb-2 field input">
+                {{ form.name.label(class="form-label") }}
+                {% if form.name.errors %}
+                    {{ form.name(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.name(class="form-control", placeholder="Enter your First and Last name") }}
+                {% endif %}
+            </div>
+            <div class="mb-2 field input">
+                {{ form.email.label(class="form-label") }}
+                {% if form.email.errors %}
+                    {{ form.email(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.email.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.email(class="form-control", placeholder="Enter your Email") }}
+                {% endif %}
+            </div>
+            <div class="mb-2 field input">
+                {{ form.username.label(class="form-label", id="form-label") }}
+                {% if form.username.errors %}
+                    {{ form.username(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.username.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.username(class="form-control", placeholder="Enter Username") }}
+                {% endif %}
+            </div>
+            <div class="mb-2 field input">
+                {{ form.password.label(class="form-label") }}
+                {% if form.password.errors %}
+                    {{ form.password(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.password(class="form-control", placeholder="Enter Password") }}
+                {% endif %}
+                <i id="i1" class="fa fa-eye" aria-hidden="true"></i>
+            </div>
+            <div class="mb-2 field input">
+                {{ form.confirm_password.label(class="form-label") }}
+                {% if form.confirm_password.errors %}
+                    {{ form.confirm_password(class="form-control is-invalid")}}
+                    <div class="invalid-feedback">
+                        {% for error in form.confirm_password.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.confirm_password(class="form-control", placeholder="Repeat your Password") }}
+                {% endif %}
+                <i id="i2" class="fa fa-eye" aria-hidden="true"></i>
+            </div>
+            <div>
+                {{ form.submit(class="btn btn-primary my-2 field button") }}
+            </div>
+        </form>
+        <div class="link text-center mb-2">Already have an Account? <a href="{{ url_for('auth_view.login') }}">Login now</a></div>
+    </div>
+
+{% endblock content %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/auth/register.js') }} " defer></script>
+{% endblock script %}

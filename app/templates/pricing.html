@@ -1,0 +1,89 @@
+{% extends 'layout.html' %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pricing.css') }}">
+{% endblock style %}
+{% block content %}
+<section class="pricing-table">
+    <div class="container">
+        <div class="block-heading">
+          <h2>Pricing</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc quam urna, dignissim nec auctor in, mattis vitae leo.</p>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-lg-3 col-md-4 col-sm-6 my-3">
+                <div class="item">
+                    <div class="heading">
+                        <h3>BASIC</h3>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="features">
+                        <h4>FHD quality</h4>
+                        <h4>HLS streaming</h4>
+                        <h4>Unlimited views</h4>
+                        <h4>Daily updates</h4>
+                    </div>
+                    <div class="price">
+                        <h3>KES350<span class="duration">/m</span></h3>
+                    </div>
+                    <button class="btn btn-block btn-outline-primary" type="submit">BUY NOW</button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 my-3">
+                <div class="item">
+                    <div class="ribbon">Recommended</div>
+                    <div class="heading">
+                        <h3>PRO</h3>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="features">
+                        <h4>FHD quality</h4>
+                        <h4>HLS streaming</h4>
+                        <h4>Unlimited views</h4>
+                        <h4>Daily updates</h4>
+                    </div>
+                    <div class="price">
+                        <h3>KES600<span class="duration">/m</span></h3>
+                    </div>
+                    <button class="btn btn-block btn-outline-primary" type="submit">BUY NOW</button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 my-3">
+                <div class="item">
+                    <div class="heading">
+                        <h3>PREMIUM</h3>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="features">
+                        <h4>FHD quality</h4>
+                        <h4>HLS streaming</h4>
+                        <h4>Unlimited views</h4>
+                        <h4>Daily updates</h4>
+                    </div>
+                    <div class="price">
+                        <h3>KES850<span class="duration">/m</span></h3>
+                    </div>
+                    <button class="btn btn-block btn-outline-primary" type="submit">BUY NOW</button>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6 my-3">
+                <div class="item">
+                    <div class="heading">
+                        <h3>TOTAL</h3>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <div class="features">
+                        <h4>FHD quality</h4>
+                        <h4>HLS streaming</h4>
+                        <h4>Unlimited views</h4>
+                        <h4>Daily updates</h4>
+                    </div>
+                    <div class="price">
+                        <h3>KES1,100<span class="duration">/m</span></h3>
+                    </div>
+                    <button class="btn btn-block btn-outline-primary" type="submit">BUY NOW</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

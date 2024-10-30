@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#047857">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/icons/logo.svg') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ url_for('static', filename='images/icons/logo_192x192.png') }}" />
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/icons/logo.svg') }}" />
+    <link rel="manifest" href="{{ url_for('static', filename='pwa/manifest.json') }}">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if title %}
+    <title>{{ title }} - Say Hii</title>
+    {% else %}
+        <title>Say Hii</title>
+    {% endif %}
+</head>
+<body>
+    {% block content %}
+    {% endblock content %}
+    <script type="text/javascript">
+        function swalToast(category, message) {
+            const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+            });
+            Toast.fire({
+                icon: category,
+                title: message
+            });
+        }
+    </script>
+    {% block script %}{% endblock script %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

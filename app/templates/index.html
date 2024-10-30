@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+    <section>
+
+        <div class="index-wrapper">
+            <div class="containe text-light text-center welcome">
+                <div class="row mb-3">
+                    <div class="col">
+                        <h1>Stream Your Favorite Movies and TV Shows</h1>
+                        <P>
+                            Stream Your Favorite Movies and TV Shows.
+                            <br>Discover new films every day.
+                            <br>Watch favorite events and live sports every week.
+                            <br>Unlimited entertainment on QuickStream.
+                        </P>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <a href="{{ url_for('static', filename='files/app/quickstream-v1.0.0.apk') }}" class="btn btn-primary"><i class="fa-solid fa-download"></i> Download</a>
+                    </div>
+                    <!-- <div class="col">
+                        <a href="#" class="btn btn-success">Subscribe</a>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="p-5" id="features">
+
+        <div class="container-fluid text-center">
+
+            <div class="row">
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <i class="icon fa-solid fa-crown fa-4x"></i>
+                    <h3 class="feature-title">High Quality</h3>
+                    <p>Quality</p>
+                </div>
+
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <i class="icon fa-solid fa-bolt-lightning fa-4x"></i>
+                    <h3 class="feature-title">Fast Load</h3>
+                    <p>Buffer</p>
+                </div>
+
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <i class="icon fa-solid fa-rectangle-ad fa-4x"></i>
+                    <h3 class="feature-title">AD Free</h3>
+                    <p>Ads</p>
+                </div>
+
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <i class="icon fa-solid fa-closed-captioning fa-4x"></i>
+                    <h3 class="feature-title">Multi Subtitles</h3>
+                    <p>Subtitles</p>
+                </div>
+                
+            </div>
+
+        </div>
+    </section>
+
+    <section class="p-5" id="features">
+
+        <div class="container-fluid text-center">
+
+            <div class="row">
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <h3 class="feature-title">80,000+</h3>
+                    <p>Movies & TV Shows</p>
+                </div>
+
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <h3 class="feature-title">1000+</h3>
+                    <p>Sports & Entertainment Channels</p>
+                </div>
+
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <h3 class="feature-title">20,000+</h3>
+                    <p>Anime Movies & TV Shows</p>
+                </div>
+
+                <div class="feature-box col-lg-3 col-md-6 my-2">
+                    <h3 class="feature-title">Unlimited</h3>
+                    <p>Entertainment</p>
+                </div>
+                
+            </div>
+
+        </div>
+    </section>
+
+<section>
+    
+</section>
+
+{% endblock content %}
