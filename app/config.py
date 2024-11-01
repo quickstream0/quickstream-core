@@ -4,9 +4,13 @@ from dotenv import load_dotenv
 # Load environment variables from .env
 load_dotenv()
 
+database_url = os.getenv('POSTGRES_URL')
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = os.getenv('POSTGRES_URL')
+    SQLALCHEMY_DATABASE_URI =database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_JWT_SECRET_KEY = os.getenv('FLASK_JWT_SECRET_KEY')
     MAIL_SERVER = os.getenv('MAIL_SERVER')
@@ -24,7 +28,7 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('POSTGRES_URL')
+    SQLALCHEMY_DATABASE_URI = database_url
     # SQLALCHEMY_DATABASE_URI = os.getenv('PROD_DATABASE_URI', 'postgresql://user:password@localhost/prod_quickstream')
 
 def get_env(var_name):
