@@ -6,7 +6,7 @@ load_dotenv()
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///db.sqlite3')
+    SQLALCHEMY_DATABASE_URI = os.getenv('POSTGRES_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_JWT_SECRET_KEY = os.getenv('FLASK_JWT_SECRET_KEY')
     MAIL_SERVER = os.getenv('MAIL_SERVER')
@@ -20,10 +20,12 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URI', 'sqlite:///db.sqlite3')
+    # SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URI', 'sqlite:///db.sqlite3')
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('PROD_DATABASE_URI', 'postgresql://user:password@localhost/prod_quickstream')
+    SQLALCHEMY_DATABASE_URI = os.getenv('POSTGRES_URL')
+    # SQLALCHEMY_DATABASE_URI = os.getenv('PROD_DATABASE_URI', 'postgresql://user:password@localhost/prod_quickstream')
 
 def get_env(var_name):
     try:
