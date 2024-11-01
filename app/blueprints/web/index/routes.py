@@ -6,6 +6,6 @@ from . import index_bp
 def index():
     return render_template('index.html')
 
-
-
-
+@index_bp.route('/pricing')
+def pricing():
+    return render_template('pricing.html')
