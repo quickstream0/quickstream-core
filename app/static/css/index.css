@@ -21,9 +21,9 @@ a:link{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%; /* Ensure it takes full width */
-    text-align: center; /* Center align text */
-    padding: 0 15px; /* Add padding to avoid text touching edges */
+    width: 100%;
+    text-align: center;
+    padding: 0 15px;
     box-sizing: border-box;
 }
 
@@ -57,13 +57,13 @@ a:link{
         font-size: 32px;
     }
     .welcome p {
-        font-size: 18px; /* Adjust text size */
+        font-size: 18px;
     }
     .icon {
-        font-size: 2.5rem; /* Resize icons */
+        font-size: 2.5rem;
     }
     .feature-box {
-        flex-basis: 100%; /* Make each feature take full width */
+        flex-basis: 100%;
         margin-bottom: 1rem;
     }
     .welcome p {
@@ -71,6 +71,6 @@ a:link{
     }
     .index-wrapper {
         padding: 2rem; 
-        margin-top: 56px; /* Make sure it doesn't overlap with navbar */
+        margin-top: 56px;
     }
 }
