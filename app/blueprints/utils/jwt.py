@@ -9,16 +9,16 @@ jwt_handler = Blueprint('jwt_handler', __name__)
 @jwt.user_lookup_loader
 def user_lookup_callback(jwt_header, jwt_data):
     identity = jwt_data['sub']
-
+    if identity == 'anonymous':
+        return User.query.filter_by(device_id=jwt_data['device_id']).one_or_none()
+    
     return User.query.filter_by(username=identity).one_or_none()
-
-# additional claims
 
 @jwt.additional_claims_loader
 def make_additional_claims(identity):
-    if identity == "learntech":
-        return {"is_staff": True}
-    return {"is_staff": False}
+    if identity == 'anonymous':
+        return {"is_anonymous": True}
+    return {"is_anonymous": False}
 
 
 # error handlers

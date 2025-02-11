@@ -1,5 +1,7 @@
 from flask import Blueprint
 
-payment_bp = Blueprint('payment', __name__)
+mpesa_bp = Blueprint('mpesa', __name__, url_prefix='/mpesa')
+card_bp = Blueprint('card', __name__, url_prefix='/card')
 
-from . import routes
+from . import mpesa
+from . import card

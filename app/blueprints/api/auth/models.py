@@ -15,11 +15,13 @@ class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     user_id = db.Column(db.String(64), unique=True, default=str(uuid4()))
-    email = db.Column(db.String(60), unique=True, nullable=False)
-    username = db.Column(db.String(20), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
+    is_anonymous = db.Column(db.Boolean(), default=True)
+    device_id = db.Column(db.String(64))
+    email = db.Column(db.String(60), unique=True)
+    username = db.Column(db.String(20), unique=True)
+    password = db.Column(db.String(255))
     name = db.Column(db.String(40))
-    profile = db.Column(db.String(64), default='default.png')
+    profile = db.Column(db.Integer(), default=0)
     status = db.Column(db.DateTime(), default=datetime.now())
     created_at = db.Column(db.DateTime(), default=datetime.now())
     verified = db.Column(db.Boolean(), default=False)
@@ -40,6 +42,10 @@ class User(db.Model, UserMixin):
     @classmethod
     def get_email(cls, email):
         return cls.query.filter_by(email=email).first()
+    
+    @classmethod
+    def get_device_id(cls, device_id):
+        return cls.query.filter_by(device_id=device_id).one_or_none()
     
     def update_account(self, form):
         try:
