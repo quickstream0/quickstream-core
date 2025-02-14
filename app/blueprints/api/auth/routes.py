@@ -137,7 +137,7 @@ def get_user():
             {
                 "user": {
                     "device_id":current_user.device_id, 
-                    "anonymous":current_user.is_anonymous,
+                    "is_anonymous":current_user.is_anonymous,
                 }
             }
         ), 200
