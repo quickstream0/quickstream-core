@@ -1,5 +1,5 @@
 from uuid import uuid4
-from datetime import datetime, timedelta
+from datetime import datetime
 from app import db
 
 class Subscription(db.Model):
