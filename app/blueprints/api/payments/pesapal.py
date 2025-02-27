@@ -60,7 +60,7 @@ def payment_request():
         )
         transaction.save()
 
-        return response
+        return data, 200
     else:
         raise Exception(f"Failed to process payment: {response.text}")
 
