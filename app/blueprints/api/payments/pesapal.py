@@ -43,12 +43,13 @@ def payment_request():
         }
     }
 
-    payment_response = create_payment_request(payment_data)
-    if payment_response.status_code == 200:
-        # print(payment_response)
-        tracking_id = payment_response.get('order_tracking_id')
-        merchant_reference = payment_response.get('merchant_reference')
-        # redirect_url = payment_response.get('redirect_url')
+    response = create_payment_request(payment_data)
+    if response.status_code == 200:
+        data = response.json()
+        # print(data)
+        tracking_id = data.get('order_tracking_id')
+        merchant_reference = data.get('merchant_reference')
+        # redirect_url = data.get('redirect_url')
 
         transaction = Transaction(
             transaction_id = id,
@@ -59,9 +60,9 @@ def payment_request():
         )
         transaction.save()
 
-        return payment_response
+        return response
     else:
-        raise Exception(f"Failed to process payment: {payment_response.text}")
+        raise Exception(f"Failed to process payment: {response.text}")
 
 
 # Store token in memory to avoid unnecessary requests
