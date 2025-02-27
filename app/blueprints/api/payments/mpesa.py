@@ -7,11 +7,17 @@ from app.config import get_env
 from flask import jsonify, request
 from . import mpesa_bp
 
-transaction_type = 'CustomerPayBillOnline'
-# transaction_type = 'CustomerBuyGoodsOnline'
+# transaction_type = 'CustomerPayBillOnline'
+transaction_type = 'CustomerBuyGoodsOnline'
 passkey='bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
-callback = 'https://61f4-154-159-252-51.ngrok-free.app/api/payment/callback'
+callback = 'https://quickstream.vercel.app/mpesa/callback'
 user_id = None
+
+# MPESA API URLs
+CONSUMER_KEY = get_env("MPESA_CONSUMER_KEY")
+CONSUMER_SECRET = get_env("MPESA_CONSUMER_SECRET")
+STK_PUSH_URL = get_env("MPESA_STK_PUSH_URL")
+AUTH_URL = get_env("MPESA_AUTH_URL")
 
 @mpesa_bp.route('/payment', methods=['POST'])
 @jwt_required()
@@ -21,7 +27,7 @@ def mpesa_express():
     phone = data.get('phone')
     user_id = current_user.user_id
 
-    endpoint = get_env('MPESA_STK_PUSH_URL')
+    endpoint = STK_PUSH_URL
     access_token = get_access_token()
     headers = { "Authorization": "Bearer %s" % access_token }
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -35,19 +41,19 @@ def mpesa_express():
         "Timestamp":timestamp,    
         "TransactionType": transaction_type,    
         "Amount": amount,    
-        "PartyA":phone,    
-        "PartyB":shortcode,    
-        "PhoneNumber":phone,    
+        "PartyA": phone,    
+        "PartyB": shortcode,    
+        "PhoneNumber": phone,    
         "CallBackURL": callback,    
-        "AccountReference":"Test",    
-        "TransactionDesc":"Test Payment"
+        "AccountReference": "Test",    
+        "TransactionDesc": "Test Payment"
     }
 
     res = requests.post(endpoint, json=data, headers=headers)
     print(f"User ID REQ: {user_id}")
     return res.json()
 
-@mpesa_bp.route('/payment/callback', methods=['POST'])
+@mpesa_bp.route('/callback', methods=['POST'])
 def incoming():
     data = request.get_json()
     if data:
@@ -59,9 +65,9 @@ def incoming():
         return jsonify({"error": "No data received"}), 400
 
 def get_access_token():
-    consumer_key = get_env('MPESA_CONSUMER_KEY')
-    consumer_secret = get_env('MPESA_CONSUMER_SECRET')
-    endpoint = get_env('MPESA_AUTH_URL')
+    consumer_key = CONSUMER_KEY
+    consumer_secret = CONSUMER_SECRET
+    endpoint = AUTH_URL
 
     r = requests.get(endpoint, auth=HTTPBasicAuth(consumer_key, consumer_secret))
     data = r.json()

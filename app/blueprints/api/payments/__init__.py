@@ -1,7 +1,7 @@
 from flask import Blueprint
 
 mpesa_bp = Blueprint('mpesa', __name__, url_prefix='/mpesa')
-card_bp = Blueprint('card', __name__, url_prefix='/card')
+pesapal_bp = Blueprint('pesapal', __name__, url_prefix='/pesapal')
 
 from . import mpesa
-from . import card
+from . import pesapal

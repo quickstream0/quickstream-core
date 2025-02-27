@@ -67,7 +67,7 @@ class User(db.Model, UserMixin):
 
     def get_reset_token(self, max_age=1800):
         s = Serializer(current_app.config['SECRET_KEY'])
-        expires = datetime.utcnow() + timedelta(seconds=max_age)
+        expires = datetime.now() + timedelta(seconds=max_age)
         expires_timestamp = int(expires.timestamp())
         token =  s.dumps({'user_id': self.user_id, 'exp': expires_timestamp})
         return token

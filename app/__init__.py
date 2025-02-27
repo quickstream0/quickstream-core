@@ -6,8 +6,8 @@ from .config import Config
 from .blueprints.web.index import index_bp
 from .blueprints.web.auth import auth_view
 from .blueprints.api.auth import auth_bp
+from .blueprints.api.payments import pesapal_bp
 from .blueprints.api.payments import mpesa_bp
-from .blueprints.api.payments import card_bp
 from .blueprints.api.subscriptions import subscription_bp
 from .blueprints.utils.jwt import jwt_handler
 from .blueprints.errors.errors import errors_bp
@@ -35,8 +35,8 @@ def create_app():
 
     # register blueprints
     api.register_blueprint(auth_bp)
+    api.register_blueprint(pesapal_bp)
     api.register_blueprint(mpesa_bp)
-    api.register_blueprint(card_bp)
     api.register_blueprint(subscription_bp)
 
     # Register the API blueprint with the main app
