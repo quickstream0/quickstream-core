@@ -94,8 +94,13 @@ def get_access_token():
 
 
 def register_ipn():
+    token = get_access_token()
     url = f"{BASE_URL}api/URLSetup/RegisterIPN"
-    headers = {"Content-Type": "application/json", "Accept": "application/json"}
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json", 
+        "Accept": "application/json"
+    }
     payload = {"url": ipnurl, "ipn_notification_type": "GET"}
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
@@ -109,7 +114,8 @@ def create_payment_request(transaction_data):
     url = f"{BASE_URL}api/Transactions/SubmitOrderRequest"
     headers = {
         "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json"
+        "Content-Type": "application/json", 
+        "Accept": "application/json"
     }
     response = requests.post(url, json=transaction_data, headers=headers)
     return response.json()
@@ -120,6 +126,7 @@ def check_transaction_status(order_tracking_id):
     url = f"{BASE_URL}api/Transactions/GetTransactionStatus?orderTrackingId={order_tracking_id}"
     headers = {
         "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json", 
         "Accept": "application/json"
     }
     response = requests.get(url, headers=headers)
