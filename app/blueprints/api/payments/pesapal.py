@@ -59,7 +59,7 @@ def payment_request():
         )
         transaction.save()
 
-        return payment_response, 200
+        return payment_response
     else:
         raise Exception(f"Failed to process payment: {payment_response.text}")
 
@@ -118,7 +118,7 @@ def create_payment_request(transaction_data):
         "Accept": "application/json"
     }
     response = requests.post(url, json=transaction_data, headers=headers)
-    return response.json()
+    return response
 
 
 def check_transaction_status(order_tracking_id):
