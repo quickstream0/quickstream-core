@@ -14,7 +14,7 @@
 # class User(db.Model, UserMixin):
 #     __tablename__ = 'user'
 #     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-#     user_id = db.Column(db.String(64), unique=True, default=str(uuid4()))
+#     user_id = db.Column(db.String(64), unique=True, default=lambda: str(uuid4()))
 #     email = db.Column(db.String(60), unique=True, nullable=False)
 #     username = db.Column(db.String(20), unique=True, nullable=False)
 #     password = db.Column(db.String(255), nullable=False)

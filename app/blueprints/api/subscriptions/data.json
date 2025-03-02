@@ -2,19 +2,22 @@
     "subscriptions": [
         {
             "name": "Basic",
-            "duration": "daily",
+            "period": "daily",
+            "days": 1,
             "price": 20,
             "description": "1 day"
         },
         {
             "name": "Basic",
-            "duration": "weekly",
+            "period": "weekly",
+            "days": 7,
             "price": 100,
-            "description": "14 days"
+            "description": "7 days"
         },
         {
             "name": "Basic",
-            "duration": "monthly",
+            "period": "monthly",
+            "days": 30,
             "price": 300,
             "description": "30 days"
         }

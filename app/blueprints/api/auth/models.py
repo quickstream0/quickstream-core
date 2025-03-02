@@ -6,6 +6,24 @@ from itsdangerous import URLSafeTimedSerializer as Serializer, SignatureExpired,
 from flask_login import UserMixin
 from app import db, login_manager
 
+class AnonUser(db.Model, UserMixin):
+    __tablename__ = 'anon_user'
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    device_id = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime(), default=datetime.now())
+    is_anonymous = db.Column(db.Boolean(), default=True)
+
+    @classmethod
+    def get_device_id(cls, device_id):
+        return cls.query.filter_by(device_id=device_id).first()
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -14,9 +32,7 @@ def load_user(user_id):
 class User(db.Model, UserMixin):
     __tablename__ = 'user'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    user_id = db.Column(db.String(64), unique=True, default=str(uuid4()))
-    is_anonymous = db.Column(db.Boolean(), default=True)
-    device_id = db.Column(db.String(64))
+    user_id = db.Column(db.String(64), unique=True, default=lambda: str(uuid4()))
     email = db.Column(db.String(60), unique=True)
     username = db.Column(db.String(20), unique=True)
     password = db.Column(db.String(255))
@@ -25,6 +41,7 @@ class User(db.Model, UserMixin):
     status = db.Column(db.DateTime(), default=datetime.now())
     created_at = db.Column(db.DateTime(), default=datetime.now())
     verified = db.Column(db.Boolean(), default=False)
+    is_anonymous = db.Column(db.Boolean(), default=False)
 
     def __repr__(self):
         return f"<User {self.username}>"
@@ -42,10 +59,6 @@ class User(db.Model, UserMixin):
     @classmethod
     def get_email(cls, email):
         return cls.query.filter_by(email=email).first()
-    
-    @classmethod
-    def get_device_id(cls, device_id):
-        return cls.query.filter_by(device_id=device_id).one_or_none()
     
     def update_account(self, form):
         try:

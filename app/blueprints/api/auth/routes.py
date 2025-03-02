@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 from flask import jsonify, request
+
+from app.blueprints.api.subscriptions.models import AnonPlan, Plan
 from . import auth_bp
 from flask_jwt_extended import (
     create_access_token, 
@@ -9,13 +11,13 @@ from flask_jwt_extended import (
     get_jwt_identity, 
     current_user
     )
-from .models import User, TokenBlocklist
+from .models import AnonUser, User, TokenBlocklist
 from app import db
 
 @auth_bp.route('/register', methods=['POST'])
 def register_user():
     data = request.get_json()
-    print(f"Data from client: {data}")
+    # print(f"Data from client: {data}")
     
     # Explicit checks for required fields
     if 'name' not in data:
@@ -41,8 +43,7 @@ def register_user():
     new_user = User(
         name=data.get('name'),
         username=data.get('username'),
-        email=data.get('email'),
-        is_anonymous=False
+        email=data.get('email')
     )
     
     # Set hashed password
@@ -62,19 +63,14 @@ def register_anon_user():
         return jsonify({"message": "device_id field is required"}), 400
 
     device_id = data.get('device_id')
-    
-    user = User.get_device_id(device_id=device_id)
-
+    user = AnonUser.get_device_id(device_id=device_id)
     if user:
         return generate_anon_token(user.device_id)
     else:
-        new_anon_user = User(
-            device_id=data.get('device_id'),
-            is_anonymous=True
-        )
-
+        new_anon_user = AnonUser(device_id=device_id)
         new_anon_user.save()
-
+        trial_plan = AnonPlan(device_id=device_id, duration=3)
+        trial_plan.save()
         return generate_anon_token(device_id)
 
 @auth_bp.route('/login', methods=['POST'])
@@ -141,20 +137,30 @@ def get_user():
                 }
             }
         ), 200
-    return jsonify(
-        {
-            "user": {
-                "user_id":current_user.user_id, 
-                "name":current_user.name,
-                "username":current_user.username, 
-                "email":current_user.email,
-                "created_at":formatted_date,
-                "profile_id":current_user.profile,
-                "is_anonymous":current_user.is_anonymous,
-                "verified":current_user.verified
-            }
-        }
-    ), 200
+    
+    user = {
+        "user_id":current_user.user_id, 
+        "name":current_user.name,
+        "username":current_user.username, 
+        "email":current_user.email,
+        "created_at":formatted_date,
+        "profile_id":current_user.profile,
+        "is_anonymous":current_user.is_anonymous,
+        "verified":current_user.verified
+    }
+    subscription = Plan.query.filter_by(user_id=current_user.user_id).order_by(Plan.expiry_date.desc()).first()
+    if not subscription:
+        subscription_data = {"plan": "none", "status": "none"}
+    subscription_data = {
+        "plan_id": subscription.plan_id,
+        "plan": subscription.name,
+        "status": "active" if subscription.is_active() else "expired",
+        "period": subscription.period,
+        "remaining_time": subscription.remaining_time(),
+        "expiry_time": subscription.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
+    }
+    return jsonify({"user": user, "subscription": subscription_data}), 200
+
 
 @auth_bp.route('/refresh', methods=['GET'])
 @jwt_required(refresh=True)
@@ -163,15 +169,20 @@ def refresh_access():
     new_access_token = create_access_token(identity=identity)
     return jsonify({"access_token": new_access_token})
 
+
 @auth_bp.route('/logout', methods=['GET'])
 @jwt_required(verify_type=False)
 def logout_user():
     jwt = get_jwt()
-    jti = jwt['jti']
+    logout(jwt)
     token_type = jwt['type']
-    token_b = TokenBlocklist(jti=jti)
-    token_b.save()
     return jsonify({"message": f"{token_type} token revoked successfully"}), 200
+
+
+def logout(jwt):
+    jti = jwt['jti']
+    token_b = TokenBlocklist(jti=jti)
+    token_b.save() 
 
 
 @auth_bp.route('/update-account', methods=['POST'])
@@ -191,11 +202,8 @@ def update_account():
 @auth_bp.route('/delete-account', methods=['GET'])
 @jwt_required()
 def delete_account():
-    # logout_user()
     jwt = get_jwt()
-    jti = jwt['jti']
-    token_b = TokenBlocklist(jti=jti)
-    token_b.save()
+    logout(jwt)
     User.query.filter_by(user_id=current_user.user_id).delete()
     db.session.commit()
 

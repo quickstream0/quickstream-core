@@ -5,7 +5,7 @@ from app import db
 class Transaction(db.Model):
     __tablename__ = 'transaction'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    transaction_id = db.Column(db.String(64), unique=True, default=str(uuid4()))
+    transaction_id = db.Column(db.String(64), unique=True, default=lambda: str(uuid4()))
     card_number = db.Column(db.String(64))
     phone_number = db.Column(db.String(64))
     payment_method = db.Column(db.String(64))

@@ -4,7 +4,9 @@ from datetime import datetime, timedelta
 from flask import jsonify, request
 from flask_jwt_extended import jwt_required, current_user
 from app import db
+from app.blueprints.api.auth.models import User
 from app.blueprints.api.payments.models import Transaction
+from app.blueprints.api.subscriptions.models import Plan
 from app.blueprints.utils.random import Generate
 from app.config import get_env
 from . import pesapal_bp
@@ -25,7 +27,9 @@ def payment_request():
     names = current_user.name.split(' ')
     client_data = request.get_json()
     amount = client_data.get('amount')
+    days = client_data.get('days')
     currency = client_data.get('currency')
+    period = client_data.get('period')
     description = client_data.get('description')
     notification_id = register_ipn()
 
@@ -46,7 +50,6 @@ def payment_request():
     response = create_payment_request(payment_data)
     if response.status_code == 200:
         data = response.json()
-        # print(data)
         tracking_id = data.get('order_tracking_id')
         merchant_reference = data.get('merchant_reference')
         # redirect_url = data.get('redirect_url')
@@ -59,6 +62,13 @@ def payment_request():
             user_id = current_user.user_id
         )
         transaction.save()
+        plan = Plan(
+            user_id=current_user.user_id, 
+            duration=days,
+            period=period, 
+            transaction_id=id
+        )
+        plan.save()
 
         return data, 200
     else:
@@ -144,11 +154,19 @@ def ipn_notification():
     payment_status_description = transaction_status.get('payment_status_description')
     transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
     transaction.payment_status = payment_status_description
-    if payment_status_description == 'Completed':
-        transaction.status = 'success'
     transaction.payment_method = transaction_status.get('payment_method')
     transaction.payment_account = transaction_status.get('payment_account')
     db.session.commit()
+
+    plan = Plan.query.filter_by(user_id=transaction.user_id).first()
+    if payment_status_description.lower() == 'completed':
+        transaction.status = 'completed'
+        plan.transaction_status = 'completed'
+        plan.status = 'active'
+        db.session.commit()
+    else:
+        plan.transaction_status = payment_status_description.lower()
+        db.session.commit()
 
     return jsonify(
         {
@@ -170,11 +188,15 @@ def callback():
     # payment_status_description = transaction_status.get('payment_status_description')
     # transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
     # transaction.payment_status = payment_status_description
-    # if payment_status_description == 'Completed':
-    #     transaction.status = 'success'
     # transaction.payment_method = transaction_status.get('payment_method')
     # transaction.payment_account = transaction_status.get('payment_account')
     # db.session.commit()
+    # if payment_status_description.lower() == 'completed':
+    #     transaction.status = 'completed'
+    #     plan = Plan.query.filter_by(user_id=transaction.user_id).first()
+    #     plan.transaction_status = 'completed'
+    #     plan.status = 'active'
+    #     db.session.commit()
 
     return jsonify(
         {

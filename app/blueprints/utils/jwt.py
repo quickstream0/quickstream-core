@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from app import jwt, db
-from app.blueprints.api.auth.models import User, TokenBlocklist
+from app.blueprints.api.auth.models import AnonUser, User, TokenBlocklist
 
 jwt_handler = Blueprint('jwt_handler', __name__)
 
@@ -10,7 +10,7 @@ jwt_handler = Blueprint('jwt_handler', __name__)
 def user_lookup_callback(jwt_header, jwt_data):
     identity = jwt_data['sub']
     if identity == 'anonymous':
-        return User.query.filter_by(device_id=jwt_data['device_id']).one_or_none()
+        return AnonUser.query.filter_by(device_id=jwt_data['device_id']).one_or_none()
     
     return User.query.filter_by(username=identity).one_or_none()
 
