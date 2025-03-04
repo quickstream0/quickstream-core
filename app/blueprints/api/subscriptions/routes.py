@@ -2,11 +2,11 @@ from flask import jsonify
 from flask_jwt_extended import jwt_required, current_user 
 from app.blueprints.api.subscriptions.models import AnonPlan, Plan
 from . import subscription_bp
-from .data import data
+from .plans import plans
 
 @subscription_bp.route('/subscriptions', methods=['GET'])
 def subscription_data():
-    return jsonify({"subscriptions": data}), 200
+    return jsonify({"subscriptions": plans}), 200
 
 @subscription_bp.route('/plan', methods=['GET'])
 @jwt_required()
