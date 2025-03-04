@@ -12,7 +12,7 @@ def subscription_data():
 @jwt_required()
 def get_subscription():
     if current_user.is_anonymous:
-        subscription = AnonPlan.query.filter_by(devce_id=current_user.devce_id).order_by(AnonPlan.expiry_date.desc()).first()
+        subscription = AnonPlan.query.filter_by(device_id=current_user.device_id).order_by(AnonPlan.expiry_date.desc()).first()
         
         return jsonify({
             "plan_id": subscription.plan_id,
@@ -41,7 +41,7 @@ def get_subscription():
 @jwt_required()
 def get_plan_status():
     if current_user.is_anonymous:
-        plan = AnonPlan.query.filter_by(devce_id=current_user.devce_id).order_by(AnonPlan.expiry_date.desc()).first()
+        plan = AnonPlan.query.filter_by(device_id=current_user.device_id).order_by(AnonPlan.expiry_date.desc()).first()
         expiry = plan.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
         return jsonify({"status": "active" if plan.is_active() else "expired", "expiry": expiry}), 200
     plan = Plan.query.filter_by(user_id=current_user.user_id).order_by(Plan.expiry_date.desc()).first()
