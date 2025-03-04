@@ -12,7 +12,7 @@ class AnonPlan(db.Model):
     expiry_date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)
     device_id = db.Column(db.String(64), db.ForeignKey('user.user_id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now())
     status = db.Column(db.String(10), default="active")
 
     @validates('duration')
@@ -54,7 +54,7 @@ class Plan(db.Model):
     transaction_status = db.Column(db.String(10), default="pending") 
     period = db.Column(db.String(10)) 
     user_id = db.Column(db.String(40), db.ForeignKey('user.user_id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now())
     status = db.Column(db.String(10), default="pending_payment")  # active, expired
 
     @validates('duration')
