@@ -25,12 +25,16 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///db.sqlite3')
     BASE_URL = os.getenv('DEV_BASE_URL')
     PESAPAL_BASE_URL = os.getenv('DEV_PESAPAL_BASE_URL')
+    PESAPAL_CONSUMER_KEY = os.getenv('DEV_PESAPAL_CONSUMER_KEY')
+    PESAPAL_CONSUMER_SECRET = os.getenv('DEV_PESAPAL_CONSUMER_SECRET')
 
 class ProductionConfig(Config):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = database_url
-    BASE_URL = os.getenv('PRO_BASE_URL')
-    PESAPAL_BASE_URL = os.getenv('PRO_PESAPAL_BASE_URL')
+    BASE_URL = os.getenv('BASE_URL')
+    PESAPAL_BASE_URL = os.getenv('PESAPAL_BASE_URL')
+    PESAPAL_CONSUMER_KEY = os.getenv('PESAPAL_CONSUMER_KEY')
+    PESAPAL_CONSUMER_SECRET = os.getenv('PESAPAL_CONSUMER_SECRET')
 
 def get_env(var_name):
     try:

@@ -156,16 +156,18 @@ def get_user():
         "verified":current_user.verified
     }
     subscription = Plan.query.filter_by(user_id=current_user.user_id).order_by(Plan.expiry_date.desc()).first()
+    print(subscription)
     if not subscription:
         subscription_data = {"plan": "none", "status": "none"}
-    subscription_data = {
-        "plan_id": subscription.plan_id,
-        "plan": subscription.name,
-        "status": "active" if subscription.is_active() else "expired",
-        "period": subscription.period,
-        "remaining_time": subscription.remaining_time(),
-        "expiry_time": subscription.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
-    }
+    else:
+        subscription_data = {
+            "plan_id": subscription.plan_id,
+            "plan": subscription.name,
+            "status": "active" if subscription.is_active() else "expired",
+            "period": subscription.period,
+            "remaining_time": subscription.remaining_time(),
+            "expiry_time": subscription.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
+        }
     return jsonify({"user": user, "subscription": subscription_data}), 200
 
 

@@ -57,7 +57,7 @@ class Plan(db.Model):
     plan_id = db.Column(db.String(40), unique=True, default=lambda: str(uuid4()))
     expiry_date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)  # Store duration in days
-    name = db.Column(db.String(40), nullable=False)
+    name = db.Column(db.String(10))
     transaction_id = db.Column(db.String(40), db.ForeignKey('transaction.transaction_id'))
     transaction_status = db.Column(db.String(10), default="pending") 
     period = db.Column(db.String(10)) 

@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime, timedelta
-from flask import current_app, jsonify, request
+from flask import current_app, jsonify, render_template, request
 from flask_jwt_extended import jwt_required, current_user
 from app import db
 from app.blueprints.api.auth.models import User
@@ -22,8 +22,8 @@ def init_pesapal(app):
     """Initialize Pesapal config once, inside app context."""
     global BASE_URL, CONSUMER_KEY, CONSUMER_SECRET, CALLBACK_URL, IPN_URL
     BASE_URL = app.config["PESAPAL_BASE_URL"]
-    CONSUMER_KEY = get_env("PESAPAL_CONSUMER_KEY")
-    CONSUMER_SECRET = get_env("PESAPAL_CONSUMER_SECRET")
+    CONSUMER_KEY = app.config["PESAPAL_CONSUMER_KEY"]
+    CONSUMER_SECRET = app.config["PESAPAL_CONSUMER_SECRET"]
     CALLBACK_URL = f"{app.config['BASE_URL']}api/pesapal/callback"
     IPN_URL = f"{app.config['BASE_URL']}api/pesapal/ipn"
 
@@ -37,6 +37,7 @@ def payment_request():
     days = client_data.get('days')
     currency = client_data.get('currency')
     period = client_data.get('period')
+    name = client_data.get('name')
     description = client_data.get('description')
     notification_id = register_ipn()
 
@@ -72,7 +73,8 @@ def payment_request():
         plan = Plan(
             user_id=current_user.user_id, 
             duration=days,
-            period=period, 
+            period=period,
+            name=name,
             transaction_id=id
         )
         plan.save()
@@ -153,6 +155,7 @@ def check_transaction_status(order_tracking_id):
 
 @pesapal_bp.route('/ipn', methods=['GET', 'POST'])
 def ipn_notification():
+    # print("notification from pesapal")
     notification_type = request.args.get('OrderNotificationType')
     tracking_id = request.args.get('OrderTrackingId')
     merchant_reference = request.args.get('OrderMerchantReference')
@@ -185,31 +188,6 @@ def ipn_notification():
     ), 200
 
 
-@pesapal_bp.route('/callback', methods=['GET', 'POST'])
+@pesapal_bp.route('/callback', methods=['GET'])
 def callback():
-    notification_type = request.args.get('OrderNotificationType')
-    tracking_id = request.args.get('OrderTrackingId')
-    merchant_reference = request.args.get('OrderMerchantReference')
-
-    # transaction_status = check_transaction_status()
-    # payment_status_description = transaction_status.get('payment_status_description')
-    # transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
-    # transaction.payment_status = payment_status_description
-    # transaction.payment_method = transaction_status.get('payment_method')
-    # transaction.payment_account = transaction_status.get('payment_account')
-    # db.session.commit()
-    # if payment_status_description.lower() == 'completed':
-    #     transaction.status = 'completed'
-    #     plan = Plan.query.filter_by(user_id=transaction.user_id).first()
-    #     plan.transaction_status = 'completed'
-    #     plan.status = 'active'
-    #     db.session.commit()
-
-    return jsonify(
-        {
-            "OrderNotificationType": notification_type,
-            "OrderTrackingId": tracking_id,
-            "OrderMerchantReference": merchant_reference,
-            "status": 200
-        }
-    ), 200
+    return render_template('payment.html')
