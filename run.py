@@ -6,9 +6,9 @@ load_dotenv()
 
 app = create_app()
 
-# app.app_context().push()    
-# db.drop_all()
-# db.create_all()
+app.app_context().push()  
+db.drop_all()
+db.create_all()
 
 if __name__ == "__main__":
     host = os.getenv('HOST', '0.0.0.0')

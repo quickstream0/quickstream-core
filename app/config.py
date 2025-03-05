@@ -22,7 +22,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URI', 'sqlite:///db.sqlite3')
+    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'sqlite:///db.sqlite3')
     BASE_URL = os.getenv('DEV_BASE_URL')
     PESAPAL_BASE_URL = os.getenv('DEV_PESAPAL_BASE_URL')
 

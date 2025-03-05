@@ -1,4 +1,3 @@
-import os
 import requests
 from datetime import datetime, timedelta
 from flask import current_app, jsonify, request
@@ -12,13 +11,21 @@ from app.config import get_env
 from . import pesapal_bp
 
 
-# Pesapal API URLs
-BASE_URL = current_app.config["PESAPAL_BASE_URL"]
-CONSUMER_KEY = get_env("PESAPAL_CONSUMER_KEY")
-CONSUMER_SECRET = get_env("PESAPAL_CONSUMER_SECRET")
+# Global variables (initialized in `init_pesapal()`)
+BASE_URL = None
+CONSUMER_KEY = None
+CONSUMER_SECRET = None
+CALLBACK_URL = None
+IPN_URL = None
 
-callbackurl = f"{current_app.config["BASE_URL"]}api/pesapal/callback"
-ipnurl = f"{current_app.config["BASE_URL"]}api/pesapal/ipn"
+def init_pesapal(app):
+    """Initialize Pesapal config once, inside app context."""
+    global BASE_URL, CONSUMER_KEY, CONSUMER_SECRET, CALLBACK_URL, IPN_URL
+    BASE_URL = app.config["PESAPAL_BASE_URL"]
+    CONSUMER_KEY = get_env("PESAPAL_CONSUMER_KEY")
+    CONSUMER_SECRET = get_env("PESAPAL_CONSUMER_SECRET")
+    CALLBACK_URL = f"{app.config['BASE_URL']}api/pesapal/callback"
+    IPN_URL = f"{app.config['BASE_URL']}api/pesapal/ipn"
 
 @pesapal_bp.route('/payment', methods=['POST'])
 @jwt_required()
@@ -38,7 +45,7 @@ def payment_request():
         "amount": amount,    
         "currency": currency,    
         "description": description,    
-        "callback_url": callbackurl,    
+        "callback_url": CALLBACK_URL,    
         "notification_id": notification_id,    
         "billing_address": {
             "email_address": current_user.email,
@@ -112,7 +119,7 @@ def register_ipn():
         "Content-Type": "application/json", 
         "Accept": "application/json"
     }
-    payload = {"url": ipnurl, "ipn_notification_type": "GET"}
+    payload = {"url": IPN_URL, "ipn_notification_type": "GET"}
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
        return response.json().get("ipn_id")
