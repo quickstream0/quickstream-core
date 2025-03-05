@@ -11,7 +11,7 @@ class AnonPlan(db.Model):
     plan_id = db.Column(db.String(64), unique=True, default=lambda: str(uuid4()))
     expiry_date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)
-    device_id = db.Column(db.String(64), db.ForeignKey('user.user_id'), nullable=False)
+    device_id = db.Column(db.String(64), db.ForeignKey('anon_user.device_id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
     status = db.Column(db.String(10), default="active")
 
@@ -41,6 +41,14 @@ class AnonPlan(db.Model):
         """Mark subscription as expired if time has passed."""
         if not self.is_active():
             self.status = "expired"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
 
 class Plan(db.Model):
     __tablename__ = 'plan'

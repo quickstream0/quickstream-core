@@ -22,7 +22,7 @@ def create_app():
     else:
         app.config.from_object(ProductionConfig)
 
-    # iMPORT config
+    # Import config
     from app.blueprints.api.payments.pesapal import init_pesapal
 
    # Initialize config 

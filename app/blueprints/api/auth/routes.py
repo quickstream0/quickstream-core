@@ -129,14 +129,21 @@ def get_user():
     print(f"Request from client: ")
     formatted_date = current_user.created_at.strftime('%Y-%m-%d %H:%M:%S')
     if current_user.is_anonymous:
-        return jsonify(
-            {
-                "user": {
-                    "device_id":current_user.device_id, 
-                    "is_anonymous":current_user.is_anonymous,
-                }
-            }
-        ), 200
+        user = {
+            "device_id":current_user.device_id, 
+            "is_anonymous":current_user.is_anonymous,
+        }
+        subscription = AnonPlan.query.filter_by(device_id=current_user.device_id).order_by(AnonPlan.expiry_date.desc()).first()
+        if not subscription:
+            subscription_data = {"plan": "none", "status": "none"}
+        subscription_data = {
+            "plan_id": subscription.plan_id,
+            "plan": "free trial",
+            "status": "active" if subscription.is_active() else "expired",
+            "remaining_time": subscription.remaining_time(),
+            "expiry_time": subscription.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        return jsonify({"user": user, "subscription": subscription_data}), 200
     
     user = {
         "user_id":current_user.user_id, 
