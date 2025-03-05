@@ -10,7 +10,6 @@ if database_url and database_url.startswith("postgres://"):
 
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY')
-    SQLALCHEMY_DATABASE_URI =database_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASK_JWT_SECRET_KEY = os.getenv('FLASK_JWT_SECRET_KEY')
     MAIL_SERVER = os.getenv('MAIL_SERVER')
@@ -24,12 +23,14 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URI', 'sqlite:///db.sqlite3')
-    # SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URI', 'sqlite:///db.sqlite3')
+    BASE_URL = os.getenv('DEV_BASE_URL')
+    PESAPAL_BASE_URL = os.getenv('DEV_PESAPAL_BASE_URL')
 
 class ProductionConfig(Config):
     DEBUG = False
     SQLALCHEMY_DATABASE_URI = database_url
-    # SQLALCHEMY_DATABASE_URI = os.getenv('PROD_DATABASE_URI', 'postgresql://user:password@localhost/prod_quickstream')
+    BASE_URL = os.getenv('PRO_BASE_URL')
+    PESAPAL_BASE_URL = os.getenv('PRO_PESAPAL_BASE_URL')
 
 def get_env(var_name):
     try:

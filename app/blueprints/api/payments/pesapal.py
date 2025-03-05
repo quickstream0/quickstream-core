@@ -1,7 +1,7 @@
 import os
 import requests
 from datetime import datetime, timedelta
-from flask import jsonify, request
+from flask import current_app, jsonify, request
 from flask_jwt_extended import jwt_required, current_user
 from app import db
 from app.blueprints.api.auth.models import User
@@ -13,12 +13,12 @@ from . import pesapal_bp
 
 
 # Pesapal API URLs
-BASE_URL = get_env("PESAPAL_BASE_URL")
+BASE_URL = current_app.config["PESAPAL_BASE_URL"]
 CONSUMER_KEY = get_env("PESAPAL_CONSUMER_KEY")
 CONSUMER_SECRET = get_env("PESAPAL_CONSUMER_SECRET")
 
-callbackurl = "https://quickstream.vercel.app/api/pesapal/callback"
-ipnurl = "https://quickstream.vercel.app/api/pesapal/ipn"
+callbackurl = f"{current_app.config["BASE_URL"]}api/pesapal/callback"
+ipnurl = f"{current_app.config["BASE_URL"]}api/pesapal/ipn"
 
 @pesapal_bp.route('/payment', methods=['POST'])
 @jwt_required()
