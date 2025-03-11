@@ -3,7 +3,7 @@ import os
 import secrets
 from PIL import Image
 from datetime import datetime, timedelta
-from flask import flash, url_for, current_app
+from flask import Config, flash, url_for, current_app
 from flask_login import current_user
 from flask_mail import Message
 from werkzeug.security import generate_password_hash
@@ -11,6 +11,7 @@ from itsdangerous import URLSafeTimedSerializer as Serializer, SignatureExpired,
 
 from app import db, mail
 from app.blueprints.api.auth.models import User
+from app.blueprints.utils.mail import Mail
 from app.config import get_env
 
 
@@ -84,7 +85,7 @@ def save_picture(form_picture, old_picture_filename):
 
 def get_token(user_id):
     s = Serializer(current_app.config['SECRET_KEY'])
-    expires = datetime.utcnow() + timedelta(seconds=3600)
+    expires = datetime.now() + timedelta(seconds=3600)
     expires_timestamp = int(expires.timestamp())
     token =  s.dumps({'user_id': user_id, 'exp': expires_timestamp})
     return token
@@ -111,24 +112,56 @@ def verify_token(token):
 
 def send_reset_email(user):
     token = user.get_reset_token()
-    message = Message('Password Reset', recipients=[user.email]) 
-
-    reset_link = url_for('auth_view.reset_token', token=token, _external=True)
-
-    message.body = f'''Password reset was requested for this email. Ignore this message if this was not you.'''
-    
-    message.html = f'''<p>Password reset was requested for this email. Ignore this message if this was not you.</p>
-                      <p>To reset your password, click <a href="{reset_link}"><strong>here</strong></a>.</p>'''
-
-    mail.send(message)
-
+    reset_url = url_for("auth_view.reset_token", token=token, _external=True)
+            
+    mail = Mail(
+        username=Config.MAIL_USERNAME,
+        password=Config.MAIL_PASSWORD,
+        host=Config.MAIL_SERVER,
+        port=Config.MAIL_PORT
+    )
+    subject = "Password Reset Request"
+    body = f'''<p>Password reset was requested for this email. Ignore this message if this was not you.</p>
+                      <p>To reset your password, click <a href="{reset_url}"><strong>here</strong></a>.</p>'''
+    mail.send_mail([user.email], subject, body, "QuckStream")
 
 def send_verification_email(user_id, email):
     token = get_token(user_id)
-    message = Message('Email Verification', recipients=[email])                  
-    message.body = f'''QuckStream account was registered with this email. Ignore this message if this was not you. 
+    verify_url = url_for("auth_view.verify_email", token=token, _external=True)
+    mail = Mail(
+        username=Config.MAIL_USERNAME,
+        password=Config.MAIL_PASSWORD,
+        host=Config.MAIL_SERVER,
+        port=Config.MAIL_PORT
+    )
+    subject = "Email Verification Request"
+    body = f'''QuckStream account was registered with this email. Ignore this message if this was not you.
+     
 
-To verify your account visit: {url_for('auth_view.verify_email', token=token, _external=True)}
+To verify your account visit: {verify_url}
 '''
-    mail.send(message)
+    mail.send_mail([email], subject, body, "QuckStream")
+    
+# def send_reset_email(user):
+#     token = user.get_reset_token()
+#     message = Message('Password Reset', recipients=[user.email]) 
 
+#     reset_link = url_for('auth_view.reset_token', token=token, _external=True)
+
+#     message.body = f'''Password reset was requested for this email. Ignore this message if this was not you.'''
+    
+#     message.html = f'''<p>Password reset was requested for this email. Ignore this message if this was not you.</p>
+#                       <p>To reset your password, click <a href="{reset_link}"><strong>here</strong></a>.</p>'''
+
+#     mail.send(message)
+
+
+# def send_verification_email(user_id, email):
+#     token = get_token(user_id)
+#     verify_url = url_for("auth_view.verify_email", token=token, _external=True)
+#     message = Message('Email Verification', recipients=[email])                  
+#     message.body = f'''QuckStream account was registered with this email. Ignore this message if this was not you. 
+
+# To verify your account visit: {verify_url}
+# '''
+#     mail.send(message)

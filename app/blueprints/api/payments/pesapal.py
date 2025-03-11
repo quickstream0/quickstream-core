@@ -160,22 +160,18 @@ def ipn_notification():
     tracking_id = request.args.get('OrderTrackingId')
     merchant_reference = request.args.get('OrderMerchantReference')
 
-    transaction_status = check_transaction_status()
+    transaction_status = check_transaction_status(tracking_id)
     payment_status_description = transaction_status.get('payment_status_description')
     transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
-    transaction.payment_status = payment_status_description
+    transaction.status = payment_status_description.lower()
     transaction.payment_method = transaction_status.get('payment_method')
     transaction.payment_account = transaction_status.get('payment_account')
     db.session.commit()
 
     plan = Plan.query.filter_by(user_id=transaction.user_id).first()
+    plan.transaction_status = payment_status_description.lower()
     if payment_status_description.lower() == 'completed':
-        transaction.status = 'completed'
-        plan.transaction_status = 'completed'
         plan.status = 'active'
-        db.session.commit()
-    else:
-        plan.transaction_status = payment_status_description.lower()
         db.session.commit()
 
     return jsonify(
@@ -190,4 +186,9 @@ def ipn_notification():
 
 @pesapal_bp.route('/callback', methods=['GET'])
 def callback():
-    return render_template('payment.html')
+    status = None
+    tracking_id = request.args.get('OrderTrackingId')
+    transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
+    if transaction:
+        status = transaction.status
+    return render_template('payment.html', status=status)

@@ -14,8 +14,7 @@ class Transaction(db.Model):
     currency = db.Column(db.String(10), default='KES')
     tracking_id = db.Column(db.String(64))
     merchant_reference = db.Column(db.String(64))
-    payment_status = db.Column(db.String(64))
-    status = db.Column(db.String(64), default='pending')
+    status = db.Column(db.String(64))
     user_id = db.Column(db.String(64), db.ForeignKey('user.user_id'))
     created_at = db.Column(db.DateTime(), default=db.func.now())
 
