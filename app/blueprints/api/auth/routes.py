@@ -183,7 +183,9 @@ def refresh_access():
 @jwt_required(verify_type=False)
 def logout_user():
     jwt = get_jwt()
-    logout(jwt)
+    jti = jwt['jti']
+    token_b = TokenBlocklist(jti=jti)
+    token_b.save()
     token_type = jwt['type']
     return jsonify({"message": f"{token_type} token revoked successfully"}), 200
 
@@ -212,7 +214,9 @@ def update_account():
 @jwt_required()
 def delete_account():
     jwt = get_jwt()
-    logout(jwt)
+    jti = jwt['jti']
+    token_b = TokenBlocklist(jti=jti)
+    token_b.save()
     User.query.filter_by(user_id=current_user.user_id).delete()
     db.session.commit()
 
