@@ -9,7 +9,7 @@ from app import db, login_manager
 class AnonUser(db.Model, UserMixin):
     __tablename__ = 'anon_user'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    device_id = db.Column(db.String(64))
+    device_id = db.Column(db.String(64), unique=True)
     created_at = db.Column(db.DateTime(), default=datetime.now())
     is_anonymous = db.Column(db.Boolean(), default=True)
 
