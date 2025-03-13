@@ -11,15 +11,22 @@
     <div class="container">
         <img src="{{ url_for('static', filename='images/logos/logo_96.png') }}" alt="QuickStream" class="logo">
         {% if status == 'completed' %}
-        <p class="message">Your payment has been received. You can close this page now.</p>
+        <p class="message">Payment processing completed. Your payment has been received.</p>
+        <p>You can now close this page.</p>
         {% elif status == 'failed' %}
-        <p class="message">Your payment processing has failed. You can close this page now.</p>
+        <p class="message">Your payment processing has failed. Please try again after few minutes.</p>
+        <p>You can now close this page.</p>
         {% elif status == 'reversed' %}
-        <p class="message">Your payment has been reversed. You can close this page now.</p>
+        <p class="message">Your payment has been reversed.</p>
+        <p>You can now close this page.</p>
         {% elif status == 'invalid' %}
-        <p class="message">Invalid payment. You can close this page now.</p>
+        <p class="message">Invalid payment. Payment rejected.</p>
+        <p>You can now close this page.</p>
         {% else %}
-        <p class="message">Unable to process your payment. You can close this page now.</p>
+        <p class="message">Your payment is being processed. You will be notified for changes in few seconds.</p>
+        <p>You can now close this page.</p>
+        <!-- <p class="message">Unable to process your payment.</p>
+        <p>You can now close this page.</p> -->
         {% endif %}
     </div>
 </body>

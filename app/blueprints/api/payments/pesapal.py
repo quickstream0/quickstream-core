@@ -150,38 +150,46 @@ def check_transaction_status(order_tracking_id):
         "Accept": "application/json"
     }
     response = requests.get(url, headers=headers)
-    return response.json()
+    return response
 
 
 @pesapal_bp.route('/ipn', methods=['GET', 'POST'])
 def ipn_notification():
-    # print("notification from pesapal")
+    # data = request.get_json()
+    # notification_type = data.get('OrderNotificationType')
+    # tracking_id = data.get('OrderTrackingId')
+    # merchant_reference = data.get('OrderMerchantReference')
+
     notification_type = request.args.get('OrderNotificationType')
     tracking_id = request.args.get('OrderTrackingId')
     merchant_reference = request.args.get('OrderMerchantReference')
 
-    transaction_status = check_transaction_status(tracking_id)
-    payment_status_description = transaction_status.get('payment_status_description')
-    transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
-    transaction.status = payment_status_description.lower()
-    transaction.payment_method = transaction_status.get('payment_method')
-    transaction.payment_account = transaction_status.get('payment_account')
-    db.session.commit()
-
-    plan = Plan.query.filter_by(user_id=transaction.user_id).first()
-    plan.transaction_status = payment_status_description.lower()
-    if payment_status_description.lower() == 'completed':
-        plan.status = 'active'
+    status = check_transaction_status(tracking_id)
+    if status.status_code == 200:
+        transaction_status = status.json()
+        payment_status_description = transaction_status.get('payment_status_description')
+        transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
+        transaction.status = payment_status_description.lower()
+        transaction.payment_method = transaction_status.get('payment_method')
+        transaction.payment_account = transaction_status.get('payment_account')
         db.session.commit()
 
-    return jsonify(
-        {
-            "OrderNotificationType": notification_type,
-            "OrderTrackingId": tracking_id,
-            "OrderMerchantReference": merchant_reference,
-            "status": 200
-        }
-    ), 200
+        plan = Plan.query.filter_by(user_id=transaction.user_id).first()
+        plan.transaction_status = payment_status_description.lower()
+        if payment_status_description.lower() == 'completed':
+            plan.status = 'active'
+            db.session.commit()
+
+        return jsonify(
+            {
+                "OrderNotificationType": notification_type,
+                "OrderTrackingId": tracking_id,
+                "OrderMerchantReference": merchant_reference,
+                "status": 200
+            }
+        ), 200
+    else:
+        raise Exception(f"Failed to check transaction status: {status.text}")
 
 
 @pesapal_bp.route('/callback', methods=['GET'])

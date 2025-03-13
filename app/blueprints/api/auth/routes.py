@@ -97,8 +97,9 @@ def login_user():
 
 def generate_token(user):
     access_token_expires = timedelta(days=7)
+    refresh_token_expires = timedelta(days=14)
     access_token = create_access_token(identity=user.username, additional_claims={"user_id": user.user_id}, expires_delta=access_token_expires)
-    refresh_token = create_refresh_token(identity=user.username)
+    refresh_token = create_refresh_token(identity=user.username, additional_claims={"user_id": user.user_id}, expires_delta=refresh_token_expires)
 
     return jsonify(
         {
@@ -110,9 +111,10 @@ def generate_token(user):
     ), 200
 
 def generate_anon_token(device_id):
-    access_token_expires = timedelta(days=7) 
+    access_token_expires = timedelta(days=7)
+    refresh_token_expires = timedelta(days=14)
     access_token = create_access_token(identity='anonymous', additional_claims={"device_id": device_id}, expires_delta=access_token_expires)
-    refresh_token = create_refresh_token(identity='anonymous')
+    refresh_token = create_refresh_token(identity='anonymous', additional_claims={"device_id": device_id}, expires_delta=refresh_token_expires)
 
     return jsonify(
         {
@@ -183,9 +185,7 @@ def refresh_access():
 @jwt_required(verify_type=False)
 def logout_user():
     jwt = get_jwt()
-    jti = jwt['jti']
-    token_b = TokenBlocklist(jti=jti)
-    token_b.save()
+    logout(jwt)
     token_type = jwt['type']
     return jsonify({"message": f"{token_type} token revoked successfully"}), 200
 
@@ -214,9 +214,7 @@ def update_account():
 @jwt_required()
 def delete_account():
     jwt = get_jwt()
-    jti = jwt['jti']
-    token_b = TokenBlocklist(jti=jti)
-    token_b.save()
+    logout(jwt)
     User.query.filter_by(user_id=current_user.user_id).delete()
     db.session.commit()
 
