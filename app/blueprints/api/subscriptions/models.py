@@ -11,7 +11,7 @@ class AnonPlan(db.Model):
     plan_id = db.Column(db.String(64), unique=True, default=lambda: str(uuid4()))
     expiry_date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)
-    device_id = db.Column(db.String(64), db.ForeignKey('anon_user.device_id'))
+    user_id = db.Column(db.String(64), db.ForeignKey('anon_user.user_id'))
     created_at = db.Column(db.DateTime, default=datetime.now())
     status = db.Column(db.String(10), default="active")
 
@@ -58,7 +58,7 @@ class Plan(db.Model):
     expiry_date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)  # Store duration in days
     name = db.Column(db.String(10))
-    transaction_id = db.Column(db.String(40), db.ForeignKey('transaction.transaction_id'))
+    transaction_id = db.Column(db.String(40), db.ForeignKey('transaction.transaction_id'), nullable=True)
     transaction_status = db.Column(db.String(10), default="pending") 
     period = db.Column(db.String(10)) 
     user_id = db.Column(db.String(40), db.ForeignKey('user.user_id'), nullable=False)
@@ -91,6 +91,25 @@ class Plan(db.Model):
         """Mark subscription as expired if time has passed."""
         if not self.is_active():
             self.status = "expired"
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+class PendingPlan(db.Model):
+    __tablename__ = 'pending_plan'
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    duration = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(10))
+    transaction_id = db.Column(db.String(40), db.ForeignKey('transaction.transaction_id'), nullable=True)
+    period = db.Column(db.String(10)) 
+    user_id = db.Column(db.String(40), db.ForeignKey('user.user_id'), nullable=False)
+    created_at = db.Column(db.DateTime, default=datetime.now())
 
     def save(self):
         db.session.add(self)

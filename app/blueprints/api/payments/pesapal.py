@@ -1,13 +1,11 @@
 import requests
 from datetime import datetime, timedelta
-from flask import current_app, jsonify, render_template, request
+from flask import jsonify, render_template, request
 from flask_jwt_extended import jwt_required, current_user
 from app import db
-from app.blueprints.api.auth.models import User
 from app.blueprints.api.payments.models import Transaction
-from app.blueprints.api.subscriptions.models import Plan
+from app.blueprints.api.subscriptions.models import PendingPlan, Plan
 from app.blueprints.utils.random import Generate
-from app.config import get_env
 from . import pesapal_bp
 
 
@@ -70,7 +68,7 @@ def payment_request():
             user_id = current_user.user_id
         )
         transaction.save()
-        plan = Plan(
+        plan = PendingPlan(
             user_id=current_user.user_id, 
             duration=days,
             period=period,
@@ -124,6 +122,7 @@ def register_ipn():
     payload = {"url": IPN_URL, "ipn_notification_type": "GET"}
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
+       print(response.json())
        return response.json().get("ipn_id")
     else:
         raise Exception(f"Failed to register ipn: {response.text}")
@@ -155,10 +154,10 @@ def check_transaction_status(order_tracking_id):
 
 @pesapal_bp.route('/ipn', methods=['GET', 'POST'])
 def ipn_notification():
-    # data = request.get_json()
-    # notification_type = data.get('OrderNotificationType')
-    # tracking_id = data.get('OrderTrackingId')
-    # merchant_reference = data.get('OrderMerchantReference')
+    data = request.get_json()
+    notification_type = data.get('OrderNotificationType')
+    tracking_id = data.get('OrderTrackingId')
+    merchant_reference = data.get('OrderMerchantReference')
 
     notification_type = request.args.get('OrderNotificationType')
     tracking_id = request.args.get('OrderTrackingId')
@@ -174,10 +173,18 @@ def ipn_notification():
         transaction.payment_account = transaction_status.get('payment_account')
         db.session.commit()
 
-        plan = Plan.query.filter_by(user_id=transaction.user_id).first()
-        plan.transaction_status = payment_status_description.lower()
+        pending_plan = PendingPlan.query.filter_by(transaction_id=transaction.transaction_id).first()
         if payment_status_description.lower() == 'completed':
-            plan.status = 'active'
+            plan = Plan(
+                user_id=pending_plan.user_id, 
+                duration=pending_plan.duration,
+                period=pending_plan.period,
+                name=pending_plan.name,
+                transaction_id=transaction.transaction,
+                transaction_status='completed',
+                status='active'
+            )
+            plan.save()
             db.session.commit()
 
         return jsonify(

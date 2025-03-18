@@ -8,11 +8,23 @@ from .plans import plans
 def subscription_data():
     return jsonify({"subscriptions": plans}), 200
 
+@subscription_bp.route('/trial-plan', methods=['GET'])
+@jwt_required()
+def save_trial_plan():
+    trial_plan = Plan(
+        user_id=current_user.user_id, 
+        duration=7,
+        name="Free trial",
+        period="weekly",
+    )
+    trial_plan.save()
+    return jsonify({"message": "subscribed to trial plan"}), 200
+
 @subscription_bp.route('/plan', methods=['GET'])
 @jwt_required()
 def get_subscription():
     if current_user.is_anonymous:
-        subscription = AnonPlan.query.filter_by(device_id=current_user.device_id).order_by(AnonPlan.expiry_date.desc()).first()
+        subscription = AnonPlan.query.filter_by(user_id=current_user.user_id).order_by(AnonPlan.expiry_date.desc()).first()
         
         return jsonify({
             "plan_id": subscription.plan_id,
@@ -41,11 +53,13 @@ def get_subscription():
 @jwt_required()
 def get_plan_status():
     if current_user.is_anonymous:
-        plan = AnonPlan.query.filter_by(device_id=current_user.device_id).order_by(AnonPlan.expiry_date.desc()).first()
+        plan = AnonPlan.query.filter_by(user_id=current_user.user_id).order_by(AnonPlan.expiry_date.desc()).first()
         expiry = plan.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
         return jsonify({"status": "active" if plan.is_active() else "expired", "expiry": expiry}), 200
     plan = Plan.query.filter_by(user_id=current_user.user_id).order_by(Plan.expiry_date.desc()).first()
-    expiry = plan.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
+    expiry = None
     if not plan:
         return jsonify({"status": "none", "expiry": ""}), 200
+    else:
+        expiry = plan.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
     return jsonify({"status": "active" if plan.is_active() else "expired", "expiry": expiry}), 200

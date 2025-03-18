@@ -9,13 +9,15 @@ from app import db, login_manager
 class AnonUser(db.Model, UserMixin):
     __tablename__ = 'anon_user'
     id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
-    device_id = db.Column(db.String(64), unique=True)
+    user_id = db.Column(db.String(64), unique=True)
+    profile = db.Column(db.Integer(), default=0)
     created_at = db.Column(db.DateTime(), default=datetime.now())
+    verified = db.Column(db.Boolean(), default=True)
     is_anonymous = db.Column(db.Boolean(), default=True)
 
     @classmethod
-    def get_device_id(cls, device_id):
-        return cls.query.filter_by(device_id=device_id).first()
+    def get_device_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).first()
     
     def save(self):
         db.session.add(self)

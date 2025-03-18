@@ -18,6 +18,7 @@ from app import db
 def register_user():
     data = request.get_json()
     # print(f"Data from client: {data}")
+    profile_id = 0
     
     # Explicit checks for required fields
     if 'name' not in data:
@@ -28,6 +29,8 @@ def register_user():
         return jsonify({"message": "Email field is required"}), 400
     if 'password' not in data:
         return jsonify({"message": "Password field is required"}), 400
+    if 'profile_id' in data:
+        profile_id = data.get('profile_id')
 
     # Check if username exists
     user = User.get_username(username=data.get('username'))
@@ -43,7 +46,8 @@ def register_user():
     new_user = User(
         name=data.get('name'),
         username=data.get('username'),
-        email=data.get('email')
+        email=data.get('email'),
+        profile=profile_id
     )
     
     # Set hashed password
@@ -59,19 +63,19 @@ def register_anon_user():
     data = request.get_json()
     print(f"Data from client: {data}")
 
-    if 'device_id' not in data:
-        return jsonify({"message": "device_id field is required"}), 400
+    if 'user_id' not in data:
+        return jsonify({"message": "user id is required"}), 400
 
-    device_id = data.get('device_id')
-    user = AnonUser.get_device_id(device_id=device_id)
+    user_id = data.get('user_id')
+    user = AnonUser.get_device_id(user_id=user_id)
     if user:
-        return generate_anon_token(user.device_id)
+        return generate_anon_token(user.user_id)
     else:
-        new_anon_user = AnonUser(device_id=device_id)
+        new_anon_user = AnonUser(user_id=user_id)
         new_anon_user.save()
-        trial_plan = AnonPlan(device_id=device_id, duration=3)
+        trial_plan = AnonPlan(user_id=user_id, duration=3)
         trial_plan.save()
-        return generate_anon_token(device_id)
+        return generate_anon_token(user_id)
 
 @auth_bp.route('/login', methods=['POST'])
 def login_user():
@@ -110,11 +114,11 @@ def generate_token(user):
         }
     ), 200
 
-def generate_anon_token(device_id):
+def generate_anon_token(user_id):
     access_token_expires = timedelta(days=7)
     refresh_token_expires = timedelta(days=14)
-    access_token = create_access_token(identity='anonymous', additional_claims={"device_id": device_id}, expires_delta=access_token_expires)
-    refresh_token = create_refresh_token(identity='anonymous', additional_claims={"device_id": device_id}, expires_delta=refresh_token_expires)
+    access_token = create_access_token(identity='anonymous', additional_claims={"user_id": user_id}, expires_delta=access_token_expires)
+    refresh_token = create_refresh_token(identity='anonymous', additional_claims={"user_id": user_id}, expires_delta=refresh_token_expires)
 
     return jsonify(
         {
@@ -132,15 +136,20 @@ def get_user():
     formatted_date = current_user.created_at.strftime('%Y-%m-%d %H:%M:%S')
     if current_user.is_anonymous:
         user = {
-            "device_id":current_user.device_id, 
+            "user_id":current_user.user_id,
+            "name":"Anonymous User",
+            "username":"anonymous",
+            "created_at":formatted_date,
+            "profile_id":current_user.profile,
             "is_anonymous":current_user.is_anonymous,
+            "verified":current_user.verified
         }
-        subscription = AnonPlan.query.filter_by(device_id=current_user.device_id).order_by(AnonPlan.expiry_date.desc()).first()
+        subscription = AnonPlan.query.filter_by(user_id=current_user.user_id).order_by(AnonPlan.expiry_date.desc()).first()
         if not subscription:
             subscription_data = {"plan": "none", "status": "none"}
         subscription_data = {
             "plan_id": subscription.plan_id,
-            "plan": "free trial",
+            "plan": "Free trial",
             "status": "active" if subscription.is_active() else "expired",
             "remaining_time": subscription.remaining_time(),
             "expiry_time": subscription.expiry_date.strftime("%Y-%m-%d %H:%M:%S")
@@ -158,7 +167,6 @@ def get_user():
         "verified":current_user.verified
     }
     subscription = Plan.query.filter_by(user_id=current_user.user_id).order_by(Plan.expiry_date.desc()).first()
-    print(subscription)
     if not subscription:
         subscription_data = {"plan": "none", "status": "none"}
     else:
