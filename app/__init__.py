@@ -1,6 +1,6 @@
 import os
 from flask import Flask, Blueprint
-from .extensions import db, jwt, bcrypt, mail, migrate, login_manager
+from .extensions import db, jwt, bcrypt, migrate, login_manager
 from .config import DevelopmentConfig, ProductionConfig
 
 # import blueprints
@@ -33,7 +33,6 @@ def create_app():
     migrate.init_app(app, db)
     bcrypt.init_app(app)
     jwt.init_app(app)
-    mail.init_app(app)
     login_manager.init_app(app)
 
     # Register blueprints

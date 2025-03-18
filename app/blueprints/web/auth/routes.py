@@ -21,8 +21,8 @@ def register():
         if success:
             flash(f'Acount created!', 'success')
             # send_verification_email(user, email)
-            flash(f'Email verification link send to {email}. Verify your email before login.', 'success')
-            errors.append(f'Email verification link send to {email}. Follow the link to Verify your email.')
+            # flash(f'Email verification link send to {email}. Verify your email before login.', 'success')
+            # errors.append(f'Email verification link send to {email}. Follow the link to Verify your email.')
             return redirect(url_for('auth_view.login'))
         else:
             flash(f'Error creating account: {user}', 'error')
@@ -44,8 +44,8 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('chat_view.user'))
             # else:
-            errors.append('Email not Verified. You need to verify your email before login')
-            flash('Login Failed. Email not Verified', 'warning')
+            # errors.append('Email not Verified. You need to verify your email before login')
+            # flash('Login Failed. Email not Verified', 'warning')
         else:
             text = 'Login Failed. Please check username and password'
             flash(text, 'warning')

@@ -5,11 +5,10 @@ from PIL import Image
 from datetime import datetime, timedelta
 from flask import Config, flash, url_for, current_app
 from flask_login import current_user
-from flask_mail import Message
 from werkzeug.security import generate_password_hash
 from itsdangerous import URLSafeTimedSerializer as Serializer, SignatureExpired, BadSignature
 
-from app import db, mail
+from app import db
 from app.blueprints.api.auth.models import User
 from app.blueprints.utils.mail import Mail
 from app.config import get_env
@@ -142,26 +141,3 @@ To verify your account visit: {verify_url}
 '''
     mail.send_mail([email], subject, body, "QuckStream")
     
-# def send_reset_email(user):
-#     token = user.get_reset_token()
-#     message = Message('Password Reset', recipients=[user.email]) 
-
-#     reset_link = url_for('auth_view.reset_token', token=token, _external=True)
-
-#     message.body = f'''Password reset was requested for this email. Ignore this message if this was not you.'''
-    
-#     message.html = f'''<p>Password reset was requested for this email. Ignore this message if this was not you.</p>
-#                       <p>To reset your password, click <a href="{reset_link}"><strong>here</strong></a>.</p>'''
-
-#     mail.send(message)
-
-
-# def send_verification_email(user_id, email):
-#     token = get_token(user_id)
-#     verify_url = url_for("auth_view.verify_email", token=token, _external=True)
-#     message = Message('Email Verification', recipients=[email])                  
-#     message.body = f'''QuckStream account was registered with this email. Ignore this message if this was not you. 
-
-# To verify your account visit: {verify_url}
-# '''
-#     mail.send(message)
