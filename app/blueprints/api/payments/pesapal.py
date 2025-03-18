@@ -38,19 +38,31 @@ def payment_request():
     name = client_data.get('name')
     description = client_data.get('description')
     notification_id = register_ipn()
+    billing_address = {
+        "email_address": current_user.email
+    }
+
+    # Handle names correctly
+    if len(names) == 2:
+        billing_address["first_name"] = names[0]
+        billing_address["last_name"] = names[1]
+    elif len(names) == 3:
+        billing_address["first_name"] = names[0]
+        billing_address["middle_name"] = names[1]
+        billing_address["last_name"] = names[2]
+    else:
+        # If only one name is found, duplicate it as last_name
+        billing_address["first_name"] = names[0]
+        billing_address["last_name"] = names[0]
 
     payment_data = {
-        "id": id,    
-        "amount": amount,    
-        "currency": currency,    
-        "description": description,    
-        "callback_url": CALLBACK_URL,    
-        "notification_id": notification_id,    
-        "billing_address": {
-            "email_address": current_user.email,
-            "first_name": names[0],
-            "last_name": names[1]
-        }
+        "id": id,
+        "amount": amount,
+        "currency": currency,
+        "description": description,
+        "callback_url": CALLBACK_URL,
+        "notification_id": notification_id,
+        "billing_address": billing_address
     }
 
     response = create_payment_request(payment_data)
@@ -122,7 +134,6 @@ def register_ipn():
     payload = {"url": IPN_URL, "ipn_notification_type": "GET"}
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
-       print(response.json())
        return response.json().get("ipn_id")
     else:
         raise Exception(f"Failed to register ipn: {response.text}")
@@ -154,10 +165,10 @@ def check_transaction_status(order_tracking_id):
 
 @pesapal_bp.route('/ipn', methods=['GET', 'POST'])
 def ipn_notification():
-    data = request.get_json()
-    notification_type = data.get('OrderNotificationType')
-    tracking_id = data.get('OrderTrackingId')
-    merchant_reference = data.get('OrderMerchantReference')
+    # data = request.get_json()
+    # notification_type = data.get('OrderNotificationType')
+    # tracking_id = data.get('OrderTrackingId')
+    # merchant_reference = data.get('OrderMerchantReference')
 
     notification_type = request.args.get('OrderNotificationType')
     tracking_id = request.args.get('OrderTrackingId')
@@ -168,10 +179,13 @@ def ipn_notification():
         transaction_status = status.json()
         payment_status_description = transaction_status.get('payment_status_description')
         transaction = Transaction.query.filter_by(tracking_id=tracking_id).first()
-        transaction.status = payment_status_description.lower()
-        transaction.payment_method = transaction_status.get('payment_method')
-        transaction.payment_account = transaction_status.get('payment_account')
-        db.session.commit()
+        if transaction:
+            transaction.status = payment_status_description.lower()
+            transaction.payment_method = transaction_status.get('payment_method')
+            transaction.payment_account = transaction_status.get('payment_account')
+            db.session.commit()
+        else:
+            return jsonify({"error": "Transaction not found"}), 404
 
         pending_plan = PendingPlan.query.filter_by(transaction_id=transaction.transaction_id).first()
         if payment_status_description.lower() == 'completed':
@@ -180,7 +194,7 @@ def ipn_notification():
                 duration=pending_plan.duration,
                 period=pending_plan.period,
                 name=pending_plan.name,
-                transaction_id=transaction.transaction,
+                transaction_id=transaction.transaction_id,
                 transaction_status='completed',
                 status='active'
             )
