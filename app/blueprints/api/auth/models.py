@@ -16,7 +16,7 @@ class AnonUser(db.Model, UserMixin):
     is_anonymous = db.Column(db.Boolean(), default=True)
 
     @classmethod
-    def get_device_id(cls, user_id):
+    def get_user_id(cls, user_id):
         return cls.query.filter_by(user_id=user_id).first()
     
     def save(self):

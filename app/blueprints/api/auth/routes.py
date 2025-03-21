@@ -67,7 +67,7 @@ def register_anon_user():
         return jsonify({"message": "user id is required"}), 400
 
     user_id = data.get('user_id')
-    user = AnonUser.get_device_id(user_id=user_id)
+    user = AnonUser.get_user_id(user_id=user_id)
     if user:
         return generate_anon_token(user.user_id)
     else:

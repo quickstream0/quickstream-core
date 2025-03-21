@@ -1,9 +1,10 @@
 {
-    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.1/quickstream-v1.0.1.apk",
+    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.2/quickstream-v1.0.2.apk",
     "version": "1.0.1",
     "forced": false,
     "changelog": [
-        "- Fix player launch error from episode",
-        "- Improve TV remote navigation and focus"
+        "- Add Register and Login, Setting and About.",
+        "- Add more providers.",
+        "- Major Updates and New Features."
     ]
 }
