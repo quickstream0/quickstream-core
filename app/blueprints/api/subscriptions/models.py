@@ -13,7 +13,7 @@ class AnonPlan(db.Model):
     duration = db.Column(db.Integer, nullable=False)
     user_id = db.Column(db.String(64), db.ForeignKey('anon_user.user_id'))
     created_at = db.Column(db.DateTime, default=datetime.now())
-    status = db.Column(db.String(10), default="active")
+    status = db.Column(db.String(20), default="active")
 
     @validates('duration')
     def validate_duration(self, key, value):
@@ -57,13 +57,13 @@ class Plan(db.Model):
     plan_id = db.Column(db.String(40), unique=True, default=lambda: str(uuid4()))
     expiry_date = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.Integer, nullable=False)  # Store duration in days
-    name = db.Column(db.String(10))
+    name = db.Column(db.String(20))
     transaction_id = db.Column(db.String(40), db.ForeignKey('transaction.transaction_id'), nullable=True)
-    transaction_status = db.Column(db.String(10), default="pending") 
-    period = db.Column(db.String(10)) 
+    transaction_status = db.Column(db.String(20), default="pending") 
+    period = db.Column(db.String(20)) 
     user_id = db.Column(db.String(40), db.ForeignKey('user.user_id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
-    status = db.Column(db.String(10), default="pending_payment")  # active, expired
+    status = db.Column(db.String(20), default="pending_payment")  # active, expired
 
     @validates('duration')
     def validate_duration(self, key, value):
@@ -105,9 +105,9 @@ class PendingPlan(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     duration = db.Column(db.Integer, nullable=False)
-    name = db.Column(db.String(10))
+    name = db.Column(db.String(20))
     transaction_id = db.Column(db.String(40), db.ForeignKey('transaction.transaction_id'), nullable=True)
-    period = db.Column(db.String(10)) 
+    period = db.Column(db.String(20)) 
     user_id = db.Column(db.String(40), db.ForeignKey('user.user_id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now())
 
