@@ -10,3 +10,7 @@ def index():
 def pricing():
     return render_template('pricing.html')
 
+@index_bp.route('/faq')
+def faq():
+    return render_template('faq.html')
+

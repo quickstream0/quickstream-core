@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/faq.css') }}">
+{% endblock style %}
+{% block content %}
+<section>
+    <div class="container">
+        <div class="title mt-3">
+            <h3 class="text-center">What is QuickStream?</h3>
+        </div>
+        <p class="text-center">QuickStream is an online streamming app for watching Movies, TV Shows, Sports, and live TV. <br>With a huge library of 100,000+ films and 1000+ Premium sports and entertaiment channels.</p>
+        <div class="title mt-3">
+            <h3 class="text-center">Is QuickStream safe to use?</h3>
+        </div>
+        <p class="text-center">Yes, QuickStream is safe to use. We do not violate your privacy or collect your data that we haven't inform you about.</p>
+        <div class="title mt-3">
+            <h3 class="text-center">Why can't I install QuickStream?</h3>
+        </div>
+        <p class="text-center">Please go to your device settings and enable "allow install from unknown sources" then try again.</p>
+        <div class="title mt-3">
+            <h3 class="text-center">Is QuickStream available for iOS?</h3>
+        </div>
+        <p class="text-center">No, QuickStream is currently available for Android devices only. Hopefully we will consider other platforms on future updates.</p>
+        <div class="title mt-3">
+            <h3 class="text-center">Can I install QuickStream on Android TV?</h3>
+        </div>
+        <p class="text-center">Yes you can install QuickStream on Android TV but note that the app is not fully compatible with Android TV. Our tream is working on a separate Android TV version that may be released in the near future.</p>
+        <div class="title mt-3">
+            <h3 class="text-center">Can I use external player with QuickStream?</h3>
+        </div>
+        <p class="text-center">Yes you can integrate external video player like VLC Player or MX Player and others.</p>
+    </div>
+</section>
+{% endblock content %}

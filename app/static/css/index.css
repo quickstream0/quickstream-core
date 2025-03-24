@@ -74,3 +74,25 @@ a:link{
         margin-top: 56px;
     }
 }
+
+/* Screenshot */
+.screenshots-section {
+    background-color: #a1bdda;
+    padding: 0 15px;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+  }
+  
+  .card-img-top {
+    width: 100%; /* Ensure images fill the card */
+    height: auto; /* Maintain aspect ratio */
+  }
