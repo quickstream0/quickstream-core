@@ -12,7 +12,7 @@ from app.blueprints.api.auth.models import User
 @auth_view.route("/register", methods=['GET', 'POST']) 
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('chat_view.user'))
+        return redirect(url_for('auth_view.index'))
     errors = []
     form = RegistrationForm()
     if request.method == 'POST' and form.validate_on_submit():
@@ -32,7 +32,7 @@ def register():
 @auth_view.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('chat_view.user'))
+        return redirect(url_for('auth_view.index'))
     errors = []
     form = LoginForm()
     if form.validate_on_submit():
@@ -42,7 +42,7 @@ def login():
             login_user(user, remember=True)
             session['user_id'] = current_user.user_id
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('chat_view.user'))
+            return redirect(next_page) if next_page else redirect(url_for('auth_view.index'))
             # else:
             # errors.append('Email not Verified. You need to verify your email before login')
             # flash('Login Failed. Email not Verified', 'warning')
@@ -62,13 +62,13 @@ def logout():
 @auth_view.route("/reset-password", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('chat_view.user'))
+        return redirect(url_for('auth_view.index'))
     errors = []
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
-        text = 'Email sent with instructions to resset password'
+        text = 'Email sent with instructions to reset password'
         errors.append(text)
         flash(text, 'success')
     return render_template('reset-request.html', title='Reset Password', form=form, errors=errors)
@@ -76,8 +76,8 @@ def reset_request():
 
 @auth_view.route("/reset-password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('chat_view.user'))
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('auth_view.index'))
     user = User.verify_reset_token(token)
     if not user:
         flash('Token is invalid or expired', 'warning')
@@ -87,7 +87,7 @@ def reset_token(token):
         success, err = reset_password(form, user)
         if success:
             flash(f'Your password has been updated. You are now able to log in with your new password', 'success')
-            return redirect(url_for('auth_view.login'))
+            return redirect(url_for('auth_view.index'))
         else:
             flash(f'Error resetting password: {err}', 'error')
 
@@ -97,7 +97,7 @@ def reset_token(token):
 @auth_view.route("/verify-email", methods=['GET', 'POST'])
 def verify_request():
     if current_user.is_authenticated:
-        return redirect(url_for('chat_view.user'))
+        return redirect(url_for('auth_view.index'))
     form = RequestVerifyForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -111,7 +111,7 @@ def verify_request():
 @auth_view.route('/verify-email/<token>')
 def verify_email(token):
     if current_user.is_authenticated:
-        return redirect(url_for('chat_view.user'))
+        return redirect(url_for('auth_view.index'))
     title = 'Email Verified!'
     text = 'Your email has been verified. Redirecting to login...'
     icon = 'success'

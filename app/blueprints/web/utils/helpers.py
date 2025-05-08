@@ -3,18 +3,18 @@ import os
 import secrets
 from PIL import Image
 from datetime import datetime, timedelta
-from flask import Config, flash, url_for, current_app
+from flask import flash, url_for, current_app
 from flask_login import current_user
 from werkzeug.security import generate_password_hash
 from itsdangerous import URLSafeTimedSerializer as Serializer, SignatureExpired, BadSignature
-
 from app import db
-from app.blueprints.api.auth.models import User
 from app.blueprints.utils.mail import Mail
-from app.config import get_env
+from app.config import Config, get_env
 
 
 def register_user(form):
+    from app.blueprints.api.auth.models import User
+
     try:
         hashed_password = generate_password_hash(form.password.data)
         user_id = str(uuid4())
@@ -91,6 +91,8 @@ def get_token(user_id):
 
 
 def verify_token(token):
+    from app.blueprints.api.auth.models import User
+    
     s = Serializer(current_app.config['SECRET_KEY'])
     try:
         data = s.loads(token)
@@ -112,17 +114,28 @@ def verify_token(token):
 def send_reset_email(user):
     token = user.get_reset_token()
     reset_url = url_for("auth_view.reset_token", token=token, _external=True)
-            
+    
     mail = Mail(
-        username=Config.MAIL_USERNAME,
-        password=Config.MAIL_PASSWORD,
-        host=Config.MAIL_SERVER,
-        port=Config.MAIL_PORT
+        username=current_app.config['MAIL_USERNAME'],
+        password=current_app.config['MAIL_PASSWORD'],
+        host=current_app.config['MAIL_SERVER'],
+        port=current_app.config['MAIL_PORT'],
+        use_tls=current_app.config['MAIL_USE_TLS']
     )
+    
     subject = "Password Reset Request"
     body = f'''<p>Password reset was requested for this email. Ignore this message if this was not you.</p>
-                      <p>To reset your password, click <a href="{reset_url}"><strong>here</strong></a>.</p>'''
-    mail.send_mail([user.email], subject, body, "QuckStream")
+              <p>To reset your password, click <a href="{reset_url}"><strong>here</strong></a>.</p>
+              <p>If the button doesn't work, copy and paste this link in your browser:</p>
+              <p>{reset_url}</p>'''
+    
+    response, success = mail.send_mail([user.email], subject, body, current_app.config['MAIL_DEFAULT_SENDER_NAME'])
+    
+    if not success:
+        current_app.logger.error(f"Failed to send reset email to {user.email}: {response.get('error')}")
+    
+    return success
+    
 
 def send_verification_email(user_id, email):
     token = get_token(user_id)

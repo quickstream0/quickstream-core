@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
-from flask import jsonify, request
+from flask import current_app, jsonify, request
 
 from app.blueprints.api.subscriptions.models import AnonPlan, Plan
+from app.blueprints.web.utils.helpers import send_reset_email
 from . import auth_bp
 from flask_jwt_extended import (
     create_access_token, 
@@ -218,6 +219,7 @@ def update_account():
 
     return jsonify({"message": "Account updated successfully!"}), 200
 
+
 @auth_bp.route('/delete-account', methods=['GET'])
 @jwt_required()
 def delete_account():
@@ -227,3 +229,29 @@ def delete_account():
     db.session.commit()
 
     return jsonify({"message": "Account deleted successfully!"}), 200
+
+
+@auth_bp.route("/forgot-password", methods=['GET', 'POST'])
+def reset_request():
+    data = request.get_json()
+    if 'email' not in data:
+        return jsonify({"message": "Email field is required"}), 400
+        
+    email = data.get('email')
+    user = User.query.filter_by(email=email).first()
+    
+    if not user:
+        # Don't reveal whether email exists or not for security
+        current_app.logger.info(f"Password reset requested for non-existent email: {email}")
+        return jsonify({"message": "If an account exists with this email, a password reset link has been sent."}), 200
+    
+    try:
+        email_sent = send_reset_email(user)
+        if email_sent:
+            return jsonify({"message": "If an account exists with this email, a password reset link has been sent."}), 200
+        else:
+            return jsonify({"error": "Failed to send password reset email. Please try again later."}), 500
+            
+    except Exception as e:
+        current_app.logger.error(f"Error in password reset for {email}: {str(e)}")
+        return jsonify({"error": "An error occurred while processing your request. Please try again later."}), 500
