@@ -135,6 +135,29 @@ def send_reset_email(user):
         current_app.logger.error(f"Failed to send reset email to {user.email}: {response.get('error')}")
     
     return success
+
+
+def send_get_started_email(user):
+    
+    mail = Mail(
+        username=current_app.config['MAIL_USERNAME'],
+        password=current_app.config['MAIL_PASSWORD'],
+        host=current_app.config['MAIL_SERVER'],
+        port=current_app.config['MAIL_PORT'],
+        use_tls=current_app.config['MAIL_USE_TLS']
+    )
+    
+    subject = "Get started"
+    body = f'''<p>Your QuickStream account have been successfully created.</p>
+              <p>Get started with a free trial plan now.</p>
+              <p>Click menu icon then head to "Profile >> Plan >> Trial"</p>'''
+    
+    response, success = mail.send_mail([user.email], subject, body, current_app.config['MAIL_DEFAULT_SENDER_NAME'])
+    
+    if not success:
+        current_app.logger.error(f"Failed to send reset email to {user.email}: {response.get('error')}")
+    
+    return success
     
 
 def send_verification_email(user_id, email):

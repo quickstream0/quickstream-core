@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from flask import current_app, jsonify, request
 
 from app.blueprints.api.subscriptions.models import AnonPlan, Plan
-from app.blueprints.web.utils.helpers import send_reset_email
+from app.blueprints.web.utils.helpers import send_get_started_email, send_reset_email
 from . import auth_bp
 from flask_jwt_extended import (
     create_access_token, 
@@ -56,6 +56,8 @@ def register_user():
 
     # Save new user to the database
     new_user.save()
+
+    send_get_started_email(new_user)
 
     return jsonify({"message": "User registered successfully!"}), 201
 

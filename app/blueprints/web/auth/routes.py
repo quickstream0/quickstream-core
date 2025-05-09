@@ -76,8 +76,12 @@ def reset_request():
 
 @auth_view.route("/reset-password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('index_bp.index'))
+    if current_user.is_authenticated:
+        return redirect(url_for('index_bp.index'))
+    title = 'Email Verified!'
+    text = 'Your email has been verified. Redirecting to login...'
+    icon = 'success'
+
     user = User.verify_reset_token(token)
     if not user:
         flash('Token is invalid or expired', 'warning')
@@ -87,7 +91,7 @@ def reset_token(token):
         success, err = reset_password(form, user)
         if success:
             flash(f'Your password has been updated. You are now able to log in with your new password', 'success')
-            return redirect(url_for('index_bp.index'))
+            return render_template('alert-dialog.html', title='Reset Password', _title=title, text=text, icon=icon)
         else:
             flash(f'Error resetting password: {err}', 'error')
 
@@ -126,7 +130,7 @@ def verify_email(token):
         icon = 'warning'
         flash('Token is invalid or expired', 'warning')
 
-    return render_template('verify-email.html', title='Verify Email', _title=title, text=text, icon=icon)
+    return render_template('alert-dialog.html', title='Verify Email', _title=title, text=text, icon=icon)
 
 @auth_view.route('/get_user_details', methods=['GET'])
 @login_required
