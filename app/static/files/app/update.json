@@ -4,6 +4,7 @@
     "forced": false,
     "changelog": [
         "- Include password reset.",
-        "- Add login with username."
+        "- Add login with username.",
+        "- Add more stream sources."
     ]
 }
