@@ -111,14 +111,9 @@ def generate_token(user):
     access_token_expires = timedelta(days=7)
     refresh_token_expires = timedelta(days=14)
 
-    new_user = False
-    plan = Plan.query.filter_by(user_id=user.user_id).order_by(Plan.expiry_date.desc()).first()
-    if not plan:
-        new_user = True
-
     access_token = create_access_token(
         identity=user.username, 
-        additional_claims={"user_id": user.user_id, "new_user": new_user}, 
+        additional_claims={"user_id": user.user_id}, 
         expires_delta=access_token_expires
     )
     refresh_token = create_refresh_token(
