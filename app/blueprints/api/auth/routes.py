@@ -33,8 +33,13 @@ def register_user():
     if 'profile_id' in data:
         profile_id = data.get('profile_id')
 
+    username = data.get('username')
+
+    if username == 'anonymous':
+        return jsonify({"message": "You can't use this username"}), 400
+
     # Check if username exists
-    user = User.get_username(username=data.get('username'))
+    user = User.get_username(username=username)
     if user:
         return jsonify({"message": "Username is taken. Please choose a different username"}), 409 
 
@@ -46,7 +51,7 @@ def register_user():
     # Proceed with user creation
     new_user = User(
         name=data.get('name'),
-        username=data.get('username'),
+        username=username,
         email=data.get('email'),
         profile=profile_id
     )
@@ -105,29 +110,45 @@ def login_user():
 def generate_token(user):
     access_token_expires = timedelta(days=7)
     refresh_token_expires = timedelta(days=14)
-    access_token = create_access_token(identity=user.username, additional_claims={"user_id": user.user_id}, expires_delta=access_token_expires)
-    refresh_token = create_refresh_token(identity=user.username, additional_claims={"user_id": user.user_id}, expires_delta=refresh_token_expires)
 
     new_user = False
     plan = Plan.query.filter_by(user_id=user.user_id).order_by(Plan.expiry_date.desc()).first()
     if not plan:
         new_user = True
 
+    access_token = create_access_token(
+        identity=user.username, 
+        additional_claims={"user_id": user.user_id, "new_user": new_user}, 
+        expires_delta=access_token_expires
+    )
+    refresh_token = create_refresh_token(
+        identity=user.username, 
+        additional_claims={"user_id": user.user_id}, 
+        expires_delta=refresh_token_expires
+    )
+
     return jsonify(
         {
             "tokens":{
                 "access":access_token,
                 "refresh":refresh_token
-            },
-            "new_user": new_user
+            }
         }
     ), 200
 
 def generate_anon_token(user_id):
     access_token_expires = timedelta(days=7)
     refresh_token_expires = timedelta(days=14)
-    access_token = create_access_token(identity='anonymous', additional_claims={"user_id": user_id}, expires_delta=access_token_expires)
-    refresh_token = create_refresh_token(identity='anonymous', additional_claims={"user_id": user_id}, expires_delta=refresh_token_expires)
+    access_token = create_access_token(
+        identity='anonymous', 
+        additional_claims={"user_id": user_id}, 
+        expires_delta=access_token_expires
+    )
+    refresh_token = create_refresh_token(
+        identity='anonymous', 
+        additional_claims={"user_id": user_id}, 
+        expires_delta=refresh_token_expires
+    )
 
     return jsonify(
         {
