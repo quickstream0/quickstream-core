@@ -18,7 +18,6 @@ from app import db
 @auth_bp.route('/register', methods=['POST'])
 def register_user():
     data = request.get_json()
-    # print(f"Data from client: {data}")
     profile_id = 0
     
     # Explicit checks for required fields

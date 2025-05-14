@@ -12,7 +12,7 @@ from app.blueprints.api.auth.models import User
 @auth_view.route("/register", methods=['GET', 'POST']) 
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('index_bp.index'))
+        return redirect(url_for('index.index'))
     errors = []
     form = RegistrationForm()
     if request.method == 'POST' and form.validate_on_submit():
@@ -32,7 +32,7 @@ def register():
 @auth_view.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index_bp.index'))
+        return redirect(url_for('index.index'))
     errors = []
     form = LoginForm()
     if form.validate_on_submit():
@@ -42,7 +42,7 @@ def login():
             login_user(user, remember=True)
             session['user_id'] = current_user.user_id
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('index_bp.index'))
+            return redirect(next_page) if next_page else redirect(url_for('index.index'))
             # else:
             # errors.append('Email not Verified. You need to verify your email before login')
             # flash('Login Failed. Email not Verified', 'warning')
@@ -62,7 +62,7 @@ def logout():
 @auth_view.route("/reset-password", methods=['GET', 'POST'])
 def reset_request():
     if current_user.is_authenticated:
-        return redirect(url_for('index_bp.index'))
+        return redirect(url_for('index.index'))
     errors = []
     form = RequestResetForm()
     if form.validate_on_submit():
@@ -77,9 +77,9 @@ def reset_request():
 @auth_view.route("/reset-password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
-        return redirect(url_for('index_bp.index'))
-    title = 'Email Verified!'
-    text = 'Your email has been verified. Redirecting to login...'
+        return redirect(url_for('index.index'))
+    title = 'Password Reset Success!'
+    text = 'You can now login with your new password. Redirecting to landing...'
     icon = 'success'
 
     user = User.verify_reset_token(token)
@@ -101,7 +101,7 @@ def reset_token(token):
 @auth_view.route("/verify-email", methods=['GET', 'POST'])
 def verify_request():
     if current_user.is_authenticated:
-        return redirect(url_for('index_bp.index'))
+        return redirect(url_for('index.index'))
     form = RequestVerifyForm()
     if form.validate_on_submit():
         email = form.email.data
@@ -115,7 +115,7 @@ def verify_request():
 @auth_view.route('/verify-email/<token>')
 def verify_email(token):
     if current_user.is_authenticated:
-        return redirect(url_for('index_bp.index'))
+        return redirect(url_for('index.index'))
     title = 'Email Verified!'
     text = 'Your email has been verified. Redirecting to login...'
     icon = 'success'
