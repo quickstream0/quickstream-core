@@ -11,6 +11,7 @@ from .blueprints.api.payments import pesapal_bp, mpesa_bp
 from .blueprints.api.subscriptions import subscription_bp
 from .blueprints.utils.jwt import jwt_handler
 from .blueprints.errors.errors import errors_bp
+from .blueprints.web.seo import seo
 
 def create_app():
     app = Flask(__name__)
@@ -40,6 +41,7 @@ def create_app():
     app.register_blueprint(auth_view)
     app.register_blueprint(jwt_handler)
     app.register_blueprint(errors_bp)
+    app.register_blueprint(seo)
 
     # Create and register the API blueprint
     api = Blueprint('api', __name__, url_prefix='/api')
