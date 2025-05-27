@@ -1,12 +1,34 @@
-from flask import jsonify
+from decimal import ROUND_HALF_UP, Decimal
+from flask import jsonify, request
 from flask_jwt_extended import jwt_required, current_user 
+from app.blueprints.api.subscriptions.exchange_rates import exchange_rates
 from app.blueprints.api.subscriptions.models import AnonPlan, Plan
 from . import subscription_bp
 from .plans import plans
 
 @subscription_bp.route('/subscriptions', methods=['GET'])
 def subscription_data():
-    return jsonify({"subscriptions": plans}), 200
+    currency = request.args.get('currency', 'KES').upper()
+    rate = exchange_rates.get(currency)
+    
+    if rate is None:
+        currency = 'KES'
+        rate = 1.0
+
+    converted = {
+        "currency": currency,
+        "subscriptions": [
+            {
+                **plan,
+                "price": round_price(plan["price"] * rate)
+            }
+            for plan in plans["subscriptions"]
+        ]
+    }
+    return jsonify(converted), 200
+
+def round_price(value):
+    return float(Decimal(value).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
 
 @subscription_bp.route('/trial-plan', methods=['GET'])
 @jwt_required()
