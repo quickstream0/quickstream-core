@@ -1,10 +1,10 @@
 {
-    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.4/quickstream-v1.0.4.apk",
-    "version": "1.0.4",
-    "forced": false,
+    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.5/quickstream-v1.0.5.apk",
+    "version": "1.0.5",
+    "forced": true,
     "changelog": [
-        "- Include password reset.",
-        "- Add login with username.",
-        "- Add more stream sources."
+        "- Improved playe.",
+        "- Open Subtitles.",
+        "- More Servers."
     ]
 }
