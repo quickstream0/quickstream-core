@@ -5,13 +5,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:site_name" content="QuickStream">
     <link rel="icon" href="{{ url_for('static', filename='images/logos/logo_64.png') }}" type="image/x-icon" />
     <meta name="description" content="QuickStream is your fast, simple, and reliable place to stream your favorite content online.">
     <meta name="robots" content="index, follow">
     <meta property="og:title" content="QuickStream - Stream Your Favorites Instantly">
     <meta property="og:description" content="Stream Your Favorite Movies, TV Shows and live Sports and Entertainment Channels.">
-    <meta property="og:image" content="{{ url_for('static', filename='images/logos/logo_64.png') }}">
+    <meta property="og:image" content="{{ url_for('static', filename='images/logos/logo_64.png', _external=True) }}">
     <meta property="og:url" content="{{ url_for('index.index', _external=True) }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="QuickStream - Stream Your Favorites Instantly">
+    <meta name="twitter:description" content="Stream Your Favorite Movies, TV Shows and live Sports and Entertainment Channels.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/logos/logo_64.png', _external=True) }}">
+
     {% if title %}
         <title>{{ title }} - QuickStream</title>
     {% else %}
@@ -27,6 +34,16 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
     {% block style %}{% endblock style %}
+
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "QuickStream",
+    "url": "https://quickstream.vercel.app",
+    "logo": "https://quickstream.vercel.app/static/images/logos/logo_64.png"
+    }
+    </script>
 </head>
 
 <body>
