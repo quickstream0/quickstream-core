@@ -61,8 +61,6 @@ def register_user():
     # Save new user to the database
     new_user.save()
 
-    send_get_started_email(new_user)
-
     return jsonify({"message": "User registered successfully!"}), 201
 
 @auth_bp.route('/anonymous-register', methods=['POST'])
