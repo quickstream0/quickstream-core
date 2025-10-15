@@ -3,6 +3,7 @@
     "version": "1.0.9",
     "forced": true,
     "changelog": [
-        "- Fixed download bug."
+        "- Fixed download bug.",
+        "- Fixed subtitle auto select bug."
     ]
 }
