@@ -1,9 +1,12 @@
 {
-    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.9/quickstream-v1.0.9.apk",
-    "version": "1.0.9",
+    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.10/quickstream-v1.0.10.apk",
+    "version": "1.0.10",
     "forced": true,
     "changelog": [
-        "- Fixed download bug.",
-        "- Fixed subtitle auto select bug."
+        "- ✅ Fixed events load error.",
+        "- ✅ Fixed channel play error.",
+        "- ✅ Add featured match.",
+        "- ✅ Fixed subtitle auto select issue.",
+        "- ✅ Add films language translation based on app language."
     ]
 }
