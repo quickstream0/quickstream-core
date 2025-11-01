@@ -1,8 +1,9 @@
 {
-    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.11/quickstream-v1.0.11.apk",
-    "version": "1.0.11",
+    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.12/quickstream-v1.0.12.apk",
+    "version": "1.0.12",
     "forced": false,
     "changelog": [
-        "- Add categorized channels by country"
+        "- Resolve events host",
+        "- Disable schedule events for fixes"
     ]
 }
