@@ -3,7 +3,7 @@
     "version": "1.0.12",
     "forced": false,
     "changelog": [
-        "- Resolve events host",
-        "- Disable schedule events for fixes"
+        "- Fixed channels",
+        "- Disabled schedule events for fixing"
     ]
 }
