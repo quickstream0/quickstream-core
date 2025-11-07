@@ -3,6 +3,7 @@
     "version": "1.0.14",
     "forced": true,
     "changelog": [
+        "- Fix player auto switch provider",
         "- Fix player stuck on dark screen",
         "- Fix VidSrc Provider"
     ]
