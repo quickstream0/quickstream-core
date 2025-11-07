@@ -1,10 +1,9 @@
 {
-    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.13/quickstream-v1.0.13.apk",
-    "version": "1.0.13",
+    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.14/quickstream-v1.0.14.apk",
+    "version": "1.0.14",
     "forced": true,
     "changelog": [
-        "- Refix channels bugs",
-        "- Upgrade player",
-        "- Add more player controls"
+        "- Fix player stuck on dark screen",
+        "- Fix VidSrc Provider"
     ]
 }
