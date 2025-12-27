@@ -1,10 +1,10 @@
 {
-    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.15/quickstream-v1.0.15.apk",
-    "version": "1.0.15",
+    "download": "https://github.com/quickstream0/app-release/releases/download/v1.0.16/quickstream-v1.0.16.apk",
+    "version": "1.0.16",
     "forced": true,
     "changelog": [
-        "- Add library view.",
-        "- Add bottom navigation bar.",
-        "- Chromecast support."
+        "- Restore events.",
+        "- New Events UI.",
+        "- Fixed some bugs."
     ]
 }
