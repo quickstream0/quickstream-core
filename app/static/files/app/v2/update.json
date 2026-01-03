@@ -1,0 +1,23 @@
+{
+    "update": {
+        "version": "1.0.17",
+        "build": 18,
+        "mandatory": false,
+        "notify_only": true,
+        "min_sdk": 24,
+        "release_date": "2026-01-03",
+        "apk": {
+            "url": "https://github.com/quickstream0/app-release/releases/download/v1.0.17/quickstream-v1.0.17.apk",
+            "size_mb": 79.6,
+            "checksum_sha256": "1E7754ABFA1E4EB437B9C22C014DDB8463BF1AACC4182CC4DBE3852B5B8DDD40"
+        },
+        "changelog": {
+            "default": [
+                "Fix player auto switch stream error",
+                "Add provider user interface",
+                "Add episode overview"
+            ],
+            "localized": {}
+        }
+    }
+}
