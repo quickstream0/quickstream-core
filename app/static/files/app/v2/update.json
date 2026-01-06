@@ -1,23 +1,82 @@
 {
     "update": {
-        "version": "1.0.17",
-        "build": 18,
-        "mandatory": false,
-        "notify_only": true,
+        "version": "1.0.18",
+        "build": 19,
+        "mandatory": true,
+        "notify_only": false,
         "min_sdk": 24,
-        "release_date": "2026-01-03",
+        "release_date": "2026-01-07",
         "apk": {
-            "url": "https://github.com/quickstream0/app-release/releases/download/v1.0.17/quickstream-v1.0.17.apk",
+            "url": "https://github.com/quickstream0/app-release/releases/download/v1.0.18/quickstream-v1.0.18.apk",
             "size_mb": 79.6,
-            "checksum_sha256": "1E7754ABFA1E4EB437B9C22C014DDB8463BF1AACC4182CC4DBE3852B5B8DDD40"
+            "checksum_sha256": "A72FB8A0CFCCA1F1883F03494D3B6471CB2764B71313EAE6C298566AA7009C17"
         },
         "changelog": {
             "default": [
-                "Fix player auto switch stream error",
-                "Add provider user interface",
-                "Add episode overview"
+                "Add russian provider"
             ],
-            "localized": {}
+            "localized": {
+                "ar": [
+                    "إضافة مزود الروسي"
+                ],
+                "de": [
+                    "Fügen Sie einen russischen Anbieter hinzu"
+                ],
+                "es": [
+                    "Agregar proveedor ruso"
+                ],
+                "fa": [
+                    "ارائه دهنده روسی را اضافه کنید"
+                ],
+                "fr": [
+                    "Ajouter un fournisseur russe"
+                ],
+                "hi": [
+                    "रूसी प्रदाता जोड़ें"
+                ],
+                "id": [
+                    "Tambahkan penyedia Rusia"
+                ],
+                "it": [
+                    "Aggiungi fornitore russo"
+                ],
+                "ja": [
+                    "ロシアのプロバイダーを追加"
+                ],
+                "ko": [
+                    "러시아 공급자 추가"
+                ],
+                "nl": [
+                    "Russische provider toevoegen"
+                ],
+                "pl": [
+                    "Dodaj rosyjskiego dostawcę"
+                ],
+                "pt": [
+                    "Adicionar provedor russo"
+                ],
+                "ru": [
+                    "Добавить российского провайдера"
+                ],
+                "sw": [
+                    "Ongeza mtoaji wa Kirusi"
+                ],
+                "th": [
+                    "เพิ่มผู้ให้บริการชาวรัสเซีย"
+                ],
+                "tr": [
+                    "Rus sağlayıcı ekle"
+                ],
+                "uk": [
+                    "Додати російського провайдера"
+                ],
+                "vi": [
+                    "Thêm nhà cung cấp Nga"
+                ],
+                "zh": [
+                    "添加俄罗斯提供商"
+                ]
+            }
         }
     }
 }
