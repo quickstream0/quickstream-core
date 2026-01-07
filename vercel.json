@@ -5,7 +5,7 @@
   ],
   "routes": [
     {
-      "src": "/static/files/app/v1/update.json",
+      "src": "/static/files/app/v2/update.json",
       "headers": {
         "Content-Type": "text/plain"
       },
