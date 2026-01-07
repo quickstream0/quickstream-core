@@ -14,7 +14,11 @@ from .blueprints.errors.errors import errors_bp
 from .blueprints.web.seo import seo
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        static_folder="app/static",
+        static_url_path="/static"
+    )
 
     # Determine environment and load the correct config
     env = os.getenv('FLASK_ENV', 'production').lower()

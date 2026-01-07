@@ -7,12 +7,9 @@
   "routes": [
     {
       "src": "/static/files/app/v2/update.json",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "text/plain"
-        }
-      ]
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8"
+      }
     },
     { "src": "/(.*)", "dest": "/run.py" }
   ]
