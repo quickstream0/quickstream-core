@@ -4,13 +4,6 @@
     { "src": "run.py", "use": "@vercel/python" }
   ],
   "routes": [
-    {
-      "src": "/static/files/app/v2/update.json",
-      "headers": {
-        "Content-Type": "text/plain"
-      },
-      "continue": true
-    },
     { "src": "/(.*)", "dest": "/run.py" }
   ]
 }
