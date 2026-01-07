@@ -3,7 +3,14 @@
   "builds": [
     { "src": "run.py", "use": "@vercel/python" }
   ],
+
   "routes": [
+    {
+      "src": "/static/files/app/v2/update.json",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8"
+      }
+    },
     { "src": "/(.*)", "dest": "/run.py" }
   ]
 }
