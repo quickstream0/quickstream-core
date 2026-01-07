@@ -1,4 +1,5 @@
-from flask import render_template
+import os
+from flask import render_template, current_app, Response
 
 from . import index_bp
 
@@ -22,9 +23,10 @@ def faq():
 @index_bp.route('/static/files/app/v2/update.json')
 def custom_update_json():
     # Read the actual static file
-    static_file_path = os.path.join(app.static_folder, 'files', 'app', 'v1', 'update.json')
+    static_file_path = os.path.join(current_app.static_folder, 'files', 'app', 'v1', 'update.json')
     
-    with open(static_file_path, 'r') as f:
+    # Read with explicit UTF-8 encoding
+    with open(static_file_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
     # Return as text/plain
