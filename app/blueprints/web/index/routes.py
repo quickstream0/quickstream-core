@@ -31,4 +31,3 @@ def custom_update_json():
     
     # Return as text/plain
     return Response(content, content_type='text/plain')
-

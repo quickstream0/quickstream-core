@@ -7,23 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="QuickStream">
     <link rel="icon" href="{{ url_for('static', filename='images/logos/logo_64.png') }}" type="image/x-icon" />
-    <meta name="description" content="QuickStream is your fast, simple, and reliable place to stream your favorite content online.">
+    <meta name="description"
+        content="QuickStream is your fast, simple, and reliable place to stream your favorite content online.">
     <meta name="robots" content="index, follow">
-    
+
     <meta property="og:title" content="QuickStream">
-    <meta property="og:description" content="Stream Your Favorite Movies, TV Shows and live Sports and Entertainment Channels.">
+    <meta property="og:description"
+        content="Stream Your Favorite Movies, TV Shows and live Sports and Entertainment Channels.">
     <meta property="og:image" content="{{ url_for('static', filename='images/logos/logo_64.png', _external=True) }}">
     <meta property="og:url" content="{{ url_for('index.index', _external=True) }}">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="QuickStream">
-    <meta name="twitter:description" content="Stream Your Favorite Movies, TV Shows and live Sports and Entertainment Channels.">
+    <meta name="twitter:description"
+        content="Stream Your Favorite Movies, TV Shows and live Sports and Entertainment Channels.">
     <meta name="twitter:image" content="{{ url_for('static', filename='images/logos/logo_64.png', _external=True) }}">
 
     {% if title %}
-        <title>{{ title }} - QuickStream</title>
+    <title>{{ title }} - QuickStream</title>
     {% else %}
-        <title>QuickStream</title>
+    <title>QuickStream</title>
     {% endif %}
     <!-- fontawesome js -->
     <script defer src="https://use.fontawesome.com/releases/v6.6.0/js/all.js"></script>
@@ -45,6 +48,16 @@
     "logo": "https://quickstream.vercel.app/static/images/logos/logo_64.png"
     }
     </script>
+    <script type="application/ld+json">
+    {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "QuickStream",
+    "alternateName": "QuickStream App",
+    "url": "https://quickstream.vercel.app"
+    }
+</script>
+
 </head>
 
 <body>
@@ -89,10 +102,13 @@
                     <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Terms Of Use</a></li>
                     <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Privacy Policy</a></li>
                     <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
-                    <li class="nav-item"><a href="{{ url_for('index.faq') }}" class="nav-link px-2 text-body-secondary">FAQs</a></li>
+                    <li class="nav-item"><a href="{{ url_for('index.faq') }}"
+                            class="nav-link px-2 text-body-secondary">FAQs</a></li>
                     <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
                 </ul>
-                <p class="text-center text-body-secondary">Copyright &copy; <script>document.write(new Date().getFullYear())</script> QuickStream. All Rights Reserved.</p>
+                <p class="text-center text-body-secondary">Copyright &copy;
+                    <script>document.write(new Date().getFullYear())</script> QuickStream. All Rights Reserved.
+                </p>
             </footer>
         </div>
 
