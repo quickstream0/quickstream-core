@@ -2,246 +2,356 @@
 {% block content %}
 
 <section>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Stream <span>Movies, TV Shows & Sports</span> On Any Device</h1>
+            <p>QuickStream brings you the best FREE entertainment experience on ALL platforms. Watch live sports, latest
+                movies, and binge-worthy TV shows in stunning quality - completely free on Android, iOS, Windows, Mac &
+                Linux!</p>
 
-    <div class="index-wrapper">
-        <div class="containe text-light text-center welcome">
-            <div class="row mb-3">
-                <div class="col">
-                    <h1>Stream Your Favorite Movies and TV Shows</h1>
-                    <P>
-                        Discover new films every day.
-                        <br>Watch favorite events and live sports every week.
-                        <br>Endless entertainment on QuickStream.
-                    </P>
-                </div>
+            <div class="hero-buttons">
+                <button class="cta-button">Download Free</button>
+                <button class="cta-button"
+                    style="background-color: transparent; color: var(--primary-blue); border: 2px solid var(--primary-blue);">Explore
+                    Content</button>
             </div>
-            <div class="row">
-                <div class="col">
-                    <a href="https://github.com/quickstream0/app-release/releases/download/v1.0.18/quickstream-v1.0.18.apk"
-                        class="btn btn-primary"><i class="fa-solid fa-download"></i> Download (Android)</a>
-                </div>
-                <!-- <div class="col">
-                        <a href="#" class="btn btn-success">Subscribe</a>
-                    </div> -->
+
+            <div class="hero-image-placeholder">
+                <img src="{{ url_for('static', filename='images/background/2.jpg') }}" alt="QuickStream Banner" loading="lazy">
             </div>
         </div>
-    </div>
+    </section>
 
-</section>
-
-<section class="p-5" id="features">
-
-    <div class="container-fluid text-center">
-
-        <div class="row">
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <i class="icon fa-solid fa-crown fa-4x"></i>
-                <h3 class="feature-title">High Quality</h3>
-                <p>Quality</p>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose QuickStream?</h2>
+                <p>Experience the future of FREE cross-platform streaming</p>
             </div>
 
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <i class="icon fa-solid fa-bolt-lightning fa-4x"></i>
-                <h3 class="feature-title">Fast Load</h3>
-                <p>Buffer</p>
-            </div>
-
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <i class="icon fa-solid fa-rectangle-ad fa-4x"></i>
-                <h3 class="feature-title">AD Free</h3>
-                <p>Ads</p>
-            </div>
-
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <i class="icon fa-solid fa-closed-captioning fa-4x"></i>
-                <h3 class="feature-title">Multi Subtitles</h3>
-                <p>Subtitles</p>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<section class="p-5" id="features">
-
-    <div class="container-fluid text-center">
-
-        <div class="row">
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <h3 class="feature-title">80,000+</h3>
-                <p>Movies & TV Shows</p>
-            </div>
-
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <h3 class="feature-title">1000+</h3>
-                <p>Sports & Entertainment Channels</p>
-            </div>
-
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <h3 class="feature-title">20,000+</h3>
-                <p>Anime Movies & TV Shows</p>
-            </div>
-
-            <div class="feature-box col-lg-3 col-md-6 my-2">
-                <h3 class="feature-title">Unlimited</h3>
-                <p>Entertainment</p>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<!-- Screenshots Section -->
-<section class="screenshots-section py-5">
-    <div class="container">
-        <h2 class="text-center mb-5">Screenshots</h2>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-            <!-- Screenshot 1 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/home_listview.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 1">
-                        <img src="{{ url_for('static', filename='images/screenshots/home_listview.png') }}"
-                            class="card-img-top" alt="Screenshot 1" loading="lazy">
-                    </a>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tv"></i>
+                    </div>
+                    <h3>Live TV & Sports</h3>
+                    <p>Watch live events, sports, and TV channels in real-time with no delay - completely free!</p>
                 </div>
-            </div>
-            <!-- Screenshot 2 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/home.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 2">
-                        <img src="{{ url_for('static', filename='images/screenshots/home.png') }}"
-                            class="card-img-top" alt="Screenshot 2" loading="lazy">
-                    </a>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>Huge Movie Library</h3>
+                    <p>Access 100,000+ movies from classics to the latest blockbusters. No subscription required!</p>
                 </div>
-            </div>
-            <!-- Screenshot 3 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/detail.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 3">
-                        <img src="{{ url_for('static', filename='images/screenshots/detail.png') }}"
-                            class="card-img-top" alt="Screenshot 3" loading="lazy">
-                    </a>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>TV Shows & Series</h3>
+                    <p>Binge-watch complete seasons of your favorite TV shows. All free of charge!</p>
                 </div>
-            </div>
-            <!-- Screenshot 4 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/season_details.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 4">
-                        <img src="{{ url_for('static', filename='images/screenshots/season_details.png') }}"
-                            class="card-img-top" alt="Screenshot 4" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 5 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/schedule_home.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 5">
-                        <img src="{{ url_for('static', filename='images/screenshots/schedule_home.png') }}"
-                            class="card-img-top" alt="Screenshot 5" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 6 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/schedule.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 6">
-                        <img src="{{ url_for('static', filename='images/screenshots/schedule.png') }}"
-                            class="card-img-top" alt="Screenshot 6" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 7 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/schedule2.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 7">
-                        <img src="{{ url_for('static', filename='images/screenshots/schedule2.png') }}"
-                            class="card-img-top" alt="Screenshot 7" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 8 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/event_list.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 8">
-                        <img src="{{ url_for('static', filename='images/screenshots/event_list.png') }}"
-                            class="card-img-top" alt="Screenshot 8" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 9 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/event_search.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 9">
-                        <img src="{{ url_for('static', filename='images/screenshots/event_search.png') }}"
-                            class="card-img-top" alt="Screenshot 9" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 10 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/event_channels.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 10">
-                        <img src="{{ url_for('static', filename='images/screenshots/event_channels.png') }}"
-                            class="card-img-top" alt="Screenshot 10" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 11 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/channels.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 11">
-                        <img src="{{ url_for('static', filename='images/screenshots/channels.png') }}"
-                            class="card-img-top" alt="Screenshot 11" loading="lazy">
-                    </a>
-                </div>
-            </div>
-            <!-- Screenshot 12 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/languages.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 12">
-                        <img src="{{ url_for('static', filename='images/screenshots/languages.png') }}"
-                            class="card-img-top" alt="Screenshot 12" loading="lazy">
-                    </a>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Cross-Platform</h3>
+                    <p>Available on Android, iOS, Windows, Mac, and Linux. Stream anywhere, on any device!</p>
                 </div>
             </div>
         </div>
-        <div class="row row-cols-1 row-cols-lg-2 g-4 my-5">
-            <!-- Screenshot 13 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/player.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 13">
-                        <img src="{{ url_for('static', filename='images/screenshots/player.png') }}"
-                            class="card-img-top" alt="Screenshot 13" loading="lazy">
-                    </a>
-                </div>
+    </section>
+
+    <!-- Platforms Section -->
+    <section class="platforms" id="platforms">
+        <div class="container">
+            <div class="section-title">
+                <h2>Available on All Platforms</h2>
+                <p>QuickStream works seamlessly across all your devices. Click any card for platform-specific guides and
+                    updates.</p>
             </div>
-            <!-- Screenshot 14 -->
-            <div class="col" data-aos="fade-up" data-aos-duration="1000">
-                <div class="card h-100">
-                    <a href="{{ url_for('static', filename='images/screenshots/liveplayer.png') }}"
-                        data-lightbox="screenshots" data-title="Screenshot 14">
-                        <img src="{{ url_for('static', filename='images/screenshots/liveplayer.png') }}"
-                            class="card-img-top" alt="Screenshot 14" loading="lazy">
-                    </a>
+
+            <div class="platforms-grid">
+                <div class="platform-card" data-platform="android" data-route="/android">
+                    <div class="platform-icon">
+                        <i class="fab fa-android"></i>
+                    </div>
+                    <h3>Android</h3>
+                    <p>Phones, Tablets & TV</p>
+                    <span class="platform-badge">APK</span>
+                    <button class="platform-download-btn" data-platform="android">Download for Android</button>
+                </div>
+
+                <div class="platform-card" data-platform="ios" data-route="/ios">
+                    <div class="platform-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>iOS</h3>
+                    <p>iPhone & iPad</p>
+                    <span class="platform-badge">IPA</span>
+                    <button class="platform-download-btn" data-platform="ios">Download for iOS</button>
+                </div>
+
+                <div class="platform-card" data-platform="windows" data-route="/windows">
+                    <div class="platform-icon">
+                        <i class="fab fa-windows"></i>
+                    </div>
+                    <h3>Windows</h3>
+                    <p>Windows 10/11</p>
+                    <span class="platform-badge">EXE / Portable</span>
+                    <button class="platform-download-btn" data-platform="windows">Download for Windows</button>
+                </div>
+
+                <div class="platform-card" data-platform="macos" data-route="/macos">
+                    <div class="platform-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS</h3>
+                    <p>MacBooks & iMacs</p>
+                    <span class="platform-badge">DMG</span>
+                    <button class="platform-download-btn" data-platform="macos">Download for macOS</button>
+                </div>
+
+                <div class="platform-card" data-platform="linux" data-route="/linux">
+                    <div class="platform-icon">
+                        <i class="fab fa-linux"></i>
+                    </div>
+                    <h3>Linux</h3>
+                    <p>Ubuntu, Fedora, Debian</p>
+                    <span class="platform-badge">AppImage / DEB</span>
+                    <button class="platform-download-btn" data-platform="linux">Download for Linux</button>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-{% endblock content %}
+    <!-- Content Showcase -->
+    <section class="content-showcase" id="content">
+        <div class="container">
+            <div class="section-title">
+                <h2>Something for Everyone</h2>
+                <p>Explore our vast library of entertainment across all categories - all completely free!</p>
+            </div>
+
+            <div class="content-tabs">
+                <div class="content-tab active">Movies</div>
+                <div class="content-tab">TV Shows</div>
+                <div class="content-tab">Live Sports</div>
+                <div class="content-tab">Live TV</div>
+            </div>
+
+            <div class="content-grid">
+                <div class="content-item">
+                    <div class="content-image" style="background-color: #2d3e50;">
+                        <i class="fas fa-film" style="color: #fff; font-size: 40px;"></i>
+                    </div>
+                    <div class="content-info">
+                        <h4>Action & Adventure</h4>
+                        <p>800+ FREE titles</p>
+                    </div>
+                </div>
+
+                <div class="content-item">
+                    <div class="content-image" style="background-color: #4a6572;">
+                        <i class="fas fa-theater-masks" style="color: #fff; font-size: 40px;"></i>
+                    </div>
+                    <div class="content-info">
+                        <h4>Comedy</h4>
+                        <p>650+ FREE titles</p>
+                    </div>
+                </div>
+
+                <div class="content-item">
+                    <div class="content-image" style="background-color: #232f3e;">
+                        <i class="fas fa-ghost" style="color: #fff; font-size: 40px;"></i>
+                    </div>
+                    <div class="content-info">
+                        <h4>Horror & Thriller</h4>
+                        <p>420+ FREE titles</p>
+                    </div>
+                </div>
+
+                <div class="content-item">
+                    <div class="content-image" style="background-color: #34495e;">
+                        <i class="fas fa-heart" style="color: #fff; font-size: 40px;"></i>
+                    </div>
+                    <div class="content-info">
+                        <h4>Romance</h4>
+                        <p>550+ FREE titles</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section (Enhanced) -->
+    <section class="download-section" id="download">
+        <div class="container">
+            <div class="section-title">
+                <h2>Download QuickStream</h2>
+                <p>Choose your platform and start streaming for free today!</p>
+            </div>
+
+            <div class="download-grid">
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fab fa-android"></i>
+                    </div>
+                    <h3>Android</h3>
+                    <p class="download-version">Version 1.1.0</p>
+                    <p class="download-size">APK • ~68 MB</p>
+                    <button class="download-btn" data-platform="android"
+                        data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-arm64-v8a-1.1.0.apk">
+                        <i class="fab fa-android"></i> Download APK
+                    </button>
+                    <!-- <button class="download-store-btn" data-platform="android-store">Get on Google Play</button> -->
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>iOS</h3>
+                    <p class="download-version">Version 1.1.0</p>
+                    <p class="download-size">IPA • ~120 MB</p>
+                    <button class="download-btn" data-platform="ios" data-url="#">
+                        <i class="fab fa-apple"></i> Download for iOS
+                    </button>
+                    <!-- <button class="download-store-btn" data-platform="ios-store">Get on App Store</button> -->
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fab fa-windows"></i>
+                    </div>
+                    <h3>Windows</h3>
+                    <p class="download-version">Version 1.1.0</p>
+                    <p class="download-size">EXE • ~42 MB</p>
+                    <button class="download-btn" data-platform="windows" data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.exe">
+                        <i class="fab fa-windows"></i> Download for Windows
+                    </button>
+                    <!-- <button class="download-store-btn" data-platform="windows-store">Get from Microsoft Store</button> -->
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <h3>macOS</h3>
+                    <p class="download-version">Version 1.1.0</p>
+                    <p class="download-size">DMG • ~95 MB</p>
+                    <button class="download-btn" data-platform="macos" data-url="#">
+                        <i class="fab fa-apple"></i> Download for macOS
+                    </button>
+                    <!-- <button class="download-store-btn" data-platform="macos-store">Get on Mac App Store</button> -->
+                </div>
+
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fab fa-linux"></i>
+                    </div>
+                    <h3>Linux</h3>
+                    <p class="download-version">Version 1.1.0</p>
+                    <p class="download-size">AppImage • ~90 MB</p>
+                    <button class="download-btn" data-platform="linux" data-url="#">
+                        <i class="fab fa-linux"></i> Download for Linux
+                    </button>
+                    <!-- <button class="download-store-btn" data-platform="linux-store">Snap Store / FlatHub</button> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+                <p>Find quick answers to common questions about QuickStream</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What is QuickStream?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>QuickStream is a <strong>free online streaming app</strong> available on Android, iOS,
+                            Windows, macOS, and Linux. Watch Movies, TV Shows, Live Sports, and Live TV channels. Enjoy
+                            our massive library of <strong>100,000+ films</strong> and access to <strong>1,000+ premium
+                                channels</strong> - completely free!</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Is QuickStream really free on all platforms?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>Yes! QuickStream is free on all platforms - Android, iOS, Windows, Mac, and
+                                Linux.</strong> No subscriptions, no hidden fees. We support the app through
+                            non-intrusive advertisements.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Is QuickStream safe to use?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, <strong>QuickStream is safe to use</strong>. We prioritize user privacy and
+                            security. We never share your personal information with third parties without your consent.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Can I sync my progress across devices?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes! Create a free account to sync your watch history, favorites, and progress across all
+                            your devices - Android phone to Windows PC to iPad, seamlessly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>What are the system requirements?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <ul>
+                            <li><strong>Android:</strong> 7.0 or higher</li>
+                            <li><strong>iOS:</strong> iOS 13.0 or later</li>
+                            <li><strong>Windows:</strong> Windows 10 or 11</li>
+                            <li><strong>macOS:</strong> macOS 10.15 or later</li>
+                            <li><strong>Linux:</strong> Ubuntu 20.04+, Fedora 34+, or similar</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <h3>Do I need to create an account?</h3>
+                        <span class="faq-toggle">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>No account is required to start streaming!</strong> However, creating a free account
+                            allows you to save watch history, create favorites, and sync across multiple devices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% endblock content %}

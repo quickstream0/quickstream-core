@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/privacy.min.css') }}">
+{% endblock style %}
+{% block content %}
+    <section class="page-header">
+        <div class="container">
+            <h1>Privacy <span>Policy</span></h1>
+            <p class="effective-date">Effective Date: October 13, 2024</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="policy-card">
+                <h2>1. Information We Collect</h2>
+                <p><strong>We do not collect personal information.</strong> Your privacy is our top priority. QuickStream is designed to respect your data and provide a secure streaming experience.</p>
+                <p>The app may use temporary identifiers (such as device model, operating system version, or crash logs) only to improve performance and fix bugs. These identifiers are anonymized and cannot be used to identify you personally.</p>
+                
+                <div class="info-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <strong>We DO NOT collect:</strong> Name, Email address, Phone number, Location data, Payment information, or any personally identifiable information.
+                </div>
+            </div>
+
+            <div class="policy-card">
+                <h2>2. Third-Party Services</h2>
+                <p>The app relies on third-party content providers to deliver movies, TV shows, live sports, and TV channels. These providers may collect information under their own privacy policies. <strong>We have no control over their data collection practices.</strong></p>
+                <p>We recommend reviewing the privacy policies of any third-party services you access through QuickStream. The app itself does not share any information with these providers.</p>
+            </div>
+
+            <div class="policy-card">
+                <h2>3. How We Use Information</h2>
+                <p>The limited anonymous data we collect is used solely for:</p>
+                <ul>
+                    <li><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Providing app functionality and features</li>
+                    <li><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Improving app stability and fixing bugs</li>
+                    <li><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Enhancing overall performance</li>
+                    <li><i class="fas fa-check-circle" style="color: #4CAF50; margin-right: 10px;"></i> Understanding usage patterns to improve user experience</li>
+                </ul>
+            </div>
+
+            <div class="policy-card">
+                <h2>4. Data Sharing</h2>
+                <p><strong>We do not sell, rent, trade, or share personal data with third parties.</strong> We do not have any personal data to share in the first place. Your privacy is completely protected.</p>
+            </div>
+
+            <div class="policy-card">
+                <h2>5. Data Security</h2>
+                <p>The app does not store sensitive data on our servers. All data remains locally on your device. We implement industry-standard security measures to protect the app from vulnerabilities and ensure a safe streaming environment.</p>
+                
+                <div class="info-box">
+                    <i class="fas fa-database"></i>
+                    <strong>Data Storage:</strong> QuickStream uses local storage on your device only. We do not maintain any external databases containing user information.
+                </div>
+            </div>
+
+            <div class="policy-card">
+                <h2>6. Children's Privacy</h2>
+                <p>QuickStream does not knowingly collect any information from children under 13. The app contains content suitable for all ages, but parental guidance is recommended for unsupervised viewing. Since we collect no personal information, there is no risk of child data exposure.</p>
+            </div>
+
+            <div class="policy-card">
+                <h2>7. Changes to This Privacy Policy</h2>
+                <p>We may update this Privacy Policy occasionally to reflect changes in our practices or for legal reasons. Continued use of the app after any changes means you accept the updated policy.</p>
+                <p>We will notify users of any material changes by updating the "Effective Date" at the top of this policy. We encourage you to review this page periodically.</p>
+            </div>
+
+            <div class="policy-card">
+                <h2>8. Your Rights</h2>
+                <p>Since we collect no personal information, you have the following assurances:</p>
+                <ul>
+                    <li>No data to access, correct, or delete</li>
+                    <li>No data portability needed</li>
+                    <li>No risk of data breach affecting your personal information</li>
+                    <li>Complete anonymity while using the app</li>
+                </ul>
+            </div>
+
+            <div class="contact-box">
+                <i class="fas fa-envelope"></i>
+                <h3>Contact Us</h3>
+                <p>If you have any questions about this Privacy Policy, please contact us:</p>
+                <p><strong>📧 <a href="mailto:app.quickstream@gmail.com">app.quickstream@gmail.com</a></strong></p>
+                <p>We typically respond within 2-3 business days.</p>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/" class="back-to-home">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}

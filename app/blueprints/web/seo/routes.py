@@ -15,9 +15,10 @@ def robots_sitemap():
 def sitemap():
     pages = [
         url_for('index.index', _external=True),
-        # url_for('auth_view.login', _external=True),
-        # url_for('auth_view.register', _external=True),
-        url_for('index.faq', _external=True),
+        url_for('index.android', _external=True),
+        url_for('index.windows', _external=True),
+        url_for('index.terms', _external=True),
+        url_for('index.privacy', _external=True),
     ]
 
     xml = ['<?xml version="1.0" encoding="UTF-8"?>']
@@ -29,7 +30,7 @@ def sitemap():
 
     for page in pages:
         xml.append('  <url>')
-        xml.append(f'    <loc>{page}</loc>')
+        xml.append(f'   <loc>{page}</loc>')
         xml.append('    <lastmod>2026-01-11</lastmod>')
         xml.append('    <changefreq>monthly</changefreq>')
         xml.append('    <priority>0.9</priority>')

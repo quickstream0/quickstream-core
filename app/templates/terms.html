@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/terms.min.css') }}">
+{% endblock style %}
+{% block content %}
+    <section class="page-header">
+        <div class="container">
+            <h1>Terms of <span>Use</span></h1>
+            <p class="effective-date">Effective Date: October 13, 2024</p>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="container">
+            <div class="terms-card">
+                <h2>1. General Use</h2>
+                <p>QuickStream is a search and discovery tool for publicly available online content. The app helps you find and stream movies, TV shows, live sports, and TV channels from various third-party sources.</p>
+                <p><strong>We do not guarantee that any particular video, show, movie, or channel will always be available.</strong> Content availability depends on third-party providers and may change without notice.</p>
+            </div>
+
+            <div class="terms-card">
+                <h2>2. Content Disclaimer</h2>
+                <div class="warning-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Important:</strong> QuickStream does NOT host, upload, or store any media files on our servers.
+                </div>
+                <p>All content accessible through QuickStream is provided by third-party services beyond our control. We do not own, produce, or distribute any of the movies, TV shows, sports events, or channels you can access.</p>
+                <p><strong>We are not responsible for:</strong></p>
+                <ul>
+                    <li>The availability of any content</li>
+                    <li>The accuracy or quality of third-party content</li>
+                    <li>The legality of content under your local laws</li>
+                    <li>Any copyright or licensing issues related to third-party content</li>
+                </ul>
+            </div>
+
+            <div class="terms-card">
+                <h2>3. User Responsibility</h2>
+                <p><strong>You agree to use QuickStream in compliance with your local laws and regulations.</strong> You are solely responsible for how you use the app and the content you access.</p>
+                <p>By using QuickStream, you acknowledge that:</p>
+                <ul>
+                    <li>You will only use the app for lawful purposes</li>
+                    <li>You will not use the app to violate any copyright laws</li>
+                    <li>You understand that content availability varies by region</li>
+                    <li>You are responsible for any internet data charges incurred</li>
+                    <li>You will comply with all applicable laws in your jurisdiction</li>
+                </ul>
+                
+                <div class="info-box">
+                    <i class="fas fa-gavel"></i>
+                    <strong>Age Requirement:</strong> By using QuickStream, you confirm that you are at least 13 years old. Users under 18 should have parental permission.
+                </div>
+            </div>
+
+            <div class="terms-card">
+                <h2>4. No Warranties</h2>
+                <p>The app is provided <strong>"as is"</strong> and <strong>"as available"</strong> without warranties of any kind, either express or implied. We do not warrant that:</p>
+                <ul>
+                    <li>The app will function uninterrupted or error-free</li>
+                    <li>Any defects will be corrected</li>
+                    <li>The app is compatible with all devices or operating systems</li>
+                    <li>All content will be available at all times</li>
+                </ul>
+            </div>
+
+            <div class="terms-card">
+                <h2>5. Limitation of Liability</h2>
+                <div class="warning-box">
+                    <i class="fas fa-balance-scale"></i>
+                    <strong>To the maximum extent permitted by law, QuickStream shall not be liable for any damages.</strong>
+                </div>
+                <p>We are not liable for any direct, indirect, incidental, consequential, or punitive damages arising from:</p>
+                <ul>
+                    <li>Your use or inability to use the app</li>
+                    <li>Issues related to third-party content or sources</li>
+                    <li>Any unauthorized access to or use of our servers</li>
+                    <li>Any bugs, viruses, or other harmful code</li>
+                    <li>Any actions taken by third-party content providers</li>
+                </ul>
+            </div>
+
+            <div class="terms-card">
+                <h2>6. Intellectual Property</h2>
+                <p>The QuickStream name, logo, and app design are our intellectual property. You may not copy, modify, or reverse engineer any part of the app.</p>
+                <p>All trademarks, logos, and content from third-party providers remain the property of their respective owners.</p>
+            </div>
+
+            <div class="terms-card">
+                <h2>7. Termination</h2>
+                <p>We reserve the right to suspend or terminate access to the app at any time, without notice, for any reason, including violation of these Terms of Use.</p>
+            </div>
+
+            <div class="terms-card">
+                <h2>8. Changes to These Terms</h2>
+                <p>We may update these Terms of Use from time to time. Continued use of the app after any changes means you accept the updated terms.</p>
+                <p>We will notify users of any material changes by updating the "Effective Date" at the top of this page.</p>
+            </div>
+
+            <div class="terms-card">
+                <h2>9. Governing Law</h2>
+                <p>These Terms shall be governed by and construed in accordance with the laws applicable in the jurisdiction where the app owner operates, without regard to conflict of law principles.</p>
+            </div>
+
+            <div class="contact-box">
+                <i class="fas fa-envelope"></i>
+                <h3>Contact Us</h3>
+                <p>If you have any questions about these Terms of Use, please contact us:</p>
+                <p><strong>📧 <a href="mailto:app.quickstream@gmail.com">app.quickstream@gmail.com</a></strong></p>
+                <p>We typically respond within 2-3 business days.</p>
+            </div>
+
+            <div style="text-align: center;">
+                <a href="/" class="back-to-home">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock content %}
