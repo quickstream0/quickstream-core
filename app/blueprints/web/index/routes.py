@@ -1,5 +1,5 @@
 import os
-from flask import render_template, current_app
+from flask import render_template, redirect, url_for
 
 from . import index_bp
 
