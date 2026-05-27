@@ -8,8 +8,8 @@
         "release_date": "2026-05-20",
         "apk": {
             "url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-1.1.0.apk",
-            "size_mb": 184.0,
-            "checksum_sha256": "E1DAF1CEE623B6A2105E2212E7A5DE74B24CEBF91F857F02AD80D665F7195153"
+            "size_mb": 158.0,
+            "checksum_sha256": "150F527F4B4B6A211E6CE78A9C799B3007207C5141AE3AC62585ED43A0AA89B0"
         },
         "changelog": {
             "default": [

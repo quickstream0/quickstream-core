@@ -152,20 +152,20 @@
                 "arm64-v8a": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-arm64-v8a-1.1.0.apk",
-                    "size_mb": 68.0,
-                    "checksum_sha256": "D48EE2BD64429388B523568A4EEBCB53474BC615562E6281FC4E6A2A71D68F99"
+                    "size_mb": 137.0,
+                    "checksum_sha256": "16A7346775E2BF1FA9B31DEB59D1D730FBA9E879E012B5022ADF0D763A713C5B"
                 },
                 "armeabi-v7a": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-armeabi-v7a-1.1.0.apk",
-                    "size_mb": 78.7,
-                    "checksum_sha256": "D62EBAD232CF603D735ABD27D03D0B8F2AA183A34F9E53D98478801D36D518F5"
+                    "size_mb": 135.8,
+                    "checksum_sha256": "75A56CF32CF4952AEEB1C8623CB625227BDFBC11307B3EF1EA9D99E7ABBF5E01"
                 },
                 "x86_64": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-x86_64-1.1.0.apk",
-                    "size_mb": 74.1,
-                    "checksum_sha256": "81B0309BC70D4C03D708876D0BC6C4F8F69E4E78A4365DE787ED84395C00E269"
+                    "size_mb": 139.0,
+                    "checksum_sha256": "2CB6B75438EAF1209AC5BE9E556D8D758645CA5F64AF3F450369607C732401D1"
                 }
             },
             "ios": {
@@ -174,8 +174,8 @@
             },
             "windows": {
                 "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.exe",
-                "size_mb": 41.4,
-                "checksum_sha256": "BBD43B6F89485E5EBAD31D706C6AE0ACC52026AC11CDABAEECBD777CD929F8FA"
+                "size_mb": 41.6,
+                "checksum_sha256": "505C7F4E62BFBACC9239382804E68E9F1292BC000216BDFD42DAD4D220D6AB21"
             },
             "macos": {
                 "download_url": "",
