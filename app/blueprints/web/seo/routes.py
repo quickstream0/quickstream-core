@@ -31,7 +31,7 @@ def sitemap():
     for page in pages:
         xml.append('  <url>')
         xml.append(f'   <loc>{page}</loc>')
-        xml.append('    <lastmod>2026-01-11</lastmod>')
+        xml.append('    <lastmod>2026-05-26</lastmod>')
         xml.append('    <changefreq>monthly</changefreq>')
         xml.append('    <priority>0.9</priority>')
         xml.append('  </url>')
