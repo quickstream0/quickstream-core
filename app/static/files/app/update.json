@@ -7,7 +7,7 @@
         "release_date": "2026-05-20",
         "changelog": {
             "default": [
-                "Version 1.1.0, Build 20. [Must Update]\n",
+                "Version 1.1.0, Build 21. [Must Update]\n",
                 "[General]\nUpgrade player from BetterPlayer to MediaKit - Player now supports Cross platform.\nAdd episodes listing in player - User can switch episode without leaving the player.\nAdded local notification support for iOS, Linux, macOS and Windows.\nMigrated from sqflite and SharedPreferences to Hive for database and local data storage.\nAdd film search filter- Now support filter by type (Movies, Tv Shows, People)\nCreate Casts, Crews and person about  pages.\n",
                 "[Providers]\nFix not working servers.\nRemoved dead servers and sources.\nFix some channels loading endlessly\n",
                 "[Other]\nCross-platform update - App now support iOS, Windows, macOS, Linux.\nAdd bandwidth sharing monetization for desktop platforms. No advertisements for desktop.\n"
