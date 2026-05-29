@@ -1,7 +1,7 @@
 {
     "update": {
         "version": "1.1.0",
-        "build": 20,
+        "build": 21,
         "mandatory": true,
         "notify_only": false,
         "release_date": "2026-05-20",
@@ -152,20 +152,20 @@
                 "arm64-v8a": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-arm64-v8a-1.1.0.apk",
-                    "size_mb": 137.0,
-                    "checksum_sha256": "16A7346775E2BF1FA9B31DEB59D1D730FBA9E879E012B5022ADF0D763A713C5B"
+                    "size_mb": 66.8,
+                    "checksum_sha256": "A2E0484AA162DD2B472A43C038CE0366B62A435508A473203117F48DCCAA7257"
                 },
                 "armeabi-v7a": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-armeabi-v7a-1.1.0.apk",
-                    "size_mb": 135.8,
-                    "checksum_sha256": "75A56CF32CF4952AEEB1C8623CB625227BDFBC11307B3EF1EA9D99E7ABBF5E01"
+                    "size_mb": 77.5,
+                    "checksum_sha256": "B5F5B2AD5948C5D7A67AA296FF5704D128851C191FB74C6496A57F065969C814"
                 },
                 "x86_64": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-x86_64-1.1.0.apk",
-                    "size_mb": 139.0,
-                    "checksum_sha256": "2CB6B75438EAF1209AC5BE9E556D8D758645CA5F64AF3F450369607C732401D1"
+                    "size_mb": 72.9,
+                    "checksum_sha256": "75487B959D7B6081E313DE5CB552C740642CFAFCB69BEB436C803889A70A87CA"
                 }
             },
             "ios": {

@@ -1,7 +1,7 @@
 {
     "update": {
         "version": "1.1.0",
-        "build": 20,
+        "build": 21,
         "mandatory": true,
         "notify_only": false,
         "min_sdk": 24,
@@ -9,7 +9,7 @@
         "apk": {
             "url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-1.1.0.apk",
             "size_mb": 158.0,
-            "checksum_sha256": "150F527F4B4B6A211E6CE78A9C799B3007207C5141AE3AC62585ED43A0AA89B0"
+            "checksum_sha256": "C5AA9D6737B8BC6659F9BE20A1D1E251C5A4FB93023828346217E8046D3C32F7"
         },
         "changelog": {
             "default": [
