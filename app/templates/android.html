@@ -1,306 +1,471 @@
 {% extends 'layout.html' %}
 {% block style %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/platform.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/android.min.css') }}">
 {% endblock style %}
 {% block content %}
-    <!-- Platform Hero -->
-    <section class="platform-hero android-hero">
-        <div class="container">
-            <div class="platform-hero-content">
-                <div class="platform-icon-large">
-                    <i class="fab fa-android"></i>
+<!-- Platform Hero -->
+<section class="platform-hero android-hero">
+    <div class="container">
+        <div class="platform-hero-content">
+            <div class="platform-icon-large">
+                <i class="fab fa-android"></i>
+            </div>
+            <h1>QuickStream for <span>Android</span></h1>
+            <p>Stream movies, TV shows, and live sports on your Android phone, tablet, or TV. Completely free!</p>
+            <button class="cta-button" id="scrollToDownload">Download Now</button>
+        </div>
+    </div>
+</section>
+
+<section class="updates-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Latest Updates</h2>
+            <p>What's new in QuickStream for Android</p>
+        </div>
+
+        <div class="updates-grid">
+            <div class="update-card cross-platform">
+                <div class="update-badge">Cross-Platform</div>
+                <h3>🎉 Major Update: QuickStream Goes Cross-Platform!</h3>
+                <p class="update-date">Released April 2026</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Now available on iOS, Windows, macOS, and Linux</li>
+                        <li><i class="fas fa-check-circle"></i> Fully synchronized experience across all devices</li>
+                        <li><i class="fas fa-check-circle"></i> Same great free content on every platform</li>
+                    </ul>
                 </div>
-                <h1>QuickStream for <span>Android</span></h1>
-                <p>Stream movies, TV shows, and live sports on your Android phone, tablet, or TV. Completely free!</p>
-                <button class="cta-button" id="scrollToDownload">Download Now</button>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">Player Upgrade</div>
+                <h3>⚡ Upgraded Media Player Engine</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Migrated from BetterPlayer to MediaKit</li>
+                        <li><i class="fas fa-check-circle"></i> True cross-platform playback support</li>
+                        <li><i class="fas fa-check-circle"></i> Improved streaming stability and performance</li>
+                        <li><i class="fas fa-check-circle"></i> Better hardware acceleration</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">New Features</div>
+                <h3>🎬 Enhanced Watching Experience</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>Episode Listing</strong> - Switch episodes
+                            without leaving the player</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Advanced Search Filters</strong> - Filter by
+                            Movies, TV Shows, or People</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Cast & Crew Pages</strong> - Dedicated pages for
+                            actors, directors, and crew</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Person About Pages</strong> - Detailed bios and
+                            filmography</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">Performance</div>
+                <h3>🚀 Under the Hood Improvements</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Migrated from sqflite/SharedPreferences to Hive database
+                        </li>
+                        <li><i class="fas fa-check-circle"></i> Faster local data storage and retrieval</li>
+                        <li><i class="fas fa-check-circle"></i> Improved app performance and responsiveness</li>
+                        <li><i class="fas fa-check-circle"></i> Added local notification support for Android</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">Fixes</div>
+                <h3>🔧 Bug Fixes & Improvements</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Fixed non-working servers and sources</li>
+                        <li><i class="fas fa-check-circle"></i> Removed dead servers and deprecated sources</li>
+                        <li><i class="fas fa-check-circle"></i> Fixed channels loading endlessly</li>
+                        <li><i class="fas fa-check-circle"></i> Improved overall stability</li>
+                    </ul>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Latest Updates Section -->
-    <section class="updates-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Latest Updates</h2>
-                <p>What's new in QuickStream for Android</p>
+<section class="download-options-section" id="download-options">
+    <div class="container">
+        <div class="section-title">
+            <h2>Download QuickStream for Android</h2>
+            <p>Choose the version that works best for your device</p>
+        </div>
+
+        <div class="download-options-grid">
+            <!-- All-in-One APK Card -->
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fas fa-box"></i>
+                </div>
+                <h3>All-in-One APK</h3>
+                <p class="option-size">~162 MB</p>
+                <p class="option-desc">Works on both Android Mobile and Android TV. Includes all features optimized for
+                    both form factors.</p>
+                <button class="download-option-btn"
+                    data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-1.1.0.apk"
+                    data-has-splits="true" data-type="fat">
+                    <i class="fab fa-android"></i> Download APK
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </button>
             </div>
-            
-            <div class="updates-grid">
-                <!-- Cross-Platform Updates -->
-                <div class="update-card cross-platform">
-                    <div class="update-badge">Cross-Platform</div>
-                    <h3>🎉 Major Update: QuickStream Goes Cross-Platform!</h3>
-                    <p class="update-date">Released April 2026</p>
-                    <div class="update-features">
+
+            <!-- Mobile Only APK Card -->
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Mobile Only APK</h3>
+                <p class="option-size">~158 MB</p>
+                <p class="option-desc">Optimized for Android phones and tablets. Smaller file size, mobile-optimized UI.
+                </p>
+                <button class="download-option-btn"
+                    data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-arm64-v8a-1.1.0.apk"
+                    data-has-splits="true" data-type="mobile">
+                    <i class="fab fa-android"></i> Download APK (arm64-v8a)
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </button>
+            </div>
+
+            <!-- TV Only APK Card -->
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <h3>TV Only APK</h3>
+                <p class="option-size">~78 MB</p>
+                <p class="option-desc">Optimized for Android TV and Google TV. Leanback UI with remote control support.
+                </p>
+                <button class="download-option-btn"
+                    data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-armeabi-v7a-1.1.0.apk"
+                    data-has-splits="true" data-type="tv">
+                    <i class="fab fa-android"></i> Download APK (armeabi-v7a)
+                    <i class="fas fa-chevron-down dropdown-icon"></i>
+                </button>
+            </div>
+
+            <!-- Fire OS / Firestick Card -->
+            <div class="download-option-card coming-soon">
+                <div class="option-icon">
+                    <i class="fab fa-firefox-browser"></i>
+                </div>
+                <h3>Fire OS / Firestick</h3>
+                <p class="option-size">Coming Soon!</p>
+                <p class="option-desc">Amazon Fire TV and Firestick support is in development.</p>
+                <button class="download-option-btn disabled" disabled>Coming Soon</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Modal for ABI selection -->
+<div id="abiModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Select APK Architecture</h3>
+            <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Dynamic content will be inserted here -->
+        </div>
+    </div>
+</div>
+
+<!-- Rest of the page (Installation Guide and FAQ remain the same) -->
+<section class="guide-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Installation Guide</h2>
+            <p>Follow these steps to install QuickStream on your Android device</p>
+        </div>
+
+        <div class="guide-container">
+            <div class="guide-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Enable "Install from Unknown Sources"</h3>
+                    <p>Since QuickStream is not downloaded from Google Play Store, you need to allow installation from
+                        unknown sources.</p>
+                    <div class="step-instructions">
+                        <ol>
+                            <li>Go to <strong>Settings</strong> on your Android device</li>
+                            <li>Navigate to <strong>Security</strong> or <strong>Privacy</strong> (may vary by device)
+                            </li>
+                            <li>Enable <strong>"Install from unknown sources"</strong> or <strong>"Allow app
+                                    installs"</strong></li>
+                            <li>If using Android 8+, you may need to grant permission to your browser/file manager
+                                specifically</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Download the APK File</h3>
+                    <p>Choose the appropriate APK version above and download it to your device.</p>
+                    <div class="step-instructions">
                         <ul>
-                            <li><i class="fas fa-check-circle"></i> Now available on iOS, Windows, macOS, and Linux</li>
-                            <li><i class="fas fa-check-circle"></i> Fully synchronized experience across all devices</li>
-                            <li><i class="fas fa-check-circle"></i> Same great free content on every platform</li>
+                            <li>Click the download button for your preferred version</li>
+                            <li>The APK file will be saved to your Downloads folder</li>
+                            <li>If using a PC, transfer the APK to your Android device via USB or cloud storage</li>
                         </ul>
                     </div>
                 </div>
-                
-                <div class="update-card">
-                    <div class="update-badge">Player Upgrade</div>
-                    <h3>⚡ Upgraded Media Player Engine</h3>
-                    <p class="update-date">Latest Version</p>
-                    <div class="update-features">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Migrated from BetterPlayer to MediaKit</li>
-                            <li><i class="fas fa-check-circle"></i> True cross-platform playback support</li>
-                            <li><i class="fas fa-check-circle"></i> Improved streaming stability and performance</li>
-                            <li><i class="fas fa-check-circle"></i> Better hardware acceleration</li>
-                        </ul>
+            </div>
+
+            <div class="guide-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Install the APK</h3>
+                    <div class="step-instructions">
+                        <ol>
+                            <li>Open your device's <strong>File Manager</strong> or <strong>Downloads</strong> app</li>
+                            <li>Locate the downloaded <strong>quickstream-*.apk</strong> file</li>
+                            <li>Tap on the file to begin installation</li>
+                            <li>If prompted, confirm that you want to install the app</li>
+                            <li>Wait for the installation to complete</li>
+                        </ol>
                     </div>
                 </div>
-                
-                <div class="update-card">
-                    <div class="update-badge">New Features</div>
-                    <h3>🎬 Enhanced Watching Experience</h3>
-                    <p class="update-date">Latest Version</p>
-                    <div class="update-features">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> <strong>Episode Listing</strong> - Switch episodes without leaving the player</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>Advanced Search Filters</strong> - Filter by Movies, TV Shows, or People</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>Cast & Crew Pages</strong> - Dedicated pages for actors, directors, and crew</li>
-                            <li><i class="fas fa-check-circle"></i> <strong>Person About Pages</strong> - Detailed bios and filmography</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="update-card">
-                    <div class="update-badge">Performance</div>
-                    <h3>🚀 Under the Hood Improvements</h3>
-                    <p class="update-date">Latest Version</p>
-                    <div class="update-features">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Migrated from sqflite/SharedPreferences to Hive database</li>
-                            <li><i class="fas fa-check-circle"></i> Faster local data storage and retrieval</li>
-                            <li><i class="fas fa-check-circle"></i> Improved app performance and responsiveness</li>
-                            <li><i class="fas fa-check-circle"></i> Added local notification support for Android</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="update-card">
-                    <div class="update-badge">Fixes</div>
-                    <h3>🔧 Bug Fixes & Improvements</h3>
-                    <p class="update-date">Latest Version</p>
-                    <div class="update-features">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Fixed non-working servers and sources</li>
-                            <li><i class="fas fa-check-circle"></i> Removed dead servers and deprecated sources</li>
-                            <li><i class="fas fa-check-circle"></i> Fixed channels loading endlessly</li>
-                            <li><i class="fas fa-check-circle"></i> Improved overall stability</li>
-                        </ul>
+            </div>
+
+            <div class="guide-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Launch QuickStream</h3>
+                    <div class="step-instructions">
+                        <ol>
+                            <li>Once installed, tap <strong>Open</strong> to launch QuickStream</li>
+                            <li>You can also find the QuickStream icon in your app drawer</li>
+                            <li>Start streaming your favorite content for free!</li>
+                        </ol>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Download Options Section -->
-    <section class="download-options-section" id="download-options">
-        <div class="container">
-            <div class="section-title">
-                <h2>Download QuickStream for Android</h2>
-                <p>Choose the version that works best for your device</p>
-            </div>
-            
-            <div class="download-options-grid">
-                <div class="download-option-card">
-                    <div class="option-icon">
-                        <i class="fas fa-box"></i>
-                    </div>
-                    <h3>All-in-One APK</h3>
-                    <p class="option-size">~76 MB</p>
-                    <p class="option-desc">Works on both Android Mobile and Android TV. Includes all features optimized for both form factors.</p>
-                    <button class="download-option-btn" data-url="#">
-                        <i class="fab fa-android"></i> Download APK
-                    </button>
-                </div>
-                
-                <div class="download-option-card">
-                    <div class="option-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Mobile Only APK</h3>
-                    <p class="option-size">~158 MB</p>
-                    <p class="option-desc">Optimized for Android phones and tablets. Smaller file size, mobile-optimized UI.</p>
-                    <button class="download-option-btn" data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-1.1.0.apk">
-                        <i class="fab fa-android"></i> Download APK
-                    </button>
-                </div>
-                
-                <div class="download-option-card">
-                    <div class="option-icon">
-                        <i class="fas fa-tv"></i>
-                    </div>
-                    <h3>TV Only APK</h3>
-                    <p class="option-size">~42 MB</p>
-                    <p class="option-desc">Optimized for Android TV and Google TV. Leanback UI with remote control support.</p>
-                    <button class="download-option-btn" data-url="#">
-                        <i class="fab fa-android"></i> Download APK
-                    </button>
-                </div>
-                
-                <!-- <div class="download-option-card coming-soon">
-                    <div class="option-icon">
-                        <i class="fab fa-firefox-browser"></i>
-                    </div>
-                    <h3>Fire OS / Firestick</h3>
-                    <p class="option-size">Coming Soon!</p>
-                    <p class="option-desc">Amazon Fire TV and Firestick support is in development.</p>
-                    <button class="download-option-btn disabled" disabled>Coming Soon</button>
-                </div> -->
-            </div>
+        <div class="guide-note">
+            <i class="fas fa-info-circle"></i>
+            <strong>Note for Android TV users:</strong> On Android TV, you can use the Downloader app from the Google
+            Play Store to download and install APKs directly on your TV.
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Installation Guide Section -->
-    <section class="guide-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Installation Guide</h2>
-                <p>Follow these steps to install QuickStream on your Android device</p>
-            </div>
-            
-            <div class="guide-container">
-                <div class="guide-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Enable "Install from Unknown Sources"</h3>
-                        <p>Since QuickStream is not downloaded from Google Play Store, you need to allow installation from unknown sources.</p>
-                        <div class="step-instructions">
-                            <ol>
-                                <li>Go to <strong>Settings</strong> on your Android device</li>
-                                <li>Navigate to <strong>Security</strong> or <strong>Privacy</strong> (may vary by device)</li>
-                                <li>Enable <strong>"Install from unknown sources"</strong> or <strong>"Allow app installs"</strong></li>
-                                <li>If using Android 8+, you may need to grant permission to your browser/file manager specifically</li>
-                            </ol>
-                        </div>
-                        <div class="step-image-placeholder">
-                            <i class="fas fa-image"></i> Screenshot guide available
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Download the APK File</h3>
-                        <p>Choose the appropriate APK version above and download it to your device.</p>
-                        <div class="step-instructions">
-                            <ul>
-                                <li>Click the download button for your preferred version</li>
-                                <li>The APK file will be saved to your Downloads folder</li>
-                                <li>If using a PC, transfer the APK to your Android device via USB or cloud storage</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="guide-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Install the APK</h3>
-                        <div class="step-instructions">
-                            <ol>
-                                <li>Open your device's <strong>File Manager</strong> or <strong>Downloads</strong> app</li>
-                                <li>Locate the downloaded <strong>quickstream-*.apk</strong> file</li>
-                                <li>Tap on the file to begin installation</li>
-                                <li>If prompted, confirm that you want to install the app</li>
-                                <li>Wait for the installation to complete</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="guide-step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Launch QuickStream</h3>
-                        <div class="step-instructions">
-                            <ol>
-                                <li>Once installed, tap <strong>Open</strong> to launch QuickStream</li>
-                                <li>You can also find the QuickStream icon in your app drawer</li>
-                                <li>Start streaming your favorite content for free!</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="guide-note">
-                <i class="fas fa-info-circle"></i>
-                <strong>Note for Android TV users:</strong> On Android TV, you can use the Downloader app from the Google Play Store to download and install APKs directly on your TV.
-            </div>
+<section class="platform-faq">
+    <div class="container">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Common questions about QuickStream for Android</p>
         </div>
-    </section>
 
-    <!-- FAQ Section for Platform -->
-    <section class="platform-faq">
-        <div class="container">
-            <div class="section-title">
-                <h2>Frequently Asked Questions</h2>
-                <p>Common questions about QuickStream for Android</p>
-            </div>
-            
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>What's the difference between the APK versions?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p><strong>All-in-One APK:</strong> Works on both mobile devices and Android TV. Best if you use QuickStream on multiple Android devices.<br>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What's the difference between the APK versions?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>All-in-One APK:</strong> Works on both mobile devices and Android TV. Best if you use
+                        QuickStream on multiple Android devices.<br>
                         <strong>Mobile Only APK:</strong> Optimized for phones and tablets. Smaller file size.<br>
-                        <strong>TV Only APK:</strong> Optimized for Android TV with leanback UI and remote control support.</p>
-                    </div>
+                        <strong>TV Only APK:</strong> Optimized for Android TV with leanback UI and remote control
+                        support.
+                    </p>
                 </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Which Android versions are supported?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>QuickStream supports Android 7.0 (Nougat) and higher. For best performance, we recommend Android 8.0 (Oreo) or later.</p>
-                    </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What are the different ABI (architecture) options?</h3>
+                    <span class="faq-toggle">+</span>
                 </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <h3>Is QuickStream really free?</h3>
-                        <span class="faq-toggle">+</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Yes! QuickStream is free with no subscriptions or hidden fees. We support the app through non-intrusive advertisements.</p>
-                    </div>
+                <div class="faq-answer">
+                    <p><strong>arm64-v8a:</strong> For 64-bit devices (most modern phones and tablets)<br>
+                        <strong>armeabi-v7a:</strong> For 32-bit devices and most Android TVs<br>
+                        <strong>x86_64:</strong> For emulators and some tablets<br>
+                        <strong>Fat APK:</strong> Universal version that works on all architectures (larger size)
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Which Android versions are supported?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>QuickStream supports Android 7.0 (Nougat) and higher. For best performance, we recommend Android
+                        8.0 (Oreo) or later.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Is QuickStream really free?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! QuickStream is free with no subscriptions or hidden fees. We support the app through
+                        non-intrusive advertisements.</p>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock content %}
 
 {% block script %}
-    <script>
-        
-        // Download buttons
-        document.querySelectorAll('.download-option-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const url = this.getAttribute('data-url');
+<script>
+    // ABI options for different types
+    const abiOptions = {
+        fat: [
+            { name: "All-in-One (Universal)", abi: "fat", file: "quickstream-android-1.1.0.apk", size: "~158 MB", description: "Works on all architectures - best compatibility", recommended: true },
+            { name: "arm64-v8a", abi: "arm64-v8a", file: "quickstream-android-arm64-v8a-1.1.0.apk", size: "~67 MB", description: "For 64-bit ARM devices (modern phones)", recommended: false },
+            { name: "armeabi-v7a", abi: "armeabi-v7a", file: "quickstream-android-armeabi-v7a-1.1.0.apk", size: "~78 MB", description: "For 32-bit ARM devices (older phones, most TVs)", recommended: false },
+            { name: "x86_64", abi: "x86_64", file: "quickstream-android-x86_64-1.1.0.apk", size: "~73 MB", description: "For x86_64 devices (emulators, some tablets)", recommended: false }
+        ],
+        mobile: [
+            { name: "arm64-v8a", abi: "arm64-v8a", file: "quickstream-android-arm64-v8a-1.1.0.apk", size: "~67 MB", description: "For 64-bit ARM devices - Most modern phones", recommended: true },
+            { name: "armeabi-v7a", abi: "armeabi-v7a", file: "quickstream-android-armeabi-v7a-1.1.0.apk", size: "~78 MB", description: "For 32-bit ARM devices - Older phones", recommended: false },
+            { name: "x86_64", abi: "x86_64", file: "quickstream-android-x86_64-1.1.0.apk", size: "~73 MB", description: "For x86_64 devices - Emulators, tablets", recommended: false }
+        ],
+        tv: [
+            { name: "armeabi-v7a", abi: "armeabi-v7a", file: "quickstream-android-armeabi-v7a-1.1.0.apk", size: "~78 MB", description: "For 32-bit ARM devices - Most Android TVs", recommended: true },
+            { name: "arm64-v8a", abi: "arm64-v8a", file: "quickstream-android-arm64-v8a-1.1.0.apk", size: "~67 MB", description: "For 64-bit ARM TVs (newer models)", recommended: false }
+        ]
+    };
+
+    // Modal elements
+    const modal = document.getElementById('abiModal');
+    const modalBody = document.getElementById('modalBody');
+    const closeModal = document.getElementById('closeModal');
+
+    // Current type tracking
+    let currentType = null;
+
+    // Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+
+    closeModal.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    // Function to show modal with ABI options
+    function showABIModal(type) {
+        currentType = type;
+        const options = abiOptions[type];
+
+        if (!options) return;
+
+        let html = '<div class="abi-options">';
+        options.forEach(option => {
+            html += `
+                    <div class="abi-option">
+                        <div class="abi-info">
+                            <h4>${option.name} ${option.recommended ? '<span class="badge recommended">Recommended</span>' : ''}</h4>
+                            <p>${option.description}</p>
+                            <p style="font-size: 12px; margin-top: 5px;">Size: ${option.size}</p>
+                        </div>
+                        <button class="abi-download-btn" data-file="${option.file}">
+                            <i class="fab fa-android"></i> Download
+                        </button>
+                    </div>
+                `;
+        });
+        html += '</div>';
+
+        modalBody.innerHTML = html;
+        modal.classList.add('active');
+
+        // Add event listeners to download buttons in modal
+        document.querySelectorAll('.abi-download-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const file = btn.getAttribute('data-file');
+                const url = `https://github.com/quickstream0/app-release/releases/download/v1.1.0/${file}`;
+                window.open(url, '_blank');
+            });
+        });
+    }
+
+    // Modify download buttons to show modal for those with splits
+    document.querySelectorAll('.download-option-btn').forEach(btn => {
+        const hasSplits = btn.getAttribute('data-has-splits') === 'true';
+        const type = btn.getAttribute('data-type');
+        const directUrl = btn.getAttribute('data-url');
+
+        // Store original click handler
+        btn.addEventListener('click', (e) => {
+            // If clicking on the dropdown icon area, show modal
+            if (e.target.classList.contains('dropdown-icon') || e.target.classList.contains('fa-chevron-down')) {
+                e.stopPropagation();
+                if (hasSplits && type) {
+                    showABIModal(type);
+                }
+            } else if (hasSplits && type) {
+                // For normal click, download the default recommended version
+                if (directUrl && directUrl !== '#') {
+                    window.open(directUrl, '_blank');
+                }
+            } else {
+                // Normal download for buttons without splits
+                const url = btn.getAttribute('data-url');
                 if (url && url !== '#') {
                     window.open(url, '_blank');
                 } else {
-                    alert('Download coming soon! The TV version is being prepared.');
+                    alert('Download coming soon!');
+                }
+            }
+        });
+    });
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
                 }
             });
+            item.classList.toggle('active');
         });
-        
-        // Scroll to download section
-        document.getElementById('scrollToDownload')?.addEventListener('click', () => {
-            document.getElementById('download-options').scrollIntoView({ behavior: 'smooth' });
-        });
-    </script>
+    });
+
+    // Scroll to download section
+    document.getElementById('scrollToDownload')?.addEventListener('click', () => {
+        document.getElementById('download-options').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Open first FAQ
+    if (faqItems.length > 0) {
+        faqItems[0].classList.add('active');
+    }
+</script>
 {% endblock script %}

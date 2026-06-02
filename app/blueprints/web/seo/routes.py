@@ -17,6 +17,7 @@ def sitemap():
         url_for('index.index', _external=True),
         url_for('index.android', _external=True),
         url_for('index.windows', _external=True),
+        url_for('index.linux', _external=True),
         url_for('index.terms', _external=True),
         url_for('index.privacy', _external=True),
     ]
@@ -31,7 +32,7 @@ def sitemap():
     for page in pages:
         xml.append('  <url>')
         xml.append(f'   <loc>{page}</loc>')
-        xml.append('    <lastmod>2026-05-26</lastmod>')
+        xml.append('    <lastmod>2026-06-02</lastmod>')
         xml.append('    <changefreq>monthly</changefreq>')
         xml.append('    <priority>0.9</priority>')
         xml.append('  </url>')

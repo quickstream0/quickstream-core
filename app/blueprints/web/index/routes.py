@@ -15,6 +15,10 @@ def android():
 def windows():
     return render_template('windows.html', title='Windows')
 
+@index_bp.route('/linux')
+def linux():
+    return render_template('linux.html', title='Linux')
+
 @index_bp.route('/privacy')
 def privacy():
     return render_template('privacy.html', title='Privacy Policy')

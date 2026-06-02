@@ -1,0 +1,380 @@
+{% extends 'layout.html' %}
+{% block style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/platform.min.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/linux.min.css') }}">
+{% endblock style %}
+{% block content %}
+<section class="platform-hero linux-hero">
+    <div class="container">
+        <div class="platform-hero-content">
+            <div class="platform-icon-large">
+                <i class="fab fa-linux"></i>
+            </div>
+            <h1>QuickStream for <span>Linux</span></h1>
+            <p>Stream movies, TV shows, and live sports on your Linux distribution. Completely free!</p>
+            <button class="cta-button" id="scrollToDownload">Download Now</button>
+        </div>
+    </div>
+</section>
+
+<section class="updates-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Latest Updates</h2>
+            <p>What's new in QuickStream for Linux</p>
+        </div>
+
+        <div class="updates-grid">
+            <div class="update-card cross-platform">
+                <div class="update-badge">Cross-Platform</div>
+                <h3>🎉 QuickStream Now on Linux!</h3>
+                <p class="update-date">Released April 2026</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Native Linux application</li>
+                        <li><i class="fas fa-check-circle"></i> Supports DEB, RPM, and AppImage formats</li>
+                        <li><i class="fas fa-check-circle"></i> Optimized for major distributions</li>
+                        <li><i class="fas fa-check-circle"></i> Same great free content as other platforms</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">Player Upgrade</div>
+                <h3>⚡ MediaKit Player Integration</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Upgraded from BetterPlayer to MediaKit</li>
+                        <li><i class="fas fa-check-circle"></i> Improved playback stability on Linux</li>
+                        <li><i class="fas fa-check-circle"></i> Better codec support</li>
+                        <li><i class="fas fa-check-circle"></i> Wayland and X11 compatibility</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">Performance</div>
+                <h3>🚀 Native Performance</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Optimized for low memory usage</li>
+                        <li><i class="fas fa-check-circle"></i> Hardware acceleration support</li>
+                        <li><i class="fas fa-check-circle"></i> System tray integration</li>
+                        <li><i class="fas fa-check-circle"></i> Desktop notifications support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="download-options-section" id="download-options">
+    <div class="container">
+        <div class="section-title">
+            <h2>Download QuickStream for Linux</h2>
+            <p>Choose the package that works best for your distribution</p>
+        </div>
+
+        <div class="download-options-grid">
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fab fa-ubuntu"></i>
+                </div>
+                <h3>DEB Package</h3>
+                <p class="option-size">~27 MB</p>
+                <p class="option-desc">For Debian, Ubuntu, Linux Mint, and other Debian-based distributions.</p>
+                <button class="download-option-btn"
+                    data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-linux-1.1.0-amd64.deb">
+                    <i class="fab fa-linux"></i> Download .deb
+                </button>
+            </div>
+
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fab fa-redhat"></i>
+                </div>
+                <h3>RPM Package</h3>
+                <p class="option-size">~27 MB</p>
+                <p class="option-desc">For Fedora, RHEL, CentOS, openSUSE, and other RPM-based distributions.</p>
+                <button class="download-option-btn"
+                    data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-linux-1.1.0-x86_64.rpm">
+                    <i class="fab fa-linux"></i> Download .rpm
+                </button>
+            </div>
+
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fas fa-box"></i>
+                </div>
+                <h3>AppImage</h3>
+                <p class="option-size">~28 MB</p>
+                <p class="option-desc">Works on any Linux distribution. No installation required - just run!</p>
+                <button class="download-option-btn" data-url="#">
+                    <i class="fab fa-linux"></i> Download AppImage
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="guide-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Installation Guide</h2>
+            <p>Choose your distribution type for detailed instructions</p>
+        </div>
+
+        <div class="install-tabs">
+            <div class="install-tab active" data-distro="debian">Debian/Ubuntu</div>
+            <div class="install-tab" data-distro="fedora">Fedora/RHEL</div>
+            <div class="install-tab" data-distro="appimage">AppImage (All Distros)</div>
+        </div>
+
+        <div class="guide-container">
+            <!-- Debian/Ubuntu Instructions -->
+            <div class="install-content active" id="debian-instructions">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Download the DEB Package</h3>
+                        <p>Click the DEB download button above to get the package.</p>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Install via Terminal</h3>
+                        <div class="step-instructions">
+                            <p>Open a terminal and navigate to your Downloads folder:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> cd ~/Downloads
+                            </div>
+                            <p>Install the DEB package:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> sudo dpkg -i quickstream-linux-1.1.0-amd64.deb
+                            </div>
+                            <p>If you encounter dependency issues, run:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> sudo apt-get install -f
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Launch QuickStream</h3>
+                        <div class="step-instructions">
+                            <p>Find QuickStream in your application menu or run:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> quickstream
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fedora/RHEL Instructions -->
+            <div class="install-content" id="fedora-instructions">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Download the RPM Package</h3>
+                        <p>Click the RPM download button above to get the package.</p>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Install via Terminal</h3>
+                        <div class="step-instructions">
+                            <p>Open a terminal and navigate to your Downloads folder:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> cd ~/Downloads
+                            </div>
+                            <p>Install the RPM package:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> sudo rpm -ivh quickstream-linux-1.1.0-x86_64.rpm
+                            </div>
+                            <p>Or using DNF (Fedora):</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> sudo dnf install quickstream-linux-1.1.0-x86_64.rpm
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Launch QuickStream</h3>
+                        <div class="step-instructions">
+                            <p>Find QuickStream in your application menu or run:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> quickstream
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AppImage Instructions -->
+            <div class="install-content" id="appimage-instructions">
+                <div class="guide-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Download the AppImage</h3>
+                        <p>Click the AppImage download button above.</p>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Make it Executable</h3>
+                        <div class="step-instructions">
+                            <p>Open a terminal in your Downloads folder:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> chmod +x QuickStream-1.1.0.AppImage
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guide-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Run QuickStream</h3>
+                        <div class="step-instructions">
+                            <p>Double-click the AppImage file or run from terminal:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> ./QuickStream-1.1.0.AppImage
+                            </div>
+                            <p><strong>Optional:</strong> Move AppImage to your applications folder:</p>
+                            <div class="code-block">
+                                <i class="fas fa-terminal"></i> mv QuickStream-1.1.0.AppImage ~/.local/bin/quickstream
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="guide-note">
+            <i class="fas fa-info-circle"></i>
+            <strong>Note:</strong> If you encounter "FUSE error" with AppImage, install libfuse2:
+            <div class="code-block" style="margin-top: 10px; background-color: #2d2d2d;">
+                <i class="fas fa-terminal"></i> sudo apt install libfuse2 <span style="color: #6a9955;">#
+                    Debian/Ubuntu</span><br>
+                <i class="fas fa-terminal"></i> sudo dnf install fuse <span style="color: #6a9955;"># Fedora/RHEL</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="platform-faq">
+    <div class="container">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Common questions about QuickStream for Linux</p>
+        </div>
+
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Which Linux distributions are supported?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>DEB packages:</strong> Ubuntu 20.04+, Debian 11+, Linux Mint 20+, Pop!_OS 20.04+<br>
+                        <strong>RPM packages:</strong> Fedora 34+, RHEL 8+, CentOS 8+, openSUSE Leap 15.3+<br>
+                        <strong>AppImage:</strong> Any modern Linux distribution with glibc 2.28+
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Is QuickStream really free on Linux?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! QuickStream is 100% free on all platforms including Linux. No subscriptions or hidden fees.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do I need to install dependencies manually?</h3>
+                    <span class="faq-toggle">+</span>
+                </div>
+                <div class="faq-answer">
+                    <p>DEB and RPM packages will automatically handle dependencies. For AppImage, no dependencies are
+                        needed as everything is bundled.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block script %}
+<script>
+    // Tab switching for installation instructions
+    const tabs = document.querySelectorAll('.install-tab');
+    const contents = document.querySelectorAll('.install-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const distro = tab.getAttribute('data-distro');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            contents.forEach(content => content.classList.remove('active'));
+            document.getElementById(`${distro}-instructions`).classList.add('active');
+        });
+    });
+
+    // Download buttons
+    document.querySelectorAll('.download-option-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const url = this.getAttribute('data-url');
+            if (url && url !== '#') {
+                window.open(url, '_blank');
+            } else {
+                alert('Download coming soon!');
+            }
+        });
+    });
+
+    // Scroll to download
+    document.getElementById('scrollToDownload')?.addEventListener('click', () => {
+        document.getElementById('download-options').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            item.classList.toggle('active');
+        });
+    });
+
+    if (faqItems.length > 0) {
+        faqItems[0].classList.add('active');
+    }
+</script>
+{% endblock script %}
