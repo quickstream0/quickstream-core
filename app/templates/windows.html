@@ -3,190 +3,198 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/platform.min.css') }}">
 {% endblock style %}
 {% block content %}
-    <section class="platform-hero windows-hero">
-        <div class="container">
-            <div class="platform-hero-content">
-                <div class="platform-icon-large">
-                    <i class="fab fa-windows"></i>
-                </div>
-                <h1>QuickStream for <span>Windows</span></h1>
-                <p>Stream movies, TV shows, and live sports on your Windows PC. Completely free!</p>
-                <button class="cta-button" id="scrollToDownload">Download Now</button>
-            </div>
-        </div>
-    </section>
-
-    <section class="updates-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Latest Updates</h2>
-                <p>What's new in QuickStream for Windows</p>
-            </div>
-            
-            <div class="updates-grid">
-                <div class="update-card cross-platform">
-                    <div class="update-badge">Windows Update</div>
-                    <h3>💰 Monetization for Windows</h3>
-                    <p class="update-date">Latest Version</p>
-                    <div class="update-features">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Added sustainable monetization model for Windows platform</li>
-                            <li><i class="fas fa-check-circle"></i> Keeping QuickStream free while supporting development</li>
-                            <li><i class="fas fa-check-circle"></i> Non-intrusive ad experience</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="update-card">
-                    <div class="update-badge">Cross-Platform</div>
-                    <h3>🎉 QuickStream Now on Windows!</h3>
-                    <p class="update-date">Released April 2026</p>
-                    <div class="update-features">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Native Windows application</li>
-                            <li><i class="fas fa-check-circle"></i> Same great content as mobile version</li>
-                            <li><i class="fas fa-check-circle"></i> Optimized for keyboard and mouse</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="update-card">
-                    <div class="update-badge">Player Upgrade</div>
-                    <h3>⚡ MediaKit Player Integration</h3>
-                    <p class="update-date">Latest Version</p>
-                    <div class="update-features">
-                        <ul>
-                            <li><i class="fas fa-check-circle"></i> Upgraded from BetterPlayer to MediaKit</li>
-                            <li><i class="fas fa-check-circle"></i> Improved playback stability on Windows</li>
-                            <li><i class="fas fa-check-circle"></i> Better codec support</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="download-options-section" id="download-options">
-        <div class="container">
-            <div class="section-title">
-                <h2>Download QuickStream for Windows</h2>
-                <p>Choose the version that works best for you</p>
-            </div>
-            
-            <div class="download-options-grid">
-                <div class="download-option-card">
-                    <div class="option-icon">
-                        <i class="fas fa-download"></i>
-                    </div>
-                    <h3>Installer (EXE)</h3>
-                    <p class="option-size">~42 MB</p>
-                    <p class="option-desc">Standard Windows installer. Adds QuickStream to your Start Menu and creates desktop shortcuts.</p>
-                    <button class="download-option-btn" data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.exe">
-                        <i class="fab fa-windows"></i> Download Installer
-                    </button>
-                </div>
-                
-                <div class="download-option-card">
-                    <div class="option-icon">
-                        <i class="fas fa-folder-zip"></i>
-                    </div>
-                    <h3>Portable (ZIP)</h3>
-                    <p class="option-size">~56 MB</p>
-                    <p class="option-desc">No installation required. Extract and run directly. Perfect for USB drives or avoiding admin rights.</p>
-                    <button class="download-option-btn" data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.zip">
-                        <i class="fab fa-windows"></i> Download Portable
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="guide-section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Installation Guide</h2>
-                <p>Quick and easy setup for Windows</p>
-            </div>
-            
-            <div class="guide-container">
-                <div class="guide-step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Download the Installer</h3>
-                        <p>Choose either the standard installer or portable version above.</p>
-                    </div>
-                </div>
-                
-                <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Run the Installer</h3>
-                        <div class="step-instructions">
-                            <ul>
-                                <li>Double-click the downloaded .exe file</li>
-                                <li>If Windows SmartScreen appears, click "More info" then "Run anyway"</li>
-                                <li>Follow the installation wizard prompts</li>
-                                <li>Choose installation location (default is recommended)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="guide-step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Launch QuickStream</h3>
-                        <div class="step-instructions">
-                            <ul>
-                                <li>Find QuickStream in your Start Menu or on your desktop</li>
-                                <li>Double-click to launch</li>
-                                <li>Start streaming for free!</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="guide-step">
-                    <div class="step-number">💡</div>
-                    <div class="step-content">
-                        <h3>Portable Version Instructions</h3>
-                        <div class="step-instructions">
-                            <ul>
-                                <li>Extract the downloaded ZIP file to your desired folder</li>
-                                <li>Run QuickStream.exe directly</li>
-                                <li>No installation or admin rights required</li>
-                                <li>Your settings are saved in the same folder</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+<section class="platform-hero windows-hero">
     <div class="container">
-        <div class="guide-note">
-            <i class="fas fa-shield-alt"></i>
-            <strong>Security Note:</strong> QuickStream is completely safe and does not contain any malware. If Windows SmartScreen appears, it's because the app is new - you can safely install by clicking "More info" then "Run anyway".
+        <div class="platform-hero-content">
+            <div class="platform-icon-large">
+                <i class="fab fa-windows"></i>
+            </div>
+            <h1>QuickStream for <span>Windows</span></h1>
+            <p>Stream movies, TV shows, and live sports on your Windows PC. Completely free!</p>
+            <button class="cta-button" id="scrollToDownload">Download Now</button>
         </div>
     </div>
+</section>
+
+<section class="updates-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Latest Updates</h2>
+            <p>What's new in QuickStream for Windows</p>
+        </div>
+
+        <div class="updates-grid">
+            <div class="update-card cross-platform">
+                <div class="update-badge">Windows Update</div>
+                <h3>💰 Monetization for Windows</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Added sustainable monetization model for Windows
+                            platform</li>
+                        <li><i class="fas fa-check-circle"></i> Keeping QuickStream free while supporting development
+                        </li>
+                        <li><i class="fas fa-check-circle"></i> Non-intrusive ad experience</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">Cross-Platform</div>
+                <h3>🎉 QuickStream Now on Windows!</h3>
+                <p class="update-date">Released April 2026</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Native Windows application</li>
+                        <li><i class="fas fa-check-circle"></i> Same great content as mobile version</li>
+                        <li><i class="fas fa-check-circle"></i> Optimized for keyboard and mouse</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="update-card">
+                <div class="update-badge">Player Upgrade</div>
+                <h3>⚡ MediaKit Player Integration</h3>
+                <p class="update-date">Latest Version</p>
+                <div class="update-features">
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Upgraded from BetterPlayer to MediaKit</li>
+                        <li><i class="fas fa-check-circle"></i> Improved playback stability on Windows</li>
+                        <li><i class="fas fa-check-circle"></i> Better codec support</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="download-options-section" id="download-options">
+    <div class="container">
+        <div class="section-title">
+            <h2>Download QuickStream for Windows</h2>
+            <p>Choose the version that works best for you</p>
+        </div>
+
+        <div class="download-options-grid">
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fas fa-download"></i>
+                </div>
+                <h3>Installer (EXE)</h3>
+                <p class="option-size">~42 MB</p>
+                <p class="option-desc">Standard Windows installer. Adds QuickStream to your Start Menu and creates
+                    desktop shortcuts.</p>
+                <button class="download-option-btn"
+                    data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.exe">
+                    <i class="fab fa-windows"></i> Download Installer
+                </button>
+            </div>
+
+            <div class="download-option-card">
+                <div class="option-icon">
+                    <i class="fas fa-folder-zip"></i>
+                </div>
+                <h3>Portable (ZIP)</h3>
+                <p class="option-size">~56 MB</p>
+                <p class="option-desc">No installation required. Extract and run directly. Perfect for USB drives or
+                    avoiding admin rights.</p>
+                <button class="download-option-btn"
+                    data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.zip">
+                    <i class="fab fa-windows"></i> Download Portable
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="guide-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Installation Guide</h2>
+            <p>Quick and easy setup for Windows</p>
+        </div>
+
+        <div class="guide-container">
+            <div class="guide-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Download the Installer</h3>
+                    <p>Choose either the standard installer or portable version above.</p>
+                </div>
+            </div>
+
+            <div class="guide-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Run the Installer</h3>
+                    <div class="step-instructions">
+                        <ul>
+                            <li>Double-click the downloaded .exe file</li>
+                            <li>If Windows SmartScreen appears, click "More info" then "Run anyway"</li>
+                            <li>Follow the installation wizard prompts</li>
+                            <li>Choose installation location (default is recommended)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Launch QuickStream</h3>
+                    <div class="step-instructions">
+                        <ul>
+                            <li>Find QuickStream in your Start Menu or on your desktop</li>
+                            <li>Double-click to launch</li>
+                            <li>Start streaming for free!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="guide-step">
+                <div class="step-number">💡</div>
+                <div class="step-content">
+                    <h3>Portable Version Instructions</h3>
+                    <div class="step-instructions">
+                        <ul>
+                            <li>Extract the downloaded ZIP file to your desired folder</li>
+                            <li>Run QuickStream.exe directly</li>
+                            <li>No installation or admin rights required</li>
+                            <li>Your settings are saved in the same folder</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="guide-note">
+        <i class="fas fa-shield-alt"></i>
+        <strong>Security Note:</strong> QuickStream is completely safe and does not contain any malware. If Windows
+        SmartScreen appears, it's because the app is new - you can safely install by clicking "More info" then "Run
+        anyway".
+    </div>
+</div>
 {% endblock content %}
 
 {% block script %}
-    <script>
-        document.querySelectorAll('.download-option-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const url = this.getAttribute('data-url');
-                if (url && url !== '#') {
-                    window.open(url, '_blank');
-                } else {
-                    alert('Download coming soon! The Windows version is being prepared.');
-                }
-            });
+<script>
+    document.querySelectorAll('.download-option-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const url = this.getAttribute('data-url');
+            if (url && url !== '#') {
+                window.open(url, '_blank');
+            } else {
+                alert('Download coming soon! The Windows version is being prepared.');
+            }
         });
-        
-        document.getElementById('scrollToDownload')?.addEventListener('click', () => {
-            document.getElementById('download-options').scrollIntoView({ behavior: 'smooth' });
-        });
-    </script>
+    });
+
+    document.getElementById('scrollToDownload')?.addEventListener('click', () => {
+        document.getElementById('download-options').scrollIntoView({ behavior: 'smooth' });
+    });
+</script>
 {% endblock script %}

@@ -18,7 +18,8 @@
             </div>
 
             <div class="hero-image-placeholder">
-                <img src="{{ url_for('static', filename='images/background/2.jpg') }}" alt="QuickStream Banner" loading="lazy">
+                <img src="{{ url_for('static', filename='images/background/2.jpg') }}" alt="QuickStream Banner"
+                    loading="lazy">
             </div>
         </div>
     </section>
@@ -232,7 +233,8 @@
                     <h3>Windows</h3>
                     <p class="download-version">Version 1.1.0</p>
                     <p class="download-size">EXE • ~42 MB</p>
-                    <button class="download-btn" data-platform="windows" data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.exe">
+                    <button class="download-btn" data-platform="windows"
+                        data-url="https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.exe">
                         <i class="fab fa-windows"></i> Download for Windows
                     </button>
                     <!-- <button class="download-store-btn" data-platform="windows-store">Get from Microsoft Store</button> -->
@@ -355,3 +357,7 @@
     </section>
 
     {% endblock content %}
+
+    {% block script %}
+    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+    {% endblock script %}
