@@ -1,191 +1,168 @@
 {
     "update": {
-        "version": "1.1.0",
-        "build": 21,
+        "version": "1.1.1",
+        "build": 22,
         "mandatory": true,
         "notify_only": false,
-        "release_date": "2026-05-20",
-        "changelog": {
-            "default": [
-                "Version 1.1.0, Build 21. [Must Update]\n",
-                "[General]\nUpgrade player from BetterPlayer to MediaKit - Player now supports Cross platform.\nAdd episodes listing in player - User can switch episode without leaving the player.\nAdded local notification support for iOS, Linux, macOS and Windows.\nMigrated from sqflite and SharedPreferences to Hive for database and local data storage.\nAdd film search filter- Now support filter by type (Movies, Tv Shows, People)\nCreate Casts, Crews and person about  pages.\n",
-                "[Providers]\nFix not working servers.\nRemoved dead servers and sources.\nFix some channels loading endlessly\n",
-                "[Other]\nCross-platform update - App now support iOS, Windows, macOS, Linux.\nAdd bandwidth sharing monetization for desktop platforms. No advertisements for desktop.\n"
-            ],
-            "localized": {
-                "ar": [
-                    "الإصدار 1.1.0، الإصدار 21. [يجب التحديث]",
-                    "[عام]\nترقية المشغل من Better Player إلى Media Kit - يدعم Player الآن النظام الأساسي المتقاطع.\nإضافة قائمة الحلقات في المشغل - يمكن للمستخدم تبديل الحلقة دون مغادرة المشغل.\nتمت إضافة دعم الإشعارات المحلية لأنظمة iOS وLinux وmacOS وWindows.\nتم الترحيل من sqflite وSharedPreferences إلى Hive لقاعدة البيانات وتخزين البيانات المحلية.\nإضافة مرشح بحث الأفلام - يدعم الآن عامل التصفية حسب النوع (الأفلام والبرامج التلفزيونية والأشخاص)\nإنشاء الممثلين والأطقم والشخص حول الصفحات.",
-                    "[مقدمو الخدمات]\nإصلاح الخوادم التي لا تعمل.\nتمت إزالة الخوادم والمصادر الميتة.\nإصلاح بعض القنوات التي يتم تحميلها إلى ما لا نهاية",
-                    "[أخرى]\nتحديث عبر الأنظمة الأساسية - يدعم التطبيق الآن iOS وWindows وmacOS وLinux.\nأضف تحقيق الدخل من مشاركة النطاق الترددي لمنصات سطح المكتب. لا توجد إعلانات لسطح المكتب."
-                ],
-                "de": [
-                    "Version 1.1.0, Build 21. [Muss aktualisiert werden]",
-                    "[Allgemein]\nAktualisieren Sie den Player von Better Player auf Media Kit – der Player unterstützt jetzt plattformübergreifend.\nEpisodenliste im Player hinzufügen – Der Benutzer kann die Episode wechseln, ohne den Player zu verlassen.\nUnterstützung für lokale Benachrichtigungen für iOS, Linux, macOS und Windows hinzugefügt.\nVon sqflite und SharedPreferences nach Hive zur Datenbank- und lokalen Datenspeicherung migriert.\nFilmsuchfilter hinzufügen – Unterstützt jetzt Filter nach Typ (Filme, Fernsehsendungen, Personen)\nErstellen Sie Besetzungen, Crews und persönliche Seiten.",
-                    "[Anbieter]\nBeheben Sie nicht funktionierende Server.\nTote Server und Quellen entfernt.\nBehebung, dass einige Kanäle endlos laden",
-                    "[Andere]\nPlattformübergreifendes Update – App unterstützt jetzt iOS, Windows, macOS, Linux.\nFügen Sie die Monetarisierung der Bandbreitenfreigabe für Desktop-Plattformen hinzu. Keine Werbung für den Desktop."
-                ],
-                "es": [
-                    "Versión 1.1.0, compilación 21. [Debe actualizarse]",
-                    "[Generales]\nActualice el reproductor de Better Player a Media Kit: el reproductor ahora es compatible con multiplataforma.\nAgregar una lista de episodios en el reproductor: el usuario puede cambiar de episodio sin salir del reproductor.\nSe agregó soporte de notificación local para iOS, Linux, macOS y Windows.\nMigré de sqflite y SharedPreferences a Hive para la base de datos y el almacenamiento de datos local.\nAgregar filtro de búsqueda de películas: ahora admite filtros por tipo (películas, programas de televisión, personas)\nCrea elencos, equipos y páginas personales.",
-                    "[Proveedores]\nReparar servidores que no funcionan.\nSe eliminaron servidores y fuentes inactivos.\nArreglar algunos canales que se cargan sin cesar",
-                    "[Otro]\nActualización multiplataforma: la aplicación ahora es compatible con iOS, Windows, macOS y Linux.\nAgregue monetización del uso compartido de ancho de banda para plataformas de escritorio. Sin anuncios para escritorio."
-                ],
-                "fa": [
-                    "نسخه 1.1.0، ساخت 21. [باید به روز رسانی شود]",
-                    "[کلی]\nپخش کننده را از Better Player به Media Kit ارتقا دهید - Player اکنون از پلتفرم Cross پشتیبانی می کند.\nافزودن لیست قسمت ها به پخش کننده - کاربر می تواند قسمت را بدون ترک پخش کننده تغییر دهد.\nپشتیبانی از اعلان های محلی برای iOS، Linux، macOS و Windows اضافه شده است.\nبرای پایگاه داده و ذخیره سازی داده های محلی از sqflite و SharedPreferences به Hive مهاجرت کرد.\nافزودن فیلتر جستجوی فیلم - اکنون از فیلتر بر اساس نوع پشتیبانی کنید (فیلم ها، نمایش های تلویزیونی، افراد)\nصفحات بازیگران، خدمه و افراد درباره صفحات ایجاد کنید.",
-                    "[ارائه دهندگان]\nکار نکردن سرورها را برطرف کنید.\nسرورها و منابع مرده حذف شدند.\nبارگذاری بی‌پایان برخی از کانال‌ها را رفع کنید",
-                    "[سایر]\nبه روز رسانی چند پلت فرم - برنامه اکنون از iOS، Windows، macOS، Linux پشتیبانی می کند.\nاضافه کردن درآمد به اشتراک گذاری پهنای باند برای پلتفرم های دسکتاپ. بدون تبلیغات برای دسکتاپ"
-                ],
-                "fr": [
-                    "Version 1.1.0, Build 21. [Doit mettre à jour]",
-                    "[Général]\nMettez à niveau le lecteur de Better Player vers Media Kit - Player prend désormais en charge plusieurs plates-formes.\nAjouter une liste d'épisodes dans le lecteur - L'utilisateur peut changer d'épisode sans quitter le lecteur.\nAjout de la prise en charge des notifications locales pour iOS, Linux, macOS et Windows.\nMigré de sqflite et SharedPreferences vers Hive pour la base de données et le stockage de données locales.\nAjouter un filtre de recherche de films - Prise en charge désormais du filtre par type (Films, Séries TV, Personnes)\nCréez des castings, des équipes et des personnes à propos des pages.",
-                    "[Fournisseurs]\nRéparez les serveurs qui ne fonctionnent pas.\nSuppression des serveurs et sources morts.\nCorrection de certaines chaînes se chargeant sans fin",
-                    "[Autre]\nMise à jour multiplateforme : l'application prend désormais en charge iOS, Windows, macOS et Linux.\nAjoutez la monétisation du partage de bande passante pour les plates-formes de bureau. Aucune publicité pour le bureau."
-                ],
-                "hi": [
-                    "संस्करण 1.1.0, बिल्ड 21 [अपडेट करना होगा]",
-                    "[सामान्य]\nप्लेयर को बेटरप्लेयर से मीडियाकिट में अपग्रेड करें - प्लेयर अब क्रॉस प्लेटफ़ॉर्म का समर्थन करता है।\nप्लेयर में एपिसोड सूची जोड़ें - उपयोगकर्ता प्लेयर को छोड़े बिना एपिसोड स्विच कर सकता है।\niOS, Linux, macOS और Windows के लिए स्थानीय अधिसूचना समर्थन जोड़ा गया।\nडेटाबेस और स्थानीय डेटा भंडारण के लिए sqflite और SharedPreferences से Hive में स्थानांतरित किया गया।\nफ़िल्म खोज फ़िल्टर जोड़ें- अब प्रकार के अनुसार फ़िल्टर का समर्थन करें (फ़िल्में, टीवी शो, लोग)\nपेजों के बारे में कास्ट, क्रू और व्यक्ति बनाएं।",
-                    "[प्रदाता]\nकाम न करने वाले सर्वर ठीक करें.\nमृत सर्वर और स्रोत हटा दिए गए।\nअंतहीन रूप से लोड होने वाले कुछ चैनलों को ठीक करें",
-                    "[अन्य]\nक्रॉस-प्लेटफ़ॉर्म अपडेट - ऐप अब iOS, Windows, macOS, Linux को सपोर्ट करता है।\nडेस्कटॉप प्लेटफ़ॉर्म के लिए बैंडविड्थ साझाकरण मुद्रीकरण जोड़ें। डेस्कटॉप के लिए कोई विज्ञापन नहीं."
-                ],
-                "id": [
-                    "Versi 1.1.0, Build 21. [Harus Diperbarui]",
-                    "[Umum]\nTingkatkan pemutar dari Better Player ke Media Kit - Player sekarang mendukung Lintas platform.\nTambahkan daftar episode di pemutar - Pengguna dapat berpindah episode tanpa meninggalkan pemutar.\nMenambahkan dukungan notifikasi lokal untuk iOS, Linux, macOS dan Windows.\nBermigrasi dari sqflite dan SharedPreferences ke Hive untuk database dan penyimpanan data lokal.\nTambahkan filter pencarian film- Sekarang mendukung filter berdasarkan jenis (Film, Acara TV, Orang)\nBuat Pemeran, Kru, dan orang tentang halaman.",
-                    "[Penyedia]\nPerbaiki server yang tidak berfungsi.\nMenghapus server dan sumber yang mati.\nPerbaiki beberapa saluran yang memuat tanpa henti",
-                    "[Lainnya]\nPembaruan lintas platform - Aplikasi sekarang mendukung iOS, Windows, macOS, Linux.\nTambahkan monetisasi berbagi bandwidth untuk platform desktop. Tidak ada iklan untuk desktop."
-                ],
-                "it": [
-                    "Versione 1.1.0, build 21. [È necessario aggiornare]",
-                    "[Generale]\nAggiorna il lettore da Better Player a Media Kit: il lettore ora supporta multipiattaforma.\nAggiungi l'elenco degli episodi nel lettore: l'utente può cambiare episodio senza uscire dal lettore.\nAggiunto supporto per le notifiche locali per iOS, Linux, macOS e Windows.\nMigrato da sqflite e SharedPreferences a Hive per il database e l'archiviazione dei dati locali.\nAggiungi filtro di ricerca film: ora supporta il filtro per tipo (film, programmi TV, persone)\nCrea cast, troupe e persone sulle pagine.",
-                    "[Fornitori]\nCorreggi i server non funzionanti.\nRimossi server e fonti morti.\nRisolto il problema con il caricamento infinito di alcuni canali",
-                    "[Altro]\nAggiornamento multipiattaforma: l'app ora supporta iOS, Windows, macOS, Linux.\nAggiungi la monetizzazione della condivisione della larghezza di banda per le piattaforme desktop. Nessuna pubblicità per desktop."
-                ],
-                "ja": [
-                    "バージョン 1.1.0、ビルド 21。[更新が必要]",
-                    "【一般】\nプレーヤーを Better Player から Media Kit にアップグレードします - プレーヤーはクロス プラットフォームをサポートするようになりました。\nプレーヤーにエピソードのリストを追加 - ユーザーはプレーヤーを離れることなくエピソードを切り替えることができます。\niOS、Linux、macOS、Windows のローカル通知サポートが追加されました。\nデータベースとローカル データ ストレージのために sqflite と SharedPreferences から Hive に移行されました。\n映画検索フィルターを追加 - タイプ別フィルター (映画、テレビ番組、人物) をサポートするようになりました。\nキャスト、クルー、人物紹介ページを作成します。",
-                    "【プロバイダー】\n動作しないサーバーを修正します。\n停止したサーバーとソースを削除しました。\n一部のチャンネルが際限なく読み込まれる問題を修正",
-                    "【その他】\nクロスプラットフォームのアップデート - アプリは iOS、Windows、macOS、Linux をサポートするようになりました。\nデスクトップ プラットフォーム向けの帯域幅共有による収益化を追加します。デスクトップには広告はありません。"
-                ],
-                "ko": [
-                    "버전 1.1.0, 빌드 21. [업데이트해야 함]",
-                    "[일반]\nBetter Player에서 Media Kit으로 플레이어 업그레이드 - 이제 Player가 크로스 플랫폼을 지원합니다.\n플레이어에 에피소드 목록 추가 - 사용자는 플레이어를 떠나지 않고도 에피소드를 전환할 수 있습니다.\niOS, Linux, macOS 및 Windows에 대한 로컬 알림 지원이 추가되었습니다.\n데이터베이스 및 로컬 데이터 저장을 위해 sqflite 및 SharedPreferences에서 Hive로 마이그레이션되었습니다.\n영화 검색 필터 추가 - 이제 유형별 필터 지원(영화, TV 프로그램, 인물)\n페이지에 대한 출연진, 제작진 및 인물을 만듭니다.",
-                    "[공급자]\n작동하지 않는 서버를 수정하세요.\n죽은 서버와 소스를 제거했습니다.\n일부 채널이 끝없이 로딩되는 문제 수정",
-                    "[기타]\n크로스 플랫폼 업데이트 - 이제 앱이 iOS, Windows, macOS, Linux를 지원합니다.\n데스크톱 플랫폼에 대한 대역폭 공유 수익 창출을 추가합니다. 데스크탑에는 광고가 없습니다."
-                ],
-                "nl": [
-                    "Versie 1.1.0, build 21. [Moet updaten]",
-                    "[Algemeen]\nUpgrade de speler van Better Player naar Media Kit - Player ondersteunt nu Cross-platform.\nVoeg afleveringen toe aan de speler - De gebruiker kan van aflevering wisselen zonder de speler te verlaten.\nOndersteuning voor lokale meldingen toegevoegd voor iOS, Linux, macOS en Windows.\nGemigreerd van sqflite en SharedPreferences naar Hive voor database- en lokale gegevensopslag.\nFilmzoekfilter toevoegen - Ondersteun nu filter op type (films, tv-programma's, mensen)\nCreëer casts, crews en persoon-over-pagina's.",
-                    "[Aanbieders]\nRepareer niet-werkende servers.\nDode servers en bronnen verwijderd.\nRepareer dat sommige kanalen eindeloos worden geladen",
-                    "[Anders]\nPlatformonafhankelijke update - App ondersteunt nu iOS, Windows, macOS, Linux.\nVoeg inkomsten genereren via het delen van bandbreedte toe voor desktopplatforms. Geen advertenties voor desktop."
-                ],
-                "pl": [
-                    "Wersja 1.1.0, kompilacja 21. [Wymaga aktualizacji]",
-                    "[Ogólne]\nUaktualnij odtwarzacz z Better Player do Media Kit — Player obsługuje teraz platformy wieloplatformowe.\nDodaj listę odcinków w odtwarzaczu — użytkownik może zmieniać odcinki bez opuszczania odtwarzacza.\nDodano obsługę powiadomień lokalnych dla systemów iOS, Linux, macOS i Windows.\nPrzeprowadzono migrację z sqflite i SharedPreferences do Hive na potrzeby bazy danych i lokalnego przechowywania danych.\nDodaj filtr wyszukiwania filmów — teraz obsługuje filtrowanie według typu (filmy, programy telewizyjne, ludzie)\nTwórz obsady, ekipy i osoby na temat stron.",
-                    "[Dostawcy]\nNapraw niedziałające serwery.\nUsunięto martwe serwery i źródła.\nNapraw ładowanie niektórych kanałów w nieskończoność",
-                    "[Inne]\nAktualizacja międzyplatformowa - aplikacja obsługuje teraz iOS, Windows, macOS i Linux.\nDodaj możliwość zarabiania na udostępnianiu przepustowości dla platform stacjonarnych. Brak reklam na komputerach stacjonarnych."
-                ],
-                "pt": [
-                    "Versão 1.1.0, Build 21. [Deve ser atualizado]",
-                    "[Geral]\nAtualize o player do Better Player para o Media Kit - o Player agora oferece suporte a várias plataformas.\nAdicionar lista de episódios no player - O usuário pode trocar de episódio sem sair do player.\nAdicionado suporte de notificação local para iOS, Linux, macOS e Windows.\nMigrei de sqflite e SharedPreferences para Hive para banco de dados e armazenamento de dados locais.\nAdicionar filtro de pesquisa de filmes - agora suporta filtro por tipo (filmes, programas de TV, pessoas)\nCrie elencos, equipes e pessoas sobre páginas.",
-                    "[Provedores]\nCorrija servidores que não funcionam.\nServidores e fontes inativos removidos.\nCorrija alguns canais carregando indefinidamente",
-                    "[Outro]\nAtualização multiplataforma - O aplicativo agora oferece suporte a iOS, Windows, macOS, Linux.\nAdicione monetização de compartilhamento de largura de banda para plataformas de desktop. Sem anúncios para desktop."
-                ],
-                "ru": [
-                    "Версия 1.1.0, сборка 21. [Необходимо обновить]",
-                    "[Общие]\nОбновите плеер с Better Player до Media Kit. Теперь плеер поддерживает кроссплатформенность.\nДобавить список эпизодов в плеер. Пользователь может переключать эпизоды, не выходя из плеера.\nДобавлена ​​поддержка локальных уведомлений для iOS, Linux, macOS и Windows.\nПеренесен с sqflite и SharedPreferences на Hive для базы данных и локального хранилища данных.\nДобавить фильтр поиска фильмов. Теперь поддерживается фильтр по типу (фильмы, телешоу, люди).\nСоздавайте актеры, команды и персональные страницы.",
-                    "[Провайдеры]\nИсправление неработающих серверов.\nУдалены мертвые серверы и исходники.\nИсправлена ​​бесконечная загрузка некоторых каналов.",
-                    "[Другое]\nКроссплатформенное обновление — приложение теперь поддерживает iOS, Windows, macOS, Linux.\nДобавьте монетизацию совместного использования полосы пропускания для настольных платформ. Нет рекламы для настольных компьютеров."
-                ],
-                "sw": [
-                    "Toleo la 1.1.0, Jenga 21. [Lazima Usasishe]",
-                    "[Jenerali]\nBoresha kichezaji kutoka Better Player hadi Media Kit - Mchezaji sasa anaauni jukwaa la Cross.\nOngeza vipindi katika kichezaji - Mtumiaji anaweza kubadilisha kipindi bila kuacha kichezaji.\nImeongeza usaidizi wa arifa za ndani kwa iOS, Linux, macOS na Windows.\nImehamishwa kutoka sqflite na SharedPreferences hadi Hive kwa hifadhidata na hifadhi ya data ya ndani.\nOngeza kichujio cha utafutaji wa filamu- Sasa tumia kichujio cha usaidizi kulingana na aina (Filamu, Vipindi vya Televisheni, Watu)\nUnda Casts, Crews na mtu kuhusu kurasa.",
-                    "[Watoa huduma]\nRekebisha seva zisizofanya kazi.\nImeondoa seva na vyanzo vilivyokufa.\nRekebisha baadhi ya vituo vinavyopakia bila kikomo",
-                    "[Nyingine]\nSasisho la jukwaa tofauti - Programu sasa inaweza kutumia iOS, Windows, macOS, Linux.\nOngeza uchumaji wa mapato ya kushiriki kipimo data kwa majukwaa ya kompyuta ya mezani. Hakuna matangazo ya eneo-kazi."
-                ],
-                "th": [
-                    "เวอร์ชัน 1.1.0 รุ่น 21 [ต้องอัปเดต]",
-                    "[ทั่วไป]\nอัปเกรดเครื่องเล่นจาก Better Player เป็น Media Kit - ตอนนี้ผู้เล่นรองรับแพลตฟอร์มข้ามแล้ว\nเพิ่มรายการตอนในเครื่องเล่น - ผู้ใช้สามารถสลับตอนได้โดยไม่ต้องออกจากเครื่องเล่น\nเพิ่มการรองรับการแจ้งเตือนในเครื่องสำหรับ iOS, Linux, macOS และ Windows\nย้ายจาก sqflite และ SharedPreferences ไปยัง Hive สำหรับฐานข้อมูลและการจัดเก็บข้อมูลในเครื่อง\nเพิ่มตัวกรองการค้นหาภาพยนตร์ - รองรับตัวกรองตามประเภท (ภาพยนตร์ รายการทีวี ผู้คน)\nสร้างนักแสดง ทีมงาน และบุคคลเกี่ยวกับเพจ",
-                    "[ผู้ให้บริการ]\nแก้ไขเซิร์ฟเวอร์ไม่ทำงาน\nลบเซิร์ฟเวอร์และแหล่งที่มาที่ไม่ทำงาน\nแก้ไขบางช่องโหลดไม่สิ้นสุด",
-                    "[อื่นๆ]\nอัปเดตข้ามแพลตฟอร์ม - ตอนนี้แอปรองรับ iOS, Windows, macOS, Linux แล้ว\nเพิ่มการสร้างรายได้จากการแบ่งปันแบนด์วิธสำหรับแพลตฟอร์มเดสก์ท็อป ไม่มีโฆษณาสำหรับเดสก์ท็อป"
-                ],
-                "tr": [
-                    "Sürüm 1.1.0, Derleme 21. [Güncellenmesi Gerekiyor]",
-                    "[Genel]\nPlayer'ı Better Player'dan Media Kit'e yükseltin - Player artık Çapraz platformu destekliyor.\nOynatıcıya bölüm listesi ekle - Kullanıcı, oynatıcıdan ayrılmadan bölümü değiştirebilir.\niOS, Linux, macOS ve Windows için yerel bildirim desteği eklendi.\nVeritabanı ve yerel veri depolama için sqflite ve SharedPreferences'tan Hive'a taşındı.\nFilm arama filtresi ekle - Artık türe göre filtre desteği (Filmler, TV Programları, Kişiler)\nSayfalar hakkında Oyuncular, Ekipler ve kişiler oluşturun.",
-                    "[Sağlayıcılar]\nÇalışmayan sunucuları düzeltin.\nÖlü sunucular ve kaynaklar kaldırıldı.\nBazı kanalların sonsuz şekilde yüklenmesini düzeltin",
-                    "[Diğer]\nÇapraz platform güncellemesi - Uygulama artık iOS, Windows, macOS ve Linux'u destekliyor.\nMasaüstü platformları için bant genişliği paylaşımından para kazanma özelliği ekleyin. Masaüstü için reklam yok."
-                ],
-                "uk": [
-                    "Версія 1.1.0, збірка 21. [Потрібно оновити]",
-                    "[Загальні]\nОновіть програвач із Better Player на Media Kit — тепер програвач підтримує крос-платформу.\nДодати список епізодів у програвач - користувач може перемикати епізод, не виходячи з програвача.\nДодано підтримку локальних сповіщень для iOS, Linux, macOS і Windows.\nПереміщено з sqflite і SharedPreferences до Hive для бази даних і локального зберігання даних.\nДодайте фільтр пошуку фільмів - тепер підтримується фільтр за типом (фільми, телешоу, люди)\nСтворюйте сторінки акторів, груп і особистих відомостей.",
-                    "[Постачальники]\nВиправлення непрацюючих серверів.\nВидалено мертві сервери та джерела.\nВиправте безперервне завантаження деяких каналів",
-                    "[інше]\nОновлення на різних платформах – програма тепер підтримує iOS, Windows, macOS, Linux.\nДодайте монетизацію спільного використання пропускної здатності для настільних платформ. Без реклами для робочого столу."
-                ],
-                "vi": [
-                    "Phiên bản 1.1.0, Bản dựng 21. [Phải cập nhật]",
-                    "[Chung]\nNâng cấp trình phát từ Better Player lên Media Kit - Trình phát hiện hỗ trợ đa nền tảng.\nThêm danh sách các tập trong trình phát - Người dùng có thể chuyển tập mà không cần rời khỏi trình phát.\nĐã thêm hỗ trợ thông báo cục bộ cho iOS, Linux, macOS và Windows.\nĐã di chuyển từ sqflite và SharedPreferences sang Hive để lưu trữ cơ sở dữ liệu và dữ liệu cục bộ.\nThêm bộ lọc tìm kiếm phim- Hiện hỗ trợ bộ lọc theo loại (Phim, Chương trình truyền hình, Mọi người)\nTạo Diễn viên, Nhóm và người về các trang.",
-                    "[Nhà cung cấp]\nSửa lỗi server không hoạt động.\nĐã loại bỏ các máy chủ và nguồn chết.\nSửa một số kênh tải liên tục",
-                    "[Khác]\nCập nhật đa nền tảng - Ứng dụng hiện hỗ trợ iOS, Windows, macOS, Linux.\nThêm khả năng kiếm tiền từ chia sẻ băng thông cho nền tảng máy tính để bàn. Không có quảng cáo cho máy tính để bàn."
-                ],
-                "zh": [
-                    "版本 1.1.0，Build 21。 [必须更新]",
-                    "[一般]\n将播放器从 Better Player 升级到 Media Kit - 播放器现在支持跨平台。\n在播放器中添加剧集列表 - 用户无需离开播放器即可切换剧集。\n添加了对 iOS、Linux、macOS 和 Windows 的本地通知支持。\n从 sqflite 和 SharedPreferences 迁移到 Hive 以进行数据库和本地数据存储。\n添加电影搜索过滤器 - 现在支持按类型过滤（电影、电视节目、人物）\n创建演员表、工作人员和人物页面。",
-                    "[供应商]\n修复不工作的服务器。\n删除了失效的服务器和源。\n修复部分频道无休止加载的问题",
-                    "[其他]\nCross-platform update - App now support iOS, Windows, macOS, Linux.\nAdd bandwidth sharing monetization for desktop platforms.桌面版无广告。"
-                ],
-                "zh-CN": [
-                    "版本 1.1.0，Build 21。 [必须更新]",
-                    "[一般]\n将播放器从 Better Player 升级到 Media Kit - 播放器现在支持跨平台。\n在播放器中添加剧集列表 - 用户无需离开播放器即可切换剧集。\n添加了对 iOS、Linux、macOS 和 Windows 的本地通知支持。\n从 sqflite 和 SharedPreferences 迁移到 Hive 以进行数据库和本地数据存储。\n添加电影搜索过滤器 - 现在支持按类型过滤（电影、电视节目、人物）\n创建演员表、工作人员和人物页面。",
-                    "[供应商]\n修复不工作的服务器。\n删除了失效的服务器和源。\n修复部分频道无休止加载的问题",
-                    "[其他]\nCross-platform update - App now support iOS, Windows, macOS, Linux.\nAdd bandwidth sharing monetization for desktop platforms.桌面版无广告。"
-                ],
-                "zh-TW": [
-                    "版本 1.1.0，Build 21。 [必須更新]",
-                    "[一般]\n將播放器從 Better Player 升級到 Media Kit - 播放器現在支援跨平台。\n在播放器中新增劇集清單 - 使用者無需離開播放器即可切換劇集。\n新增了對 iOS、Linux、macOS 和 Windows 的本機通知支援。\n從 sqflite 和 SharedPreferences 遷移到 Hive 以進行資料庫和本地資料儲存。\n新增電影搜尋過濾器 - 現在支援按類型過濾（電影、電視節目、人物）\n建立演員表、工作人員和人物頁面。",
-                    "[供應商]\n修復不工作的伺服器。\n刪除了失效的伺服器和來源。\n修復部分頻道無休止加載的問題",
-                    "[其他]\n跨平台更新 - 應用程式現在支援 iOS、Windows、macOS、Linux。\n為桌面平台添加頻寬共享貨幣化。桌面版無廣告。"
-                ]
-            }
-        },
+        "release_date": "2026-06-25",
         "platforms": {
             "android": {
+                "universal": {
+                    "min_sdk": 24,
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-1.1.1.apk",
+                    "size_mb": 159.0,
+                    "checksum_sha256": "DB572EA11E549FC393F0F876FC9761B8693A84C439155D9856101E5CF837247B"
+                },
                 "arm64-v8a": {
                     "min_sdk": 24,
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-arm64-v8a-1.1.0.apk",
-                    "size_mb": 66.8,
-                    "checksum_sha256": "A2E0484AA162DD2B472A43C038CE0366B62A435508A473203117F48DCCAA7257"
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-arm64-v8a-1.1.1.apk",
+                    "size_mb": 67.1,
+                    "checksum_sha256": "D440D4F10F163C123C013E733E3F2A7789F6F7439F951576C481D519139C2241"
                 },
                 "armeabi-v7a": {
                     "min_sdk": 24,
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-armeabi-v7a-1.1.0.apk",
-                    "size_mb": 77.5,
-                    "checksum_sha256": "B5F5B2AD5948C5D7A67AA296FF5704D128851C191FB74C6496A57F065969C814"
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-armeabi-v7a-1.1.1.apk",
+                    "size_mb": 77.8,
+                    "checksum_sha256": "4A126F174646CC5D0BEC17A9392B3D2791828E3D1755271AE395B8B6F257345D"
                 },
                 "x86_64": {
                     "min_sdk": 24,
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-android-x86_64-1.1.0.apk",
-                    "size_mb": 72.9,
-                    "checksum_sha256": "75487B959D7B6081E313DE5CB552C740642CFAFCB69BEB436C803889A70A87CA"
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-x86_64-1.1.1.apk",
+                    "size_mb": 73.2,
+                    "checksum_sha256": "F9C5D603EE1885243255836FC8E3E9A2A4507CCC46A1A40C165F0EEF7763DB15"
                 }
             },
-            "ios": {
-                "store_url": "",
-                "min_ios_version": "13.0"
+            "linux": {
+                "debrian": {
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-linux-amd64-1.1.1.deb",
+                    "size_mb": 19.9,
+                    "checksum_sha256": "55CB9A43D85DB35A6F78222C523439AFB60841288C17899848F133755DB60553"
+                },
+                "redhat": {
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-linux-x86_64-1.1.1.rpm",
+                    "size_mb": 20.0,
+                    "checksum_sha256": "E7BEA0A01A7EB7B8E9CA7373B91E1B5C4F9CCCB31F54D8F1808FBFB6994FE3A5"
+                },
+                "arch": {
+                    "download_url": "",
+                    "size_mb": 0,
+                    "checksum_sha256": ""
+                },
+                "appimage": {
+                    "download_url": "",
+                    "size_mb": 0,
+                    "checksum_sha256": ""
+                }
             },
             "windows": {
-                "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.0/quickstream-windows-1.1.0.exe",
+                "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-windows-1.1.1.exe",
                 "size_mb": 41.6,
-                "checksum_sha256": "505C7F4E62BFBACC9239382804E68E9F1292BC000216BDFD42DAD4D220D6AB21"
+                "checksum_sha256": "6BB25F52DD51B4CFBE2E345611A729D47DC321DEA094AB890EDEE5A73B84ABFD"
             },
             "macos": {
                 "download_url": "",
                 "size_mb": 0,
                 "checksum_sha256": ""
             },
-            "linux": {
-                "download_url": "",
-                "size_mb": 0,
-                "checksum_sha256": ""
+            "ios": {
+                "store_url": "",
+                "min_ios_version": "13.0"
+            }
+        },
+        "changelog": {
+            "default": [
+                "[Player]\nAdded source switch in player options - User can now switch through multiple sources in same server.\nUpdate player audio track and video track information - Now show detailed information.\nFix player playing wrong next episode and previous episode.\nPlayer user interface improvements.\n",
+                "[Providers]\nAdded server links cache - Now cache links for faster fetch.\nRestore old channels provider.\nFix VixSrc server generating invalid link."
+            ],
+            "localized": {
+                "ar": [
+                    "[لاعب]\nتمت إضافة مفتاح المصدر في خيارات المشغل - يمكن للمستخدم الآن التبديل من خلال مصادر متعددة في نفس الخادم.\nقم بتحديث معلومات المسار الصوتي ومسار الفيديو للمشغل - الآن اعرض المعلومات التفصيلية.\nإصلاح اللاعب الذي يلعب الحلقة التالية والحلقة السابقة بشكل خاطئ.\nتحسينات على واجهة مستخدم اللاعب.",
+                    "[مقدمو الخدمات]\nتمت إضافة ذاكرة التخزين المؤقت لروابط الخادم - الآن قم بتخزين الروابط مؤقتًا لجلب أسرع.\nاستعادة مزود القنوات القديم.\nإصلاح خادم VixSrc الذي يقوم بإنشاء رابط غير صالح."
+                ],
+                "de": [
+                    "[Spieler]\nQuellenwechsel in den Player-Optionen hinzugefügt – Benutzer können jetzt zwischen mehreren Quellen auf demselben Server wechseln.\nAktualisieren Sie die Audio- und Videospurinformationen des Players – zeigen Sie jetzt detaillierte Informationen an.\nProblem behoben, bei dem der Player die nächste und vorherige Episode falsch abspielt.\nVerbesserungen der Spieler-Benutzeroberfläche.",
+                    "[Anbieter]\nServer-Links-Cache hinzugefügt – Jetzt werden Links zwischengespeichert, um einen schnelleren Abruf zu ermöglichen.\nStellen Sie den alten Kanalanbieter wieder her.\nBehebung, dass der VixSrc-Server einen ungültigen Link generiert."
+                ],
+                "es": [
+                    "[Jugador]\nSe agregó un cambio de fuente en las opciones del reproductor: el usuario ahora puede cambiar entre múltiples fuentes en el mismo servidor.\nActualice la información de la pista de audio y de video del reproductor: ahora muestra información detallada.\nSe corrige que el reproductor reproduzca mal el siguiente episodio y el episodio anterior.\nMejoras en la interfaz de usuario del reproductor.",
+                    "[Proveedores]\nCaché de enlaces de servidor agregado: ahora enlaces de caché para una recuperación más rápida.\nRestaurar el antiguo proveedor de canales.\nRepare el servidor VixSrc que genera un enlace no válido."
+                ],
+                "fa": [
+                    "[بازیکن]\nسوئیچ منبع اضافه شده در گزینه های پخش کننده - کاربر اکنون می تواند از طریق چندین منبع در همان سرور جابجا شود.\nاطلاعات تراک صوتی و آهنگ ویدیویی پخش کننده را به روز کنید - اکنون اطلاعات دقیق را نشان دهید.\nتعمیر اشتباه پخش کننده قسمت بعدی و قسمت قبلی.\nبهبود رابط کاربری پلیر",
+                    "[ارائه دهندگان]\nحافظه پنهان پیوندهای سرور اضافه شد - اکنون پیوندها را برای واکشی سریعتر ذخیره کنید.\nارائه دهنده کانال های قدیمی را بازیابی کنید.\nسرور VixSrc ایجاد پیوند نامعتبر را برطرف کنید."
+                ],
+                "fr": [
+                    "[Joueur]\nAjout d'un commutateur de source dans les options du lecteur - L'utilisateur peut désormais basculer entre plusieurs sources sur le même serveur.\nMettre à jour les informations sur la piste audio et la piste vidéo du lecteur - Affichez désormais les informations détaillées.\nCorrection du joueur qui joue mal l'épisode suivant et l'épisode précédent.\nAméliorations de l'interface utilisateur du lecteur.",
+                    "[Fournisseurs]\nAjout du cache des liens du serveur - Met désormais en cache les liens pour une récupération plus rapide.\nRestaurer l'ancien fournisseur de chaînes.\nCorrection du serveur VixSrc générant un lien invalide."
+                ],
+                "hi": [
+                    "[खिलाड़ी]\nप्लेयर विकल्पों में स्रोत स्विच जोड़ा गया - उपयोगकर्ता अब एक ही सर्वर में एकाधिक स्रोतों के माध्यम से स्विच कर सकता है।\nप्लेयर ऑडियो ट्रैक और वीडियो ट्रैक जानकारी अपडेट करें - अब विस्तृत जानकारी दिखाएं।\nअगले एपिसोड और पिछले एपिसोड में गलत खेलने वाले खिलाड़ी को ठीक करें।\nप्लेयर यूजर इंटरफ़ेस में सुधार।",
+                    "[प्रदाता]\nसर्वर लिंक कैश जोड़ा गया - अब तेजी से लाने के लिए कैश लिंक।\nपुराने चैनल प्रदाता को पुनर्स्थापित करें।\nअमान्य लिंक उत्पन्न करने वाले VixSrc सर्वर को ठीक करें।"
+                ],
+                "id": [
+                    "[Pemain]\nMenambahkan peralihan sumber dalam opsi pemutar - Pengguna sekarang dapat beralih melalui beberapa sumber di server yang sama.\nPerbarui informasi trek audio pemutar dan trek video - Sekarang tampilkan informasi terperinci.\nPerbaiki pemain yang salah memutar episode berikutnya dan episode sebelumnya.\nPeningkatan antarmuka pengguna pemain.",
+                    "[Penyedia]\nMenambahkan cache tautan server - Sekarang tautan cache untuk pengambilan lebih cepat.\nPulihkan penyedia saluran lama.\nPerbaiki server VixSrc yang menghasilkan tautan tidak valid."
+                ],
+                "it": [
+                    "[Giocatore]\nAggiunto cambio sorgente nelle opzioni del lettore: l'utente può ora passare da più sorgenti nello stesso server.\nAggiorna le informazioni sulla traccia audio e sulla traccia video del lettore: ora mostra informazioni dettagliate.\nRisolto il problema con il giocatore che riproduceva in modo errato l'episodio successivo e quello precedente.\nMiglioramenti all'interfaccia utente del lettore.",
+                    "[Fornitori]\nAggiunta la cache dei collegamenti del server: ora memorizza nella cache i collegamenti per un recupero più rapido.\nRipristina il vecchio provider di canali.\nRisolto il problema con il server VixSrc che generava un collegamento non valido."
+                ],
+                "ja": [
+                    "[プレイヤー]\nプレーヤー オプションにソース スイッチを追加 - ユーザーは同じサーバー内の複数のソースを切り替えることができるようになりました。\nプレーヤーのオーディオ トラックおよびビデオ トラック情報を更新 - 詳細情報を表示するようになりました。\n次のエピソードと前のエピソードを間違ってプレイするプレイヤーを修正しました。\nプレーヤーのユーザー インターフェイスの改善。",
+                    "【プロバイダー】\nサーバー リンク キャッシュを追加 - より高速なフェッチのためにリンクをキャッシュするようになりました。\n古いチャネルプロバイダーを復元します。\n無効なリンクを生成する VixSrc サーバーを修正しました。"
+                ],
+                "ko": [
+                    "[플레이어]\n플레이어 옵션에 소스 스위치 추가 - 이제 사용자는 동일한 서버에서 여러 소스를 통해 전환할 수 있습니다.\n플레이어 오디오 트랙 및 비디오 트랙 정보 업데이트 - 이제 자세한 정보가 표시됩니다.\n플레이어가 다음 에피소드와 이전 에피소드를 잘못 재생하는 문제를 수정합니다.\n플레이어 사용자 인터페이스 개선.",
+                    "[공급자]\n서버 링크 캐시 추가 - 이제 더 빠른 가져오기를 위해 링크를 캐시합니다.\n이전 채널 제공자를 복원합니다.\nVixSrc 서버가 잘못된 링크를 생성하는 문제를 수정하세요.\n"
+                ],
+                "nl": [
+                    "[Speler]\nBronschakelaar toegevoegd in speleropties - De gebruiker kan nu door meerdere bronnen op dezelfde server schakelen.\nUpdate de audiotrack- en videotrackinformatie van de speler - Toon nu gedetailleerde informatie.\nFix dat de speler volgende aflevering en vorige aflevering verkeerd speelt.\nVerbeteringen in de gebruikersinterface van de speler.",
+                    "[Aanbieders]\nCache voor serverlinks toegevoegd - Cache nu links voor sneller ophalen.\nHerstel oude zenderprovider.\nFix VixSrc-server genereert ongeldige link.\n"
+                ],
+                "pl": [
+                    "[Gracz]\nDodano przełącznik źródła w opcjach odtwarzacza — użytkownik może teraz przełączać się między wieloma źródłami na tym samym serwerze.\nZaktualizuj informacje o ścieżce audio i ścieżce wideo odtwarzacza — teraz pokaż szczegółowe informacje.\nNapraw gracza grającego źle w następnym i poprzednim odcinku.\nUlepszenia interfejsu użytkownika odtwarzacza.",
+                    "[Dostawcy]\nDodano pamięć podręczną łączy do serwerów — teraz buforuj łącza w celu szybszego pobierania.\nPrzywróć starego dostawcę kanałów.\nNapraw serwer VixSrc generujący nieprawidłowe łącze.\n"
+                ],
+                "pt": [
+                    "[Jogador]\nAdicionada troca de fonte nas opções do player - O usuário agora pode alternar entre várias fontes no mesmo servidor.\nAtualize as informações da trilha de áudio e da trilha de vídeo do player - Agora mostre informações detalhadas.\nCorrija o jogador jogando errado no próximo episódio e no episódio anterior.\nMelhorias na interface do usuário do player.",
+                    "[Provedores]\nAdicionado cache de links de servidor - agora cache de links para busca mais rápida.\nRestaure o antigo provedor de canais.\nCorreção do servidor VixSrc gerando link inválido.\n"
+                ],
+                "ru": [
+                    "[Игрок]\nДобавлен переключатель источника в настройках проигрывателя. Теперь пользователь может переключаться между несколькими источниками на одном сервере.\nОбновить информацию об аудиодорожке и видеодорожке проигрывателя. Теперь отображается подробная информация.\nИсправлена ​​ошибка, из-за которой игрок неправильно играл в следующем и предыдущем эпизодах.\nУлучшения пользовательского интерфейса плеера.",
+                    "[Провайдеры]\nДобавлен кеш ссылок на сервер. Теперь ссылки кэшируются для более быстрого получения.\nВосстановить старого провайдера каналов.\nИсправлена ​​ошибка, из-за которой сервер VixSrc генерировал неверную ссылку.\n"
+                ],
+                "sw": [
+                    "[Mchezaji]\nUbadilishaji chanzo katika chaguo za kichezaji - Mtumiaji sasa anaweza kubadili kupitia vyanzo vingi katika seva moja.\nSasisha wimbo wa sauti wa kichezaji na maelezo ya wimbo wa video - Sasa onyesha maelezo ya kina.\nRekebisha mchezaji anacheza vibaya sehemu inayofuata na sehemu iliyotangulia.\nMaboresho ya kiolesura cha mchezaji.",
+                    "[Watoa huduma]\nAkiba ya viungo vya seva - Sasa viungo vya akiba vya kuleta haraka.\nRejesha mtoaji wa vituo vya zamani.\nRekebisha seva ya VixSrc inayozalisha kiungo batili.\n"
+                ],
+                "th": [
+                    "[ผู้เล่น]\nเพิ่มการสลับแหล่งที่มาในตัวเลือกของผู้เล่น - ขณะนี้ผู้ใช้สามารถสลับผ่านหลายแหล่งในเซิร์ฟเวอร์เดียวกัน\nอัปเดตแทร็กเสียงและข้อมูลแทร็กวิดีโอของผู้เล่น - ตอนนี้แสดงข้อมูลโดยละเอียด\nแก้ไขผู้เล่นเล่นตอนถัดไปและตอนก่อนหน้าผิด\nการปรับปรุงส่วนติดต่อผู้ใช้ของผู้เล่น",
+                    "[ผู้ให้บริการ]\nเพิ่มแคชลิงก์เซิร์ฟเวอร์ - ตอนนี้ลิงก์แคชเพื่อการดึงข้อมูลที่รวดเร็วยิ่งขึ้น\nคืนค่าผู้ให้บริการช่องเก่า\nแก้ไขเซิร์ฟเวอร์ VixSrc ที่สร้างลิงก์ที่ไม่ถูกต้อง"
+                ],
+                "tr": [
+                    "[Oyuncu]\nAdded source switch in player options - User can now switch through multiple sources in same server.\nUpdate player audio track and video track information - Now show detailed information.\nFix player playing wrong next episode and previous episode.\nOyuncu kullanıcı arayüzü iyileştirmeleri.",
+                    "[Sağlayıcılar]\nSunucu bağlantıları önbelleği eklendi - Artık daha hızlı almak için bağlantıları önbelleğe alın.\nEski kanal sağlayıcısını geri yükleyin.\nVixSrc sunucusunun geçersiz bağlantı oluşturmasını düzeltin.\n"
+                ],
+                "uk": [
+                    "[Гравець]\nДодано перемикання джерел у параметрах програвача - тепер користувач може перемикатися між кількома джерелами на одному сервері.\nОновити інформацію про аудіодоріжку та відеодоріжку плеєра - тепер показувати детальну інформацію.\nВиправте неправильне відтворення наступного та попереднього епізоду гравцем.\nПокращення інтерфейсу користувача програвача.",
+                    "[Постачальники]\nДодано кеш посилань на сервер - тепер кешуйте посилання для швидшого отримання.\nВідновлення старого провайдера каналів.\nВиправити сервер VixSrc, який генерував недійсне посилання.\n"
+                ],
+                "vi": [
+                    "[Người chơi]\nĐã thêm chuyển đổi nguồn trong tùy chọn trình phát - Giờ đây người dùng có thể chuyển qua nhiều nguồn trong cùng một máy chủ.\nCập nhật thông tin bản âm thanh và bản nhạc video của trình phát - Bây giờ hiển thị thông tin chi tiết.\nSửa lỗi trình phát chơi sai tập tiếp theo và tập trước.\nCải thiện giao diện người dùng của người chơi.",
+                    "[Nhà cung cấp]\nĐã thêm bộ đệm liên kết máy chủ - Bây giờ liên kết bộ đệm để tìm nạp nhanh hơn.\nKhôi phục nhà cung cấp kênh cũ.\nSửa lỗi máy chủ VixSrc tạo liên kết không hợp lệ.\n"
+                ],
+                "zh": [
+                    "[玩家]\n在播放器选项中添加了源切换 - 用户现在可以在同一服务器中切换多个源。\n更新播放器音轨和视频轨道信息 - 现在显示详细信息。\n修复播放器播放错误的下一集和上一集。\n播放器用户界面改进。",
+                    "[供应商]\n添加了服务器链接缓存 - 现在缓存链接以加快获取速度。\n恢复旧的渠道提供商。\n修复 VixSrc 服务器生成无效链接的问题。"
+                ],
+                "zh-CN": [
+                    "[玩家]\n在播放器选项中添加了源切换 - 用户现在可以在同一服务器中切换多个源。\n更新播放器音轨和视频轨道信息 - 现在显示详细信息。\n修复播放器播放错误的下一集和上一集。\n播放器用户界面改进。",
+                    "[供应商]\n添加了服务器链接缓存 - 现在缓存链接以加快获取速度。\n恢复旧的渠道提供商。\n修复 VixSrc 服务器生成无效链接的问题。"
+                ],
+                "zh-TW": [
+                    "[玩家]\n在播放器選項中新增了來源切換 - 用戶現在可以在同一伺服器中切換多個來源。\n更新播放器音軌和視訊軌道資訊 - 現在顯示詳細資訊。\n修復播放器播放錯誤的下一集和上一集。\n播放器使用者介面改進。",
+                    "[供應商]\n新增了伺服器連結快取 - 現在快取連結以加快獲取速度。\n恢復舊的通路提供者。\n修正 VixSrc 伺服器產生無效連結的問題。"
+                ]
             }
         }
     }
