@@ -9,7 +9,7 @@
         "apk": {
             "url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-1.1.2.apk",
             "size_mb": 159.0,
-            "checksum_sha256": "DB572EA11E549FC393F0F876FC9761B8693A84C439155D9856101E5CF837247B"
+            "checksum_sha256": "1D02212DA498DA3176DC5FE9F8F672E5EC854FE4E88C4F5F0661D6B9BF70B197"
         },
         "changelog": {
             "default": [
