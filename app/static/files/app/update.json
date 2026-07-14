@@ -1,7 +1,7 @@
 {
     "update": {
-        "version": "1.1.1",
-        "build": 22,
+        "version": "1.1.2",
+        "build": 23,
         "mandatory": true,
         "notify_only": false,
         "release_date": "2026-06-25",
@@ -9,39 +9,39 @@
             "android": {
                 "universal": {
                     "min_sdk": 24,
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-1.1.1.apk",
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-1.1.2.apk",
                     "size_mb": 159.0,
-                    "checksum_sha256": "DB572EA11E549FC393F0F876FC9761B8693A84C439155D9856101E5CF837247B"
+                    "checksum_sha256": "1D02212DA498DA3176DC5FE9F8F672E5EC854FE4E88C4F5F0661D6B9BF70B197"
                 },
                 "arm64-v8a": {
                     "min_sdk": 24,
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-arm64-v8a-1.1.1.apk",
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-arm64-v8a-1.1.2.apk",
                     "size_mb": 67.1,
-                    "checksum_sha256": "D440D4F10F163C123C013E733E3F2A7789F6F7439F951576C481D519139C2241"
+                    "checksum_sha256": "3B142F0AB3BF091938C3DD524445D08E47317746558F57421B7FA2F824D7D845"
                 },
                 "armeabi-v7a": {
                     "min_sdk": 24,
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-armeabi-v7a-1.1.1.apk",
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-armeabi-v7a-1.1.2.apk",
                     "size_mb": 77.8,
-                    "checksum_sha256": "4A126F174646CC5D0BEC17A9392B3D2791828E3D1755271AE395B8B6F257345D"
+                    "checksum_sha256": "630640A8781D658470FEE0AB0A353E608457C8A56884635D955C4021366822F5"
                 },
                 "x86_64": {
                     "min_sdk": 24,
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-android-x86_64-1.1.1.apk",
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-x86_64-1.1.2.apk",
                     "size_mb": 73.2,
-                    "checksum_sha256": "F9C5D603EE1885243255836FC8E3E9A2A4507CCC46A1A40C165F0EEF7763DB15"
+                    "checksum_sha256": "38C0773C6029FC440D8A09704346DA1D7B3F02DF0482D636D4C56FE4C830C615"
                 }
             },
             "linux": {
                 "debrian": {
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-linux-amd64-1.1.1.deb",
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-linux-amd64-1.1.2.deb",
                     "size_mb": 19.9,
-                    "checksum_sha256": "55CB9A43D85DB35A6F78222C523439AFB60841288C17899848F133755DB60553"
+                    "checksum_sha256": "98775AF5E171416BF5CA911E65D5B19FC24C6C4C893D7E5AA1A74DF847209F36"
                 },
                 "redhat": {
-                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-linux-x86_64-1.1.1.rpm",
+                    "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-linux-x86_64-1.1.2.rpm",
                     "size_mb": 20.0,
-                    "checksum_sha256": "E7BEA0A01A7EB7B8E9CA7373B91E1B5C4F9CCCB31F54D8F1808FBFB6994FE3A5"
+                    "checksum_sha256": "CCF19094C4703C9C0CF489BA9B6C98599BE76E94A811758DA683986DEAB3987C"
                 },
                 "arch": {
                     "download_url": "",
@@ -55,9 +55,9 @@
                 }
             },
             "windows": {
-                "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.1/quickstream-windows-1.1.1.exe",
+                "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-windows-1.1.2.exe",
                 "size_mb": 41.6,
-                "checksum_sha256": "6BB25F52DD51B4CFBE2E345611A729D47DC321DEA094AB890EDEE5A73B84ABFD"
+                "checksum_sha256": "63E0EEE05BF30380EED83C8F9EF5577928C9A9C48B39FC553898573A6EDBAA8F"
             },
             "macos": {
                 "download_url": "",
@@ -71,97 +71,189 @@
         },
         "changelog": {
             "default": [
-                "[Player]\nAdded source switch in player options - User can now switch through multiple sources in same server.\nUpdate player audio track and video track information - Now show detailed information.\nFix player playing wrong next episode and previous episode.\nPlayer user interface improvements.\n",
-                "[Providers]\nAdded server links cache - Now cache links for faster fetch.\nRestore old channels provider.\nFix VixSrc server generating invalid link."
+                "Version 1.1.2, Build 23. [Recommended Update]\n",
+                "[General]\nAdded proxy server support - Helps bypass regional access restrictions.\nAdded DNS over HTTPS - Enhanced privacy and security for connections.\nAdded custom User Agent option - Personalize your user agent string.\n",
+                "[Player]\nAdded new libmpv (media_kit) player configurations - Hardware acceleration, hardware decoder, debanding, YUV420P.\nAdded preferred audio languages option - Set preferred languages (e.g., en,de,fr,ru - comma delimited).\n",
+                "[Desktop]\nAdded external WebView support - Use your preferred browser for WebView rendering (Settings → General).\nEnabled external WebView by default for Linux - Internal WebView not supported on Linux.\n",
+                "[Mobile]\nAdded dual playback engine support - Choose between ExoPlayer/AVPlayer (better_player) and libmpv (media_kit).\nAdded Auto mode - Smart fallback between engines based on content type (livestream vs movies/series).\n",
+                "[Settings]\nFixed backup and restore settings - Now fully functional (Settings → Updates).\nAdded libmpv configuration options - Hardware acceleration, decoder, debanding, YUV420P (Settings → Player).\n"
             ],
             "localized": {
                 "ar": [
-                    "[لاعب]\nتمت إضافة مفتاح المصدر في خيارات المشغل - يمكن للمستخدم الآن التبديل من خلال مصادر متعددة في نفس الخادم.\nقم بتحديث معلومات المسار الصوتي ومسار الفيديو للمشغل - الآن اعرض المعلومات التفصيلية.\nإصلاح اللاعب الذي يلعب الحلقة التالية والحلقة السابقة بشكل خاطئ.\nتحسينات على واجهة مستخدم اللاعب.",
-                    "[مقدمو الخدمات]\nتمت إضافة ذاكرة التخزين المؤقت لروابط الخادم - الآن قم بتخزين الروابط مؤقتًا لجلب أسرع.\nاستعادة مزود القنوات القديم.\nإصلاح خادم VixSrc الذي يقوم بإنشاء رابط غير صالح."
+                    "الإصدار 1.1.2، الإصدار 23. [التحديث الموصى به]",
+                    "[عام]\nتمت إضافة دعم الخادم الوكيل - يساعد على تجاوز قيود الوصول الإقليمية.\nتمت إضافة DNS عبر HTTPS - خصوصية وأمان معززين للاتصالات.\nتمت إضافة خيار وكيل المستخدم المخصص - قم بتخصيص سلسلة وكيل المستخدم الخاص بك.",
+                    "[لاعب]\nتمت إضافة تكوينات جديدة لمشغل libmpv (media_kit) - تسريع الأجهزة، وحدة فك ترميز الأجهزة، فك النطاق، YUV420P.\nتمت إضافة خيار اللغات الصوتية المفضلة - ضبط اللغات المفضلة (على سبيل المثال، en,de,fr,ru - محددة بفاصلة).",
+                    "[سطح المكتب]\nتمت إضافة دعم WebView الخارجي - استخدم متصفحك المفضل لعرض WebView (الإعدادات → عام).\nتمكين WebView الخارجي افتراضيًا لنظام Linux - عرض WebView الداخلي غير مدعوم على Linux.",
+                    "[الجوال]\nتمت إضافة دعم محرك التشغيل المزدوج - اختر بين ExoPlayer/AVPlayer (better_player) وlibmpv (media_kit).\nتمت إضافة الوضع التلقائي - الرجوع الذكي بين المحركات بناءً على نوع المحتوى (البث المباشر مقابل الأفلام/المسلسلات).",
+                    "[الإعدادات]\nإعدادات النسخ الاحتياطي والاستعادة الثابتة - الآن تعمل بكامل طاقتها (الإعدادات → التحديثات).\nتمت إضافة خيارات تكوين libmpv - تسريع الأجهزة، وحدة فك التشفير، فك النطاق، YUV420P (الإعدادات → المشغل)."
                 ],
                 "de": [
-                    "[Spieler]\nQuellenwechsel in den Player-Optionen hinzugefügt – Benutzer können jetzt zwischen mehreren Quellen auf demselben Server wechseln.\nAktualisieren Sie die Audio- und Videospurinformationen des Players – zeigen Sie jetzt detaillierte Informationen an.\nProblem behoben, bei dem der Player die nächste und vorherige Episode falsch abspielt.\nVerbesserungen der Spieler-Benutzeroberfläche.",
-                    "[Anbieter]\nServer-Links-Cache hinzugefügt – Jetzt werden Links zwischengespeichert, um einen schnelleren Abruf zu ermöglichen.\nStellen Sie den alten Kanalanbieter wieder her.\nBehebung, dass der VixSrc-Server einen ungültigen Link generiert."
+                    "Version 1.1.2, Build 23. [Empfohlenes Update]",
+                    "[Allgemein]\nUnterstützung für Proxyserver hinzugefügt – Hilft, regionale Zugriffsbeschränkungen zu umgehen.\nDNS über HTTPS hinzugefügt – Verbesserte Privatsphäre und Sicherheit für Verbindungen.\nBenutzerdefinierte Benutzeragentenoption hinzugefügt – Personalisieren Sie Ihre Benutzeragentenzeichenfolge.",
+                    "[Spieler]\nNeue libmpv (media_kit) Player-Konfigurationen hinzugefügt – Hardwarebeschleunigung, Hardware-Decoder, Debanding, YUV420P.\nOption „Bevorzugte Audiosprachen“ hinzugefügt – Legen Sie bevorzugte Sprachen fest (z. B. en,de,fr,ru – durch Kommas getrennt).",
+                    "[Desktop]\nExterne WebView-Unterstützung hinzugefügt – Verwenden Sie Ihren bevorzugten Browser für das WebView-Rendering (Einstellungen → Allgemein).\nExternes WebView standardmäßig für Linux aktiviert – Internes WebView wird unter Linux nicht unterstützt.",
+                    "[Mobil]\nUnterstützung für zwei Wiedergabe-Engines hinzugefügt – Wählen Sie zwischen ExoPlayer/AVPlayer (better_player) und libmpv (media_kit).\nAutomatischer Modus hinzugefügt – Intelligentes Fallback zwischen Engines basierend auf dem Inhaltstyp (Livestream vs. Filme/Serien).",
+                    "[Einstellungen]\nFeste Backup- und Wiederherstellungseinstellungen – Jetzt voll funktionsfähig (Einstellungen → Updates).\nlibmpv-Konfigurationsoptionen hinzugefügt – Hardwarebeschleunigung, Decoder, Debanding, YUV420P (Einstellungen → Player)."
                 ],
                 "es": [
-                    "[Jugador]\nSe agregó un cambio de fuente en las opciones del reproductor: el usuario ahora puede cambiar entre múltiples fuentes en el mismo servidor.\nActualice la información de la pista de audio y de video del reproductor: ahora muestra información detallada.\nSe corrige que el reproductor reproduzca mal el siguiente episodio y el episodio anterior.\nMejoras en la interfaz de usuario del reproductor.",
-                    "[Proveedores]\nCaché de enlaces de servidor agregado: ahora enlaces de caché para una recuperación más rápida.\nRestaurar el antiguo proveedor de canales.\nRepare el servidor VixSrc que genera un enlace no válido."
+                    "Versión 1.1.2, compilación 23. [Actualización recomendada]",
+                    "[Generales]\nSe agregó soporte para servidor proxy: ayuda a evitar las restricciones de acceso regional.\nDNS agregado sobre HTTPS: privacidad y seguridad mejoradas para las conexiones.\nSe agregó la opción de agente de usuario personalizado: personalice su cadena de agente de usuario.",
+                    "[Jugador]\nSe agregaron nuevas configuraciones del reproductor libmpv (media_kit): aceleración de hardware, decodificador de hardware, eliminación de bandas, YUV420P.\nSe agregó la opción de idiomas de audio preferidos: establezca los idiomas preferidos (por ejemplo, en, de, fr, ru - delimitados por comas).",
+                    "[Escritorio]\nSe agregó compatibilidad con WebView externo: use su navegador preferido para la representación de WebView (Configuración → General).\nWebView externo habilitado de forma predeterminada para Linux; WebView interno no es compatible con Linux.",
+                    "[Móvil]\nSe agregó compatibilidad con motor de reproducción dual: elija entre ExoPlayer/AVPlayer (better_player) y libmpv (media_kit).\nModo automático agregado: respaldo inteligente entre motores según el tipo de contenido (transmisión en vivo versus películas/series).",
+                    "[Configuración]\nSe corrigieron las configuraciones de copia de seguridad y restauración: ahora completamente funcional (Configuración → Actualizaciones).\nSe agregaron opciones de configuración de libmpv: aceleración de hardware, decodificador, eliminación de bandas, YUV420P (Configuración → Reproductor)."
                 ],
                 "fa": [
-                    "[بازیکن]\nسوئیچ منبع اضافه شده در گزینه های پخش کننده - کاربر اکنون می تواند از طریق چندین منبع در همان سرور جابجا شود.\nاطلاعات تراک صوتی و آهنگ ویدیویی پخش کننده را به روز کنید - اکنون اطلاعات دقیق را نشان دهید.\nتعمیر اشتباه پخش کننده قسمت بعدی و قسمت قبلی.\nبهبود رابط کاربری پلیر",
-                    "[ارائه دهندگان]\nحافظه پنهان پیوندهای سرور اضافه شد - اکنون پیوندها را برای واکشی سریعتر ذخیره کنید.\nارائه دهنده کانال های قدیمی را بازیابی کنید.\nسرور VixSrc ایجاد پیوند نامعتبر را برطرف کنید."
+                    "نسخه 1.1.2، ساخت 23. [به روز رسانی توصیه شده]",
+                    "[کلی]\nپشتیبانی از سرور پروکسی اضافه شد - به دور زدن محدودیت های دسترسی منطقه ای کمک می کند.\nDNS اضافه شده از طریق HTTPS - افزایش حریم خصوصی و امنیت برای اتصالات.\nگزینه سفارشی User Agent اضافه شد - رشته عامل کاربر خود را شخصی کنید.",
+                    "[بازیکن]\nپیکربندی‌های پخش‌کننده جدید libmpv (media_kit) اضافه شد - شتاب سخت‌افزار، رمزگشای سخت‌افزار، debanding، YUV420P.\nگزینه زبان‌های صوتی ترجیحی اضافه شد - زبان‌های برگزیده را تنظیم کنید (مانند en,de,fr,ru - با کاما محدود شده).",
+                    "[رومیزی]\nاضافه شدن پشتیبانی خارجی WebView - از مرورگر دلخواه خود برای رندر WebView استفاده کنید (تنظیمات → عمومی).\nWebView خارجی به طور پیش‌فرض برای لینوکس فعال شد - WebView داخلی در لینوکس پشتیبانی نمی‌شود.",
+                    "[موبایل]\nاضافه شدن پشتیبانی از موتور پخش دوگانه - بین ExoPlayer/AVPlayer (better_player) و libmpv (media_kit) یکی را انتخاب کنید.\nاضافه شدن حالت خودکار - بازگشت هوشمند بین موتورها بر اساس نوع محتوا (پخش زنده در مقابل فیلم/سریال).",
+                    "[تنظیمات]\nتنظیمات پشتیبان‌گیری و بازیابی ثابت - اکنون کاملاً کاربردی است (تنظیمات → به‌روزرسانی‌ها).\nاضافه شدن گزینه های پیکربندی libmpv - شتاب سخت افزار، رمزگشا، جداسازی، YUV420P (تنظیمات → پخش کننده)."
                 ],
                 "fr": [
-                    "[Joueur]\nAjout d'un commutateur de source dans les options du lecteur - L'utilisateur peut désormais basculer entre plusieurs sources sur le même serveur.\nMettre à jour les informations sur la piste audio et la piste vidéo du lecteur - Affichez désormais les informations détaillées.\nCorrection du joueur qui joue mal l'épisode suivant et l'épisode précédent.\nAméliorations de l'interface utilisateur du lecteur.",
-                    "[Fournisseurs]\nAjout du cache des liens du serveur - Met désormais en cache les liens pour une récupération plus rapide.\nRestaurer l'ancien fournisseur de chaînes.\nCorrection du serveur VixSrc générant un lien invalide."
+                    "Version 1.1.2, Build 23. [Mise à jour recommandée]",
+                    "[Général]\nPrise en charge du serveur proxy ajouté - Aide à contourner les restrictions d'accès régionales.\nAjout de DNS sur HTTPS - Confidentialité et sécurité améliorées pour les connexions.\nAjout d'une option d'agent utilisateur personnalisée - Personnalisez votre chaîne d'agent utilisateur.",
+                    "[Joueur]\nAjout de nouvelles configurations de lecteur libmpv (media_kit) - Accélération matérielle, décodeur matériel, débandage, YUV420P.\nAjout de l'option de langues audio préférées - Définissez les langues préférées (par exemple, en, de, fr, ru - délimitées par des virgules).",
+                    "[Bureau]\nAjout de la prise en charge externe de WebView - Utilisez votre navigateur préféré pour le rendu WebView (Paramètres → Général).\nWebView externe activé par défaut pour Linux - WebView interne non pris en charge sous Linux.",
+                    "[Mobile]\nAjout de la prise en charge du moteur de lecture double - Choisissez entre ExoPlayer/AVPlayer (better_player) et libmpv (media_kit).\nMode automatique ajouté – Repli intelligent entre les moteurs en fonction du type de contenu (livestream vs films/séries).",
+                    "[Paramètres]\nParamètres de sauvegarde et de restauration fixes - Désormais entièrement fonctionnels (Paramètres → Mises à jour).\nAjout d'options de configuration libmpv - Accélération matérielle, décodeur, débandage, YUV420P (Paramètres → Lecteur)."
                 ],
                 "hi": [
-                    "[खिलाड़ी]\nप्लेयर विकल्पों में स्रोत स्विच जोड़ा गया - उपयोगकर्ता अब एक ही सर्वर में एकाधिक स्रोतों के माध्यम से स्विच कर सकता है।\nप्लेयर ऑडियो ट्रैक और वीडियो ट्रैक जानकारी अपडेट करें - अब विस्तृत जानकारी दिखाएं।\nअगले एपिसोड और पिछले एपिसोड में गलत खेलने वाले खिलाड़ी को ठीक करें।\nप्लेयर यूजर इंटरफ़ेस में सुधार।",
-                    "[प्रदाता]\nसर्वर लिंक कैश जोड़ा गया - अब तेजी से लाने के लिए कैश लिंक।\nपुराने चैनल प्रदाता को पुनर्स्थापित करें।\nअमान्य लिंक उत्पन्न करने वाले VixSrc सर्वर को ठीक करें।"
+                    "संस्करण 1.1.2, बिल्ड 23. [अनुशंसित अद्यतन]",
+                    "[सामान्य]\nप्रॉक्सी सर्वर समर्थन जोड़ा गया - क्षेत्रीय पहुंच प्रतिबंधों को बायपास करने में मदद करता है।\nHTTPS पर DNS जोड़ा गया - कनेक्शन के लिए बढ़ी हुई गोपनीयता और सुरक्षा।\nकस्टम उपयोगकर्ता एजेंट विकल्प जोड़ा गया - अपनी उपयोगकर्ता एजेंट स्ट्रिंग को वैयक्तिकृत करें।",
+                    "[खिलाड़ी]\nनए libmpv (मीडिया_किट) प्लेयर कॉन्फ़िगरेशन जोड़े गए - हार्डवेयर एक्सेलेरेशन, हार्डवेयर डिकोडर, डिबैंडिंग, YUV420P।\nपसंदीदा ऑडियो भाषाओं का विकल्प जोड़ा गया - पसंदीदा भाषाएँ सेट करें (उदाहरण के लिए, एन, डी, एफआर, आरयू - अल्पविराम सीमांकित)।",
+                    "[डेस्कटॉप]\nबाहरी वेबव्यू समर्थन जोड़ा गया - वेबव्यू रेंडरिंग के लिए अपने पसंदीदा ब्राउज़र का उपयोग करें (सेटिंग्स → सामान्य)।\nलिनक्स के लिए डिफ़ॉल्ट रूप से सक्षम बाहरी वेबव्यू - आंतरिक वेबव्यू लिनक्स पर समर्थित नहीं है।",
+                    "[मोबाइल]\nदोहरी प्लेबैक इंजन समर्थन जोड़ा गया - एक्सोप्लेयर/एवीप्लेयर (बेहतर_प्लेयर) और लिबएमपीवी (मीडिया_किट) के बीच चयन करें।\nऑटो मोड जोड़ा गया - सामग्री प्रकार (लाइवस्ट्रीम बनाम फिल्में/श्रृंखला) के आधार पर इंजनों के बीच स्मार्ट फ़ॉलबैक।",
+                    "[सेटिंग्स]\nफिक्स्ड बैकअप और रीस्टोर सेटिंग्स - अब पूरी तरह कार्यात्मक (सेटिंग्स → अपडेट)।\nlibmpv कॉन्फ़िगरेशन विकल्प जोड़े गए - हार्डवेयर एक्सेलेरेशन, डिकोडर, डिबैंडिंग, YUV420P (सेटिंग्स → प्लेयर)।"
                 ],
                 "id": [
-                    "[Pemain]\nMenambahkan peralihan sumber dalam opsi pemutar - Pengguna sekarang dapat beralih melalui beberapa sumber di server yang sama.\nPerbarui informasi trek audio pemutar dan trek video - Sekarang tampilkan informasi terperinci.\nPerbaiki pemain yang salah memutar episode berikutnya dan episode sebelumnya.\nPeningkatan antarmuka pengguna pemain.",
-                    "[Penyedia]\nMenambahkan cache tautan server - Sekarang tautan cache untuk pengambilan lebih cepat.\nPulihkan penyedia saluran lama.\nPerbaiki server VixSrc yang menghasilkan tautan tidak valid."
+                    "Versi 1.1.2, Build 23. [Pembaruan yang Direkomendasikan]",
+                    "[Umum]\nMenambahkan dukungan server proxy - Membantu melewati batasan akses regional.\nMenambahkan DNS melalui HTTPS - Peningkatan privasi dan keamanan untuk koneksi.\nMenambahkan opsi Agen Pengguna khusus - Personalisasikan string agen pengguna Anda.",
+                    "[Pemain]\nMenambahkan konfigurasi pemutar libmpv (media_kit) baru - Akselerasi perangkat keras, dekoder perangkat keras, debanding, YUV420P.\nMenambahkan opsi bahasa audio pilihan - Tetapkan bahasa pilihan (mis., en,de,fr,ru - dibatasi koma).",
+                    "[Desktop]\nMenambahkan dukungan WebView eksternal - Gunakan browser pilihan Anda untuk rendering WebView (Pengaturan → Umum).\nMengaktifkan WebView eksternal secara default untuk Linux - WebView internal tidak didukung di Linux.",
+                    "[Seluler]\nMenambahkan dukungan mesin pemutaran ganda - Pilih antara ExoPlayer/AVPlayer (better_player) dan libmpv (media_kit).\nMenambahkan mode Otomatis - Penggantian cerdas antar mesin berdasarkan jenis konten (streaming langsung vs film/serial).",
+                    "[Pengaturan]\nMemperbaiki pengaturan pencadangan dan pemulihan - Sekarang berfungsi penuh (Pengaturan → Pembaruan).\nMenambahkan opsi konfigurasi libmpv - Akselerasi perangkat keras, dekoder, debanding, YUV420P (Pengaturan → Pemutar)."
                 ],
                 "it": [
-                    "[Giocatore]\nAggiunto cambio sorgente nelle opzioni del lettore: l'utente può ora passare da più sorgenti nello stesso server.\nAggiorna le informazioni sulla traccia audio e sulla traccia video del lettore: ora mostra informazioni dettagliate.\nRisolto il problema con il giocatore che riproduceva in modo errato l'episodio successivo e quello precedente.\nMiglioramenti all'interfaccia utente del lettore.",
-                    "[Fornitori]\nAggiunta la cache dei collegamenti del server: ora memorizza nella cache i collegamenti per un recupero più rapido.\nRipristina il vecchio provider di canali.\nRisolto il problema con il server VixSrc che generava un collegamento non valido."
+                    "Versione 1.1.2, build 23. [Aggiornamento consigliato]",
+                    "[Generale]\nAggiunto supporto per server proxy: aiuta a bypassare le restrizioni di accesso regionali.\nAggiunto DNS su HTTPS: privacy e sicurezza migliorate per le connessioni.\nAggiunta l'opzione personalizzata dell'agente utente: personalizza la stringa dell'agente utente.",
+                    "[Giocatore]\nAggiunte nuove configurazioni del lettore libmpv (media_kit): accelerazione hardware, decodificatore hardware, debanding, YUV420P.\nAggiunta l'opzione delle lingue audio preferite: imposta le lingue preferite (ad esempio, en, de, fr, ru - delimitate da virgole).",
+                    "[Desktop]\nAggiunto supporto WebView esterno: utilizza il tuo browser preferito per il rendering WebView (Impostazioni → Generale).\nAbilitato WebView esterno per impostazione predefinita per Linux - WebView interno non supportato su Linux.",
+                    "[Cellulare]\nAggiunto supporto per il doppio motore di riproduzione: scegli tra ExoPlayer/AVPlayer (better_player) e libmpv (media_kit).\nAggiunta la modalità automatica: fallback intelligente tra i motori in base al tipo di contenuto (livestream vs film/serie).",
+                    "[Impostazioni]\nRisolte le impostazioni di backup e ripristino: ora completamente funzionanti (Impostazioni → Aggiornamenti).\nAggiunte opzioni di configurazione libmpv: accelerazione hardware, decoder, debanding, YUV420P (Impostazioni → Lettore)."
                 ],
                 "ja": [
-                    "[プレイヤー]\nプレーヤー オプションにソース スイッチを追加 - ユーザーは同じサーバー内の複数のソースを切り替えることができるようになりました。\nプレーヤーのオーディオ トラックおよびビデオ トラック情報を更新 - 詳細情報を表示するようになりました。\n次のエピソードと前のエピソードを間違ってプレイするプレイヤーを修正しました。\nプレーヤーのユーザー インターフェイスの改善。",
-                    "【プロバイダー】\nサーバー リンク キャッシュを追加 - より高速なフェッチのためにリンクをキャッシュするようになりました。\n古いチャネルプロバイダーを復元します。\n無効なリンクを生成する VixSrc サーバーを修正しました。"
+                    "バージョン 1.1.2、ビルド 23。 [推奨アップデート]",
+                    "【一般】\nプロキシ サーバーのサポートを追加しました - 地域のアクセス制限を回避するのに役立ちます。\nDNS over HTTPS を追加 - 接続のプライバシーとセキュリティが強化されました。\nカスタム ユーザー エージェント オプションを追加しました - ユーザー エージェント文字列をパーソナライズします。",
+                    "[プレイヤー]\n新しい libmpv (media_kit) プレーヤー構成 - ハードウェア アクセラレーション、ハードウェア デコーダー、デバンド、YUV420P を追加しました。\n優先オーディオ言語オプションを追加しました - 優先言語を設定します (例: en、de、fr、ru - カンマ区切り)。",
+                    "[デスクトップ]\n外部 WebView サポートの追加 - WebView レンダリングには好みのブラウザを使用します (設定 → 一般)。\nLinux では外部 WebView がデフォルトで有効になりました - 内部 WebView は Linux ではサポートされません。",
+                    "【モバイル】\nデュアル再生エンジンのサポートを追加 - ExoPlayer/AVPlayer (better_player) と libmpv (media_kit) から選択します。\n自動モードを追加しました - コンテンツ タイプ (ライブストリームと映画/シリーズ) に基づいたエンジン間のスマート フォールバック。",
+                    "［設定］\nバックアップと復元の設定が修正されました - 完全に機能するようになりました ([設定] → [更新])。\nlibmpv 設定オプションを追加しました - ハードウェア アクセラレーション、デコーダ、デバンド、YUV420P (設定 → プレーヤー)。"
                 ],
                 "ko": [
-                    "[플레이어]\n플레이어 옵션에 소스 스위치 추가 - 이제 사용자는 동일한 서버에서 여러 소스를 통해 전환할 수 있습니다.\n플레이어 오디오 트랙 및 비디오 트랙 정보 업데이트 - 이제 자세한 정보가 표시됩니다.\n플레이어가 다음 에피소드와 이전 에피소드를 잘못 재생하는 문제를 수정합니다.\n플레이어 사용자 인터페이스 개선.",
-                    "[공급자]\n서버 링크 캐시 추가 - 이제 더 빠른 가져오기를 위해 링크를 캐시합니다.\n이전 채널 제공자를 복원합니다.\nVixSrc 서버가 잘못된 링크를 생성하는 문제를 수정하세요.\n"
+                    "버전 1.1.2, 빌드 23. [권장 업데이트]",
+                    "[일반]\n프록시 서버 지원 추가 - 지역별 액세스 제한을 우회하는 데 도움이 됩니다.\nHTTPS를 통한 DNS 추가 - 연결에 대한 개인 정보 보호 및 보안이 강화되었습니다.\n사용자 정의 사용자 에이전트 옵션이 추가되었습니다 - 사용자 에이전트 문자열을 개인화하세요.",
+                    "[플레이어]\n새로운 libmpv(media_kit) 플레이어 구성이 추가되었습니다 - 하드웨어 가속, 하드웨어 디코더, 밴드 해제, YUV420P.\n기본 오디오 언어 옵션 추가 - 기본 언어를 설정합니다(예: en,de,fr,ru - 쉼표로 구분).",
+                    "[데스크탑]\n외부 WebView 지원 추가 - WebView 렌더링에 선호하는 브라우저를 사용하세요(설정 → 일반).\nLinux에서는 기본적으로 외부 WebView가 활성화됩니다. 내부 WebView는 Linux에서 지원되지 않습니다.",
+                    "[모바일]\n듀얼 재생 엔진 지원 추가 - ExoPlayer/AVPlayer(better_player)와 libmpv(media_kit) 중에서 선택하세요.\n자동 모드 추가 - 콘텐츠 유형(실시간 스트리밍 대 영화/시리즈)을 기반으로 엔진 간 스마트 폴백이 가능합니다.",
+                    "[설정]\n백업 및 복원 설정 수정 - 이제 완전히 작동합니다(설정 → 업데이트).\nlibmpv 구성 옵션 추가 - 하드웨어 가속, 디코더, 밴드 해제, YUV420P(설정 → 플레이어)."
                 ],
                 "nl": [
-                    "[Speler]\nBronschakelaar toegevoegd in speleropties - De gebruiker kan nu door meerdere bronnen op dezelfde server schakelen.\nUpdate de audiotrack- en videotrackinformatie van de speler - Toon nu gedetailleerde informatie.\nFix dat de speler volgende aflevering en vorige aflevering verkeerd speelt.\nVerbeteringen in de gebruikersinterface van de speler.",
-                    "[Aanbieders]\nCache voor serverlinks toegevoegd - Cache nu links voor sneller ophalen.\nHerstel oude zenderprovider.\nFix VixSrc-server genereert ongeldige link.\n"
+                    "Versie 1.1.2, build 23. [Aanbevolen update]",
+                    "[Algemeen]\nOndersteuning voor proxyservers toegevoegd - Helpt regionale toegangsbeperkingen te omzeilen.\nDNS via HTTPS toegevoegd - Verbeterde privacy en beveiliging voor verbindingen.\nAangepaste User Agent-optie toegevoegd - Personaliseer uw user-agentreeks.",
+                    "[Speler]\nNieuwe libmpv (media_kit) spelerconfiguraties toegevoegd - Hardwareversnelling, hardwaredecoder, debanding, YUV420P.\nOptie voor voorkeursaudiotalen toegevoegd - Stel voorkeurstalen in (bijvoorbeeld en,de,fr,ru - door komma's gescheiden).",
+                    "[Bureaublad]\nExterne WebView-ondersteuning toegevoegd - Gebruik uw voorkeursbrowser voor WebView-weergave (Instellingen → Algemeen).\nExterne WebView standaard ingeschakeld voor Linux - Interne WebView wordt niet ondersteund op Linux.",
+                    "[Mobiel]\nOndersteuning voor dubbele afspeelengine toegevoegd - Kies tussen ExoPlayer/AVPlayer (better_player) en libmpv (media_kit).\nAutomatische modus toegevoegd - Slimme terugval tussen zoekmachines op basis van inhoudstype (livestream versus films/series).",
+                    "[Instellingen]\nVaste back-up- en herstelinstellingen - Nu volledig functioneel (Instellingen → Updates).\nLibmpv-configuratieopties toegevoegd - Hardwareversnelling, decoder, debanding, YUV420P (Instellingen → Speler)."
                 ],
                 "pl": [
-                    "[Gracz]\nDodano przełącznik źródła w opcjach odtwarzacza — użytkownik może teraz przełączać się między wieloma źródłami na tym samym serwerze.\nZaktualizuj informacje o ścieżce audio i ścieżce wideo odtwarzacza — teraz pokaż szczegółowe informacje.\nNapraw gracza grającego źle w następnym i poprzednim odcinku.\nUlepszenia interfejsu użytkownika odtwarzacza.",
-                    "[Dostawcy]\nDodano pamięć podręczną łączy do serwerów — teraz buforuj łącza w celu szybszego pobierania.\nPrzywróć starego dostawcę kanałów.\nNapraw serwer VixSrc generujący nieprawidłowe łącze.\n"
+                    "Wersja 1.1.2, kompilacja 23. [Zalecana aktualizacja]",
+                    "[Ogólne]\nDodano obsługę serwera proxy — pomaga ominąć regionalne ograniczenia dostępu.\nDodano DNS przez HTTPS — zwiększona prywatność i bezpieczeństwo połączeń.\nDodano niestandardową opcję agenta użytkownika — personalizuj ciąg agenta użytkownika.",
+                    "[Gracz]\nDodano nowe konfiguracje odtwarzacza libmpv (media_kit) - akceleracja sprzętowa, dekoder sprzętowy, usuwanie pasm, YUV420P.\nDodano opcję preferowanych języków audio - Ustaw preferowane języki (np. en,de,fr,ru - rozdzielane przecinkami).",
+                    "[Pulpit]\nDodano zewnętrzną obsługę WebView — użyj preferowanej przeglądarki do renderowania WebView (Ustawienia → Ogólne).\nDomyślnie włączono zewnętrzny widok WebView dla systemu Linux — wewnętrzny widok WebView nie jest obsługiwany w systemie Linux.",
+                    "[Komórkowy]\nDodano obsługę podwójnego silnika odtwarzania — wybierz pomiędzy ExoPlayer/AVPlayer (better_player) i libmpv (media_kit).\nDodano tryb automatyczny – inteligentne przełączanie między silnikami w zależności od typu treści (transmisja na żywo vs filmy/seriale).",
+                    "[Ustawienia]\nNaprawiono ustawienia tworzenia kopii zapasowych i przywracania - Teraz w pełni funkcjonalne (Ustawienia → Aktualizacje).\nDodano opcje konfiguracji libmpv - Przyspieszenie sprzętowe, dekoder, usuwanie pasm, YUV420P (Ustawienia → Odtwarzacz)."
                 ],
                 "pt": [
-                    "[Jogador]\nAdicionada troca de fonte nas opções do player - O usuário agora pode alternar entre várias fontes no mesmo servidor.\nAtualize as informações da trilha de áudio e da trilha de vídeo do player - Agora mostre informações detalhadas.\nCorrija o jogador jogando errado no próximo episódio e no episódio anterior.\nMelhorias na interface do usuário do player.",
-                    "[Provedores]\nAdicionado cache de links de servidor - agora cache de links para busca mais rápida.\nRestaure o antigo provedor de canais.\nCorreção do servidor VixSrc gerando link inválido.\n"
+                    "Versão 1.1.2, Build 23. [Atualização recomendada]",
+                    "[Geral]\nAdicionado suporte a servidor proxy - Ajuda a contornar restrições de acesso regional.\nAdicionado DNS sobre HTTPS – Privacidade e segurança aprimoradas para conexões.\nAdicionada opção de agente de usuário personalizado - Personalize sua string de agente de usuário.",
+                    "[Jogador]\nAdicionadas novas configurações do player libmpv (media_kit) - Aceleração de hardware, decodificador de hardware, debanding, YUV420P.\nAdicionada opção de idiomas de áudio preferidos - Definir idiomas preferidos (por exemplo, en,de,fr,ru - delimitado por vírgula).",
+                    "[Área de trabalho]\nAdicionado suporte externo a WebView - Use seu navegador preferido para renderização de WebView (Configurações → Geral).\nWebView externo ativado por padrão para Linux - WebView interno não suportado no Linux.",
+                    "[Celular]\nAdicionado suporte a mecanismo de reprodução dupla - Escolha entre ExoPlayer/AVPlayer (better_player) e libmpv (media_kit).\nAdicionado modo automático - substituto inteligente entre mecanismos com base no tipo de conteúdo (transmissão ao vivo vs filmes/séries).",
+                    "[Configurações]\nConfigurações corrigidas de backup e restauração - Agora totalmente funcionais (Configurações → Atualizações).\nAdicionadas opções de configuração do libmpv - Aceleração de hardware, decodificador, debanding, YUV420P (Configurações → Player)."
                 ],
                 "ru": [
-                    "[Игрок]\nДобавлен переключатель источника в настройках проигрывателя. Теперь пользователь может переключаться между несколькими источниками на одном сервере.\nОбновить информацию об аудиодорожке и видеодорожке проигрывателя. Теперь отображается подробная информация.\nИсправлена ​​ошибка, из-за которой игрок неправильно играл в следующем и предыдущем эпизодах.\nУлучшения пользовательского интерфейса плеера.",
-                    "[Провайдеры]\nДобавлен кеш ссылок на сервер. Теперь ссылки кэшируются для более быстрого получения.\nВосстановить старого провайдера каналов.\nИсправлена ​​ошибка, из-за которой сервер VixSrc генерировал неверную ссылку.\n"
+                    "Версия 1.1.2, сборка 23. [Рекомендуемое обновление]",
+                    "[Общие]\nДобавлена поддержка прокси-сервера — помогает обойти региональные ограничения доступа.\nДобавлен DNS через HTTPS — улучшена конфиденциальность и безопасность соединений.\nДобавлена ​​опция пользовательского агента — персонализируйте строку пользовательского агента.",
+                    "[Игрок]\nДобавлены новые конфигурации плеера libmpv (media_kit) - Аппаратное ускорение, аппаратный декодер, дебандинг, YUV420P.\nДобавлена ​​опция предпочитаемых языков аудио — установите предпочтительные языки (например, en,de,fr,ru — через запятую).",
+                    "[Рабочий стол]\nДобавлена поддержка внешнего WebView. Используйте предпочитаемый вами браузер для рендеринга WebView (Настройки → Общие).\nВнешний WebView включен по умолчанию для Linux. Внутренний WebView не поддерживается в Linux.",
+                    "[Мобильный]\nДобавлена поддержка механизма двойного воспроизведения. Выбирайте между ExoPlayer/AVPlayer (better_player) и libmpv (media_kit).\nДобавлен автоматический режим — интеллектуальный переход между движками в зависимости от типа контента (прямая трансляция или фильмы/сериалы).",
+                    "[Настройки]\nИсправлены настройки резервного копирования и восстановления - Теперь полностью работоспособны (Настройки → Обновления).\nДобавлены параметры конфигурации libmpv - Аппаратное ускорение, декодер, дебандинг, YUV420P (Настройки → Плеер)."
                 ],
                 "sw": [
-                    "[Mchezaji]\nUbadilishaji chanzo katika chaguo za kichezaji - Mtumiaji sasa anaweza kubadili kupitia vyanzo vingi katika seva moja.\nSasisha wimbo wa sauti wa kichezaji na maelezo ya wimbo wa video - Sasa onyesha maelezo ya kina.\nRekebisha mchezaji anacheza vibaya sehemu inayofuata na sehemu iliyotangulia.\nMaboresho ya kiolesura cha mchezaji.",
-                    "[Watoa huduma]\nAkiba ya viungo vya seva - Sasa viungo vya akiba vya kuleta haraka.\nRejesha mtoaji wa vituo vya zamani.\nRekebisha seva ya VixSrc inayozalisha kiungo batili.\n"
+                    "Toleo la 1.1.2, Jenga 23. [Sasisho Linalopendekezwa]",
+                    "[Jenerali]\nUsaidizi wa seva mbadala ulioongezwa - Husaidia kukwepa vizuizi vya ufikiaji wa kikanda.\nImeongeza DNS kupitia HTTPS - Faragha na usalama ulioimarishwa kwa miunganisho.\nChaguo maalum la Wakala wa Mtumiaji - Binafsisha kamba ya wakala wako wa mtumiaji.",
+                    "[Mchezaji]\nUsanidi mpya wa kicheza libmpv (media_kit) - Uongezaji kasi wa maunzi, avkodare ya maunzi, debanding, YUV420P.\nChaguo la lugha za sauti zinazopendekezwa - Weka lugha zinazopendekezwa (k.m., en,de,fr,ru - comma delimited).",
+                    "[Desktop]\nUsaidizi wa Mwonekano wa Wavuti wa nje - Tumia kivinjari chako unachopendelea kwa uwasilishaji wa Mwonekano wa Wavuti (Mipangilio → Jumla).\nImewasha Mwonekano wa Wavuti wa nje kwa chaguomsingi kwa ajili ya Linux - Mwonekano wa Ndani wa Wavuti hautumiki kwenye Linux.",
+                    "[Rununu]\nImeongeza usaidizi wa injini ya uchezaji mbili - Chagua kati ya ExoPlayer/AVPlayer (better_player) na libmpv (media_kit).\nHali ya Kiotomatiki Iliyoongezwa - Urejeaji mahiri kati ya injini kulingana na aina ya maudhui (mtiririko wa moja kwa moja dhidi ya filamu/mfululizo).",
+                    "[Mipangilio]\nHifadhi nakala rudufu na mipangilio ya kurejesha - Sasa inafanya kazi kikamilifu (Mipangilio → Sasisho).\nChaguzi za usanidi wa libmpv zilizoongezwa - Uongezaji kasi wa maunzi, avkodare, debanding, YUV420P (Mipangilio → Kichezaji)."
                 ],
                 "th": [
-                    "[ผู้เล่น]\nเพิ่มการสลับแหล่งที่มาในตัวเลือกของผู้เล่น - ขณะนี้ผู้ใช้สามารถสลับผ่านหลายแหล่งในเซิร์ฟเวอร์เดียวกัน\nอัปเดตแทร็กเสียงและข้อมูลแทร็กวิดีโอของผู้เล่น - ตอนนี้แสดงข้อมูลโดยละเอียด\nแก้ไขผู้เล่นเล่นตอนถัดไปและตอนก่อนหน้าผิด\nการปรับปรุงส่วนติดต่อผู้ใช้ของผู้เล่น",
-                    "[ผู้ให้บริการ]\nเพิ่มแคชลิงก์เซิร์ฟเวอร์ - ตอนนี้ลิงก์แคชเพื่อการดึงข้อมูลที่รวดเร็วยิ่งขึ้น\nคืนค่าผู้ให้บริการช่องเก่า\nแก้ไขเซิร์ฟเวอร์ VixSrc ที่สร้างลิงก์ที่ไม่ถูกต้อง"
+                    "เวอร์ชัน 1.1.2 รุ่น 23 [อัปเดตที่แนะนำ]",
+                    "[ทั่วไป]\nเพิ่มการรองรับพร็อกซีเซิร์ฟเวอร์ - ช่วยหลีกเลี่ยงข้อ จำกัด การเข้าถึงระดับภูมิภาค\nเพิ่ม DNS ผ่าน HTTPS - ปรับปรุงความเป็นส่วนตัวและความปลอดภัยสำหรับการเชื่อมต่อ\nเพิ่มตัวเลือกตัวแทนผู้ใช้ที่กำหนดเอง - ปรับแต่งสตริงตัวแทนผู้ใช้ของคุณ",
+                    "[ผู้เล่น]\nเพิ่มการกำหนดค่าเครื่องเล่น libmpv (media_kit) ใหม่ - การเร่งความเร็วด้วยฮาร์ดแวร์, ตัวถอดรหัสฮาร์ดแวร์, การแยกแถบ, YUV420P\nเพิ่มตัวเลือกภาษาเสียงที่ต้องการ - ตั้งค่าภาษาที่ต้องการ (เช่น en,de,fr,ru - คั่นด้วยเครื่องหมายจุลภาค)",
+                    "[เดสก์ท็อป]\nเพิ่มการสนับสนุน WebView ภายนอก - ใช้เบราว์เซอร์ที่คุณต้องการสำหรับการแสดงผล WebView (การตั้งค่า → ทั่วไป)\nเปิดใช้งาน WebView ภายนอกตามค่าเริ่มต้นสำหรับ Linux - WebView ภายในไม่รองรับบน Linux",
+                    "[มือถือ]\nเพิ่มการรองรับเอ็นจิ้นการเล่นคู่ - เลือกระหว่าง ExoPlayer/AVPlayer (better_player) และ libmpv (media_kit)\nเพิ่มโหมดอัตโนมัติ - ทางเลือกอัจฉริยะระหว่างเอ็นจิ้นตามประเภทเนื้อหา (สตรีมสดเทียบกับภาพยนตร์/ซีรีส์)",
+                    "[การตั้งค่า]\nแก้ไขการตั้งค่าการสำรองและกู้คืน - ตอนนี้ทำงานได้อย่างสมบูรณ์แล้ว (การตั้งค่า → อัปเดต)\nเพิ่มตัวเลือกการกำหนดค่า libmpv - การเร่งความเร็วด้วยฮาร์ดแวร์, ตัวถอดรหัส, การแยกแถบ, YUV420P (การตั้งค่า → ผู้เล่น)"
                 ],
                 "tr": [
-                    "[Oyuncu]\nAdded source switch in player options - User can now switch through multiple sources in same server.\nUpdate player audio track and video track information - Now show detailed information.\nFix player playing wrong next episode and previous episode.\nOyuncu kullanıcı arayüzü iyileştirmeleri.",
-                    "[Sağlayıcılar]\nSunucu bağlantıları önbelleği eklendi - Artık daha hızlı almak için bağlantıları önbelleğe alın.\nEski kanal sağlayıcısını geri yükleyin.\nVixSrc sunucusunun geçersiz bağlantı oluşturmasını düzeltin.\n"
+                    "Sürüm 1.1.2, Derleme 23. [Önerilen Güncelleme]",
+                    "[Genel]\nProxy sunucu desteği eklendi - Bölgesel erişim kısıtlamalarının aşılmasına yardımcı olur.\nHTTPS üzerinden DNS eklendi - Bağlantılar için geliştirilmiş gizlilik ve güvenlik.\nÖzel Kullanıcı Aracısı seçeneği eklendi - Kullanıcı aracısı dizenizi kişiselleştirin.",
+                    "[Oyuncu]\nYeni libmpv (media_kit) oynatıcı yapılandırmaları eklendi - Donanım hızlandırma, donanım kod çözücü, bant çözme, YUV420P.\nTercih edilen ses dilleri seçeneği eklendi - Tercih edilen dilleri ayarlayın (ör. en,de,fr,ru - virgülle ayrılmış).",
+                    "[Masaüstü]\nHarici Web Görünümü desteği eklendi - Web Görünümü oluşturma için tercih ettiğiniz tarayıcıyı kullanın (Ayarlar → Genel).\nLinux için varsayılan olarak etkin harici Web Görünümü - Dahili Web Görünümü Linux'ta desteklenmez.",
+                    "[Mobil]\nÇift oynatma motoru desteği eklendi - ExoPlayer/AVPlayer (better_player) ve libmpv (media_kit) arasında seçim yapın.\nOtomatik mod eklendi - İçerik türüne (canlı yayın ve film/dizi karşılaştırması) göre motorlar arasında akıllı geri dönüş.",
+                    "[Ayarlar]\nYedekleme ve geri yükleme ayarları düzeltildi - Artık tamamen işlevsel (Ayarlar → Güncellemeler).\nLibmpv yapılandırma seçenekleri eklendi - Donanım hızlandırma, kod çözücü, bant kaldırma, YUV420P (Ayarlar → Oynatıcı)."
                 ],
                 "uk": [
-                    "[Гравець]\nДодано перемикання джерел у параметрах програвача - тепер користувач може перемикатися між кількома джерелами на одному сервері.\nОновити інформацію про аудіодоріжку та відеодоріжку плеєра - тепер показувати детальну інформацію.\nВиправте неправильне відтворення наступного та попереднього епізоду гравцем.\nПокращення інтерфейсу користувача програвача.",
-                    "[Постачальники]\nДодано кеш посилань на сервер - тепер кешуйте посилання для швидшого отримання.\nВідновлення старого провайдера каналів.\nВиправити сервер VixSrc, який генерував недійсне посилання.\n"
+                    "Версія 1.1.2, збірка 23. [Рекомендоване оновлення]",
+                    "[Загальні]\nДодана підтримка проксі-сервера - допомагає обійти регіональні обмеження доступу.\nДодано DNS через HTTPS - покращена конфіденційність і безпека для підключень.\nДодана спеціальна опція агента користувача - персоналізуйте рядок агента користувача.",
+                    "[Гравець]\nДодано нові конфігурації програвача libmpv (media_kit) — апаратне прискорення, апаратний декодер, дебандування, YUV420P.\nДодано параметр бажаних мов аудіосупроводу - установіть бажані мови (наприклад, en,de,fr,ru - розділені комами).",
+                    "[Робочий стіл]\nДодано зовнішню підтримку WebView - Використовуйте бажаний браузер для візуалізації WebView (Налаштування → Загальні).\nЗовнішній WebView за замовчуванням увімкнено для Linux – внутрішній WebView не підтримується в Linux.",
+                    "[Мобільний]\nДодана підтримка механізму подвійного відтворення — вибирайте між ExoPlayer/AVPlayer (better_player) і libmpv (media_kit).\nДодано автоматичний режим — інтелектуальний резервний варіант між механізмами залежно від типу вмісту (пряма трансляція чи фільми/серіали).",
+                    "[Налаштування]\nВиправлено параметри резервного копіювання та відновлення — тепер повністю функціональний (Налаштування → Оновлення).\nДодано параметри конфігурації libmpv - Апаратне прискорення, декодер, дебандування, YUV420P (Параметри → Програвач)."
                 ],
                 "vi": [
-                    "[Người chơi]\nĐã thêm chuyển đổi nguồn trong tùy chọn trình phát - Giờ đây người dùng có thể chuyển qua nhiều nguồn trong cùng một máy chủ.\nCập nhật thông tin bản âm thanh và bản nhạc video của trình phát - Bây giờ hiển thị thông tin chi tiết.\nSửa lỗi trình phát chơi sai tập tiếp theo và tập trước.\nCải thiện giao diện người dùng của người chơi.",
-                    "[Nhà cung cấp]\nĐã thêm bộ đệm liên kết máy chủ - Bây giờ liên kết bộ đệm để tìm nạp nhanh hơn.\nKhôi phục nhà cung cấp kênh cũ.\nSửa lỗi máy chủ VixSrc tạo liên kết không hợp lệ.\n"
+                    "Phiên bản 1.1.2, Bản dựng 23. [Cập nhật được đề xuất]",
+                    "[Chung]\nĐã thêm hỗ trợ máy chủ proxy - Giúp bỏ qua các hạn chế truy cập khu vực.\nĐã thêm DNS qua HTTPS - Nâng cao quyền riêng tư và bảo mật cho các kết nối.\nĐã thêm tùy chọn Tác nhân người dùng tùy chỉnh - Cá nhân hóa chuỗi tác nhân người dùng của bạn.",
+                    "[Người chơi]\nĐã thêm cấu hình trình phát libmpv (media_kit) mới - Tăng tốc phần cứng, bộ giải mã phần cứng, gỡ lỗi, YUV420P.\nĐã thêm tùy chọn ngôn ngữ âm thanh ưa thích - Đặt ngôn ngữ ưa thích (ví dụ: en,de,fr,ru - được phân cách bằng dấu phẩy).",
+                    "[Máy tính để bàn]\nĐã thêm hỗ trợ WebView bên ngoài - Sử dụng trình duyệt ưa thích của bạn để hiển thị WebView (Cài đặt → Chung).\nTheo mặc định, WebView bên ngoài được bật cho Linux - WebView nội bộ không được hỗ trợ trên Linux.",
+                    "[Di động]\nĐã thêm hỗ trợ công cụ phát lại kép - Chọn giữa ExoPlayer/AVPlayer (better_player) và libmpv (media_kit).\nĐã thêm Chế độ tự động - Dự phòng thông minh giữa các công cụ dựa trên loại nội dung (phát trực tiếp so với phim/loạt phim).",
+                    "[Cài đặt]\nĐã sửa lỗi cài đặt sao lưu và khôi phục - Hiện đã có đầy đủ chức năng (Cài đặt → Cập nhật).\nĐã thêm tùy chọn cấu hình libmpv - Tăng tốc phần cứng, bộ giải mã, gỡ lỗi, YUV420P (Cài đặt → Trình phát)."
                 ],
                 "zh": [
-                    "[玩家]\n在播放器选项中添加了源切换 - 用户现在可以在同一服务器中切换多个源。\n更新播放器音轨和视频轨道信息 - 现在显示详细信息。\n修复播放器播放错误的下一集和上一集。\n播放器用户界面改进。",
-                    "[供应商]\n添加了服务器链接缓存 - 现在缓存链接以加快获取速度。\n恢复旧的渠道提供商。\n修复 VixSrc 服务器生成无效链接的问题。"
+                    "版本 1.1.2，内部版本 23。 [推荐更新]",
+                    "[一般]\n添加了代理服务器支持 - 帮助绕过区域访问限制。\n添加了基于 HTTPS 的 DNS - 增强了连接的隐私性和安全性。\n添加了自定义用户代理选项 - 个性化您的用户代理字符串。",
+                    "[玩家]\n添加了新的 libmpv (media_kit) 播放器配置 - 硬件加速、硬件解码器、解带、YUV420P。\n添加了首选音频语言选项 - 设置首选语言（例如 en、de、fr、ru - 以逗号分隔）。",
+                    "[桌面]\n添加了外部 WebView 支持 - 使用您喜欢的浏览器进行 WebView 渲染（设置 → 常规）。\n默认情况下为 Linux 启用外部 WebView - Linux 上不支持内部 WebView。",
+                    "[手机]\n添加了双播放引擎支持 - 在 ExoPlayer/AVPlayer (better_player) 和 libmpv (media_kit) 之间进行选择。\n添加了自动模式 - 根据内容类型（直播与电影/系列）引擎之间的智能回退。",
+                    "[设置]\n修复了备份和恢复设置 - 现在功能齐全（设置 → 更新）。\n添加了 libmpv 配置选项 - 硬件加速、解码器、解带、YUV420P（设置 → 播放器）。"
                 ],
                 "zh-CN": [
-                    "[玩家]\n在播放器选项中添加了源切换 - 用户现在可以在同一服务器中切换多个源。\n更新播放器音轨和视频轨道信息 - 现在显示详细信息。\n修复播放器播放错误的下一集和上一集。\n播放器用户界面改进。",
-                    "[供应商]\n添加了服务器链接缓存 - 现在缓存链接以加快获取速度。\n恢复旧的渠道提供商。\n修复 VixSrc 服务器生成无效链接的问题。"
+                    "版本 1.1.2，内部版本 23。 [推荐更新]",
+                    "[一般]\n添加了代理服务器支持 - 帮助绕过区域访问限制。\n添加了基于 HTTPS 的 DNS - 增强了连接的隐私性和安全性。\n添加了自定义用户代理选项 - 个性化您的用户代理字符串。",
+                    "[玩家]\n添加了新的 libmpv (media_kit) 播放器配置 - 硬件加速、硬件解码器、解带、YUV420P。\n添加了首选音频语言选项 - 设置首选语言（例如 en、de、fr、ru - 以逗号分隔）。",
+                    "[桌面]\n添加了外部 WebView 支持 - 使用您喜欢的浏览器进行 WebView 渲染（设置 → 常规）。\n默认情况下为 Linux 启用外部 WebView - Linux 上不支持内部 WebView。",
+                    "[手机]\n添加了双播放引擎支持 - 在 ExoPlayer/AVPlayer (better_player) 和 libmpv (media_kit) 之间进行选择。\n添加了自动模式 - 根据内容类型（直播与电影/系列）引擎之间的智能回退。",
+                    "[设置]\n修复了备份和恢复设置 - 现在功能齐全（设置 → 更新）。\n添加了 libmpv 配置选项 - 硬件加速、解码器、解带、YUV420P（设置 → 播放器）。"
                 ],
                 "zh-TW": [
-                    "[玩家]\n在播放器選項中新增了來源切換 - 用戶現在可以在同一伺服器中切換多個來源。\n更新播放器音軌和視訊軌道資訊 - 現在顯示詳細資訊。\n修復播放器播放錯誤的下一集和上一集。\n播放器使用者介面改進。",
-                    "[供應商]\n新增了伺服器連結快取 - 現在快取連結以加快獲取速度。\n恢復舊的通路提供者。\n修正 VixSrc 伺服器產生無效連結的問題。"
+                    "版本 1.1.2，內部版本 23。 [推薦更新]",
+                    "[一般]\n新增了代理伺服器支援 - 幫助繞過區域存取限制。\n新增了基於 HTTPS 的 DNS - 增強了連線的隱私性和安全性。\n新增了自訂用戶代理選項 - 個性化您的用戶代理字串。",
+                    "[玩家]\n新增了新的 libmpv (media_kit) 播放器配置 - 硬體加速、硬體解碼器、解帶、YUV420P。\n新增了首選音訊語言選項 - 設定首選語言（例如 en、de、fr、ru - 以逗號分隔）。",
+                    "[桌面]\n新增了外部 WebView 支援 - 使用您喜歡的瀏覽器進行 WebView 渲染（設定 → 常規）。\n預設為 Linux 啟用外部 WebView - Linux 上不支援內部 WebView。",
+                    "[手機]\n新增了雙播放引擎支援 - 在 ExoPlayer/AVPlayer (better_player) 和 libmpv (media_kit) 之間進行選擇。\n新增了自動模式 - 根據內容類型（直播與電影/系列）引擎之間的智慧回退。",
+                    "[設定]\n修復了備份和恢復設定 - 現在功能齊全（設定 → 更新）。\n新增了 libmpv 配置選項 - 硬體加速、解碼器、解帶、YUV420P（設定 → 播放器）。"
                 ]
             }
         }
