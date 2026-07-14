@@ -10,25 +10,25 @@
                 "universal": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-1.1.2.apk",
-                    "size_mb": 159.0,
+                    "size_mb": 161.0,
                     "checksum_sha256": "1D02212DA498DA3176DC5FE9F8F672E5EC854FE4E88C4F5F0661D6B9BF70B197"
                 },
                 "arm64-v8a": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-arm64-v8a-1.1.2.apk",
-                    "size_mb": 67.1,
+                    "size_mb": 68.2,
                     "checksum_sha256": "3B142F0AB3BF091938C3DD524445D08E47317746558F57421B7FA2F824D7D845"
                 },
                 "armeabi-v7a": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-armeabi-v7a-1.1.2.apk",
-                    "size_mb": 77.8,
+                    "size_mb": 79.0,
                     "checksum_sha256": "630640A8781D658470FEE0AB0A353E608457C8A56884635D955C4021366822F5"
                 },
                 "x86_64": {
                     "min_sdk": 24,
                     "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-android-x86_64-1.1.2.apk",
-                    "size_mb": 73.2,
+                    "size_mb": 74.3,
                     "checksum_sha256": "38C0773C6029FC440D8A09704346DA1D7B3F02DF0482D636D4C56FE4C830C615"
                 }
             },
@@ -56,7 +56,7 @@
             },
             "windows": {
                 "download_url": "https://github.com/quickstream0/app-release/releases/download/v1.1.2/quickstream-windows-1.1.2.exe",
-                "size_mb": 41.6,
+                "size_mb": 48.2,
                 "checksum_sha256": "63E0EEE05BF30380EED83C8F9EF5577928C9A9C48B39FC553898573A6EDBAA8F"
             },
             "macos": {
