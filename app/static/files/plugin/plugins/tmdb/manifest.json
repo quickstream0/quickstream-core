@@ -7,7 +7,6 @@
     "authors": [
         "QuickStream Team"
     ],
-    "logoUrl": "assets/tmdb_logo.png",
     "runtime": "fjs",
     "capabilities": [
         "metadata",

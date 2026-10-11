@@ -579,9 +579,9 @@ export async function getStreams(metadata) {
   return {
     providers: [
       {
-        id: 'com.tinyzone',
+        id: 'com.quickstream.plugin.tinyzone',
         name: 'TinyZone',
-        logo: null,
+        logo: 'https://tinyzonetv.app/images/logo.png',
         reliable: mapped.length > 0,
         servers: mapped.map((s) => ({
           id: s.id,
@@ -608,7 +608,7 @@ export async function getStreamSources(metadata, providerId, serverId) {
 
   let server;
   try {
-    server = await pluginManager.call('open-extractors', meta.extractor, [
+    server = await pluginManager.call('com.quickstream.plugin.open-extractors', meta.extractor, [
       { url: embed.url, name: meta.label, id: key },
     ]);
   } catch (e) {
@@ -685,7 +685,7 @@ function serverRank(id) {
 
 async function isExtractorReady(method) {
   try {
-    const okay = await pluginManager.isInstalled('open-extractors');
+    const okay = await pluginManager.isInstalled('com.quickstream.plugin.open-extractors');
     if (okay) return true;
     console.warn('TinyZone: Open Extractors plugin not installed');
     return false;

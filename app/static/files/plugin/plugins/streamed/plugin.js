@@ -720,6 +720,7 @@ export async function getStreams(metadata) {
       {
         id: 'streamed',
         name: 'Streamed',
+        logo: 'https://streamed.st/favicon.png',
         servers, // lazy: no `sources` key — expanded on demand one by one
       },
     ],

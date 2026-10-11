@@ -113,7 +113,7 @@ export async function getStreams(metadata) {
   return {
     providers: [
       {
-        id: 'com.insertunit',
+        id: 'com.quickstream.plugin.insertunit',
         name: 'InsertUnit',
         logo: `${BASE}/favicon.ico`,
         reliable: true,

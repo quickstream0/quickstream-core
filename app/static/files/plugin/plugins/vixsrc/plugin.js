@@ -60,7 +60,7 @@ export async function getStreams(metadata) {
   return {
     providers: [
       {
-        id: 'com.vixsrc',
+        id: 'com.quickstream.plugin.vixsrc',
         name: 'VixSrc',
         logo: `${vixSrcBase}/favicon.ico`,
         reliable: true,

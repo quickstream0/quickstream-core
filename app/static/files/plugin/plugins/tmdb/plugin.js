@@ -830,19 +830,19 @@ export async function getStreams(metadata) {
   const providers = [];
 
   // --- Path 1: VixSrc (most reliable — listed first) --------------------
-  if (await pluginManager.isInstalled('com.vixsrc')) {
+  if (await pluginManager.isInstalled('com.quickstream.plugin.vixsrc')) {
     try {
       const result = await pluginManager.call(
-        'com.vixsrc',
+        'com.quickstream.plugin.vixsrc',
         'getStreams',
         [metadata]
       );
       const vixSrc = (result?.providers || []).find(
-        (p) => p.id === 'com.vixsrc'
+        (p) => p.id === 'com.quickstream.plugin.vixsrc'
       );
       if (vixSrc) {
         providers.push({
-          id: 'com.vixsrc',
+          id: 'com.quickstream.plugin.vixsrc',
           name: 'VixSrc',
           logo: vixSrc.logo ?? null,
           reliable: vixSrc.reliable ?? true,
@@ -864,19 +864,19 @@ export async function getStreams(metadata) {
   // --- Path 2: InsertUnit (direct HLS/DASH, inline servers) ------------
   // Sources arrive fully inline (no lazy expansion needed), so nothing is
   // forwarded from getStreamSources() below for this provider.
-  if (await pluginManager.isInstalled('com.insertunit')) {
+  if (await pluginManager.isInstalled('com.quickstream.plugin.insertunit')) {
     try {
       const result = await pluginManager.call(
-        'com.insertunit',
+        'com.quickstream.plugin.insertunit',
         'getStreams',
         [metadata]
       );
       const insertUnit = (result?.providers || []).find(
-        (p) => p.id === 'com.insertunit'
+        (p) => p.id === 'com.quickstream.plugin.insertunit'
       );
       if (insertUnit) {
         providers.push({
-          id: 'com.insertunit',
+          id: 'com.quickstream.plugin.insertunit',
           name: 'InsertUnit',
           logo: insertUnit.logo ?? null,
           reliable: insertUnit.reliable ?? true,
@@ -894,19 +894,19 @@ export async function getStreams(metadata) {
   }
 
   // --- Path 3: PrimeSrc (lazy servers, real provider) -----------------
-  if (await pluginManager.isInstalled('com.primesrc')) {
+  if (await pluginManager.isInstalled('com.quickstream.plugin.primesrc')) {
     try {
       const result = await pluginManager.call(
-        'com.primesrc',
+        'com.quickstream.plugin.primesrc',
         'getStreams',
         [metadata]
       );
       const primeSrc = (result?.providers || []).find(
-        (p) => p.id === 'com.primesrc'
+        (p) => p.id === 'com.quickstream.plugin.primesrc'
       );
       if (primeSrc) {
         providers.push({
-          id: 'com.primesrc',
+          id: 'com.quickstream.plugin.primesrc',
           name: 'PrimeSrc',
           logo: primeSrc.logo ?? null,
           reliable: primeSrc.reliable ?? true,
@@ -969,10 +969,10 @@ export async function getStreams(metadata) {
  * everything else fall through empty for the player to move on.
  */
 export async function getStreamSources(metadata, providerId, serverId) {
-  if (providerId === 'com.vixsrc') {
+  if (providerId === 'com.quickstream.plugin.vixsrc') {
     try {
       return await pluginManager.call(
-        'com.vixsrc',
+        'com.quickstream.plugin.vixsrc',
         'getStreamSources',
         [metadata, providerId, serverId]
       );
@@ -980,10 +980,10 @@ export async function getStreamSources(metadata, providerId, serverId) {
       console.error('TMDB: VixSrc stream sources failed:', e.message);
     }
   }
-  if (providerId === 'com.primesrc') {
+  if (providerId === 'com.quickstream.plugin.primesrc') {
     try {
       return await pluginManager.call(
-        'com.primesrc',
+        'com.quickstream.plugin.primesrc',
         'getStreamSources',
         [metadata, providerId, serverId]
       );
@@ -992,41 +992,6 @@ export async function getStreamSources(metadata, providerId, serverId) {
     }
   }
   return { sources: [], subtitles: [] };
-}
-
-/** Routes a PrimeWire embed to the right shared extractor host method.
- *  Open Extractors takes the embed ({url, name?, id?}) and returns a full
- *  server ({id, name, sources, subtitles}). */
-async function extractEmbedViaOpenExtractors(embed) {
-  const openExtractorsInstalled =
-    await pluginManager.isInstalled('open-extractors');
-  const sourceName = String(embed.name || '').toLowerCase();
-
-  if (openExtractorsInstalled) {
-    if (sourceName.includes('doodstream')) {
-      return pluginManager.call('open-extractors', 'extractDoodstream', [embed]);
-    }
-    if (sourceName.includes('streamtape')) {
-      return pluginManager.call('open-extractors', 'extractStreamtape', [embed]);
-    }
-    if (sourceName.includes('streamwish')) {
-      return pluginManager.call('open-extractors', 'extractStreamwish', [embed]);
-    }
-  }
-
-  // Unknown host (or no extractors installed) → assume a direct video link.
-  return {
-    id: embed.id,
-    name: embed.name,
-    sources: [
-      {
-        url: embed.url,
-        quality: embed.quality || 'auto',
-        stream_type: 'other',
-      },
-    ],
-    subtitles: [],
-  };
 }
 
 const genres = {

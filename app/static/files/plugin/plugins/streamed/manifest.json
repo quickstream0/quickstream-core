@@ -6,7 +6,7 @@
   "description": "Live sports match catalog from Streamed (football, basketball, American football, hockey, baseball, motor sports, fight nights, tennis, rugby, golf, billiards, AFL, darts, cricket and more). Includes live stream sources and client-side search across the full event catalog.",
   "language": "javascript",
   "authors": ["QuickStream Community"],
-  "logoUrl": "assets/streamed.png",
+  "logoUrl": "https://streamed.st/favicon.png",
   "runtime": "fjs",
   "capabilities": ["metadata", "source", "search"],
   "mediaTypes": ["Sports"],

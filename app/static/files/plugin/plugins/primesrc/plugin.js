@@ -151,7 +151,7 @@ export async function getStreams(metadata) {
   return {
     providers: [
       {
-        id: 'com.primesrc',
+        id: 'com.quickstream.plugin.primesrc',
         name: 'PrimeSrc',
         logo: `${primeSrcBase}/logo.svg`,
         reliable: true,
@@ -226,7 +226,7 @@ export async function getStreamSources(metadata, providerId, serverId) {
   // extractMixdrop + extractDoodstream + extractFilelions).
   let server;
   try {
-    server = await pluginManager.call('open-extractors', extractorName, [
+    server = await pluginManager.call('com.quickstream.plugin.open-extractors', extractorName, [
       { url: embed.link, name: embed.host, id: embed.host_id },
     ]);
   } catch (e) {
