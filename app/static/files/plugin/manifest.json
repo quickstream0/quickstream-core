@@ -8,7 +8,7 @@
     {
       "id": "com.quickstream.plugin.tmdb",
       "name": "TMDb",
-      "version": "2.9.1",
+      "version": "0.0.0",
       "description": "Provides movie and TV show metadata from The Movie Database",
       "language": "javascript",
       "authors": ["QuickStream Team"],
@@ -17,74 +17,77 @@
       "mediaTypes": ["Movies", "Tv Shows", "Anime"],
       "configurable": true,
       "logoUrl": "https://www.quickstream.fyi/static/files/plugin/plugins/tmdb/assets/tmdb_logo.png",
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/tmdb/tmdb.zip"
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/tmdb/tmdb.qsp"
     },
     {
       "id": "com.quickstream.plugin.streamed",
       "name": "Streamed",
-      "version": "1.0.0",
-      "description": "Live sports match catalog from Streamed (football, basketball, American football, hockey, baseball, motor sports, fight nights, tennis, rugby, golf, billiards, AFL, darts, cricket and more). Catalog first — streaming sources arrive in a later phase.",
+      "version": "0.0.0",
+      "description": "Live sports match from Streamed (football, basketball, American football, hockey, baseball, motor sports, fight nights, tennis, rugby, golf, billiards, AFL, darts, cricket and more).",
       "language": "javascript",
       "authors": ["QuickStream Community"],
       "runtime": "fjs",
       "capabilities": ["metadata", "source"],
       "mediaTypes": ["Sports"],
       "configurable": false,
-      "logoUrl": "https://www.quickstream.fyi/static/files/plugin/plugins/streamed/assets/streamed.png",
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/streamed/streamed.zip"
+      "logoUrl": "https://streamed.st/favicon.png",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/streamed/streamed.qsp"
     },
     {
-      "id": "com.primesrc",
+      "id": "com.quickstream.plugin.primesrc",
       "name": "PrimeSrc",
-      "version": "1.10.0",
+      "version": "0.0.0",
       "description": "PrimeSrc movie and TV show provider with embedded server support",
       "language": "javascript",
       "authors": ["Community"],
       "runtime": "fjs",
       "capabilities": ["source"],
       "mediaTypes": ["Movies", "Tv Shows"],
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/primesrc/primesrc.zip"
+      "logoUrl": "https://primesrc.me/logo.svg",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/primesrc/primesrc.qsp"
     },
     {
-      "id": "com.vixsrc",
+      "id": "com.quickstream.plugin.vixsrc",
       "name": "VixSrc",
-      "version": "1.1.0",
+      "version": "0.0.0",
       "description": "VixSrc movie and TV show source provider",
       "language": "javascript",
       "authors": ["Community"],
       "runtime": "fjs",
       "capabilities": ["source"],
       "mediaTypes": ["Movies", "Tv Shows"],
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/vixsrc/vixsrc.zip"
+      "logoUrl": "https://vixsrc.to/favicon.ico",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/vixsrc/vixsrc.qsp"
     },
     {
-      "id": "com.insertunit",
+      "id": "com.quickstream.plugin.insertunit",
       "name": "InsertUnit",
-      "version": "1.1.0",
+      "version": "0.0.0",
       "description": "InsertUnit movie and TV show provider with direct HLS/DASH streams",
       "language": "javascript",
       "authors": ["Community"],
       "runtime": "fjs",
       "capabilities": ["source"],
       "mediaTypes": ["Movies", "Tv Shows"],
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/insertunit/insertunit.zip"
+      "logoUrl": "https://api.insertunit.ws/favicon.ico",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/insertunit/insertunit.qsp"
     },
     {
-      "id": "open-extractors",
+      "id": "com.quickstream.plugin.open-extractors",
       "name": "Open Extractors",
-      "version": "3.2.0",
+      "version": "0.0.0",
       "description": "Extractors for various video hosting services",
       "language": "javascript",
       "authors": ["QuickStream Team"],
       "runtime": "fjs",
       "capabilities": ["tool"],
       "mediaTypes": ["Other"],
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/openextractors/openextractors.zip"
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/openextractors/openextractors.qsp"
     },
     {
-      "id": "com.tinyzone",
+      "id": "com.quickstream.plugin.tinyzone",
       "name": "TinyZone",
-      "version": "1.0.4",
+      "version": "0.0.0",
       "description": "Movies and TV shows from TinyZone with UpCloud + Vidmoly server extraction via Open Extractors.",
       "language": "javascript",
       "authors": ["Community"],
@@ -92,8 +95,8 @@
       "capabilities": ["metadata", "source", "search"],
       "mediaTypes": ["Movies", "Tv Shows"],
       "configurable": false,
-      "logoUrl": "https://www.quickstream.fyi/static/files/plugin/plugins/tinyzone/assets/tinyzone.png",
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/tinyzone/tinyzone.zip"
+      "logoUrl": "https://tinyzonetv.app/images/logo.png",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/tinyzone/tinyzone.qsp"
     }
   ]
 }

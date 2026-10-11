@@ -1,0 +1,281 @@
+{
+    "id": "com.quickstream.plugin.tmdb",
+    "name": "TMDb",
+    "version": "2.9.1",
+    "description": "Provides movie and TV show metadata from The Movie Database",
+    "language": "javascript",
+    "authors": [
+        "QuickStream Team"
+    ],
+    "logoUrl": "assets/tmdb_logo.png",
+    "runtime": "fjs",
+    "capabilities": [
+        "metadata",
+        "source",
+        "search"
+    ],
+    "mediaTypes": [
+        "Movies",
+        "Tv Shows",
+        "Anime"
+    ],
+    "defaultCardOrientation": "portrait",
+    "searchHint": "Search for Movies & TV Shows",
+    "methods": {
+        "home": [
+            "getHomeContent"
+        ],
+        "search": [
+            "search"
+        ],
+        "details": [
+            "getDetails"
+        ],
+        "more": [
+            "getMediaItems"
+        ],
+        "season": [
+            "getSeasonEpisodes"
+        ],
+        "source": [
+            "getStreams",
+            "getStreamSources"
+        ]
+    },
+    "configurable": true,
+    "requireConfiguration": false,
+    "configSchema": {
+        "fields": [
+            {
+                "key": "language",
+                "label": "Language",
+                "type": "select",
+                "default": "Default",
+                "options": [
+                    "Default",
+                    "af-ZA",
+                    "ar-AE",
+                    "ar-BH",
+                    "ar-EG",
+                    "ar-IQ",
+                    "ar-JO",
+                    "ar-LY",
+                    "ar-MA",
+                    "ar-QA",
+                    "ar-SA",
+                    "ar-TD",
+                    "ar-YE",
+                    "be-BY",
+                    "bg-BG",
+                    "bn-BD",
+                    "bn-IN",
+                    "br-FR",
+                    "ca-AD",
+                    "ca-ES",
+                    "ch-GU",
+                    "cs-CZ",
+                    "cy-GB",
+                    "da-DK",
+                    "de-AT",
+                    "de-CH",
+                    "de-DE",
+                    "el-CY",
+                    "el-GR",
+                    "en-AG",
+                    "en-AU",
+                    "en-BB",
+                    "en-BZ",
+                    "en-CA",
+                    "en-CM",
+                    "en-GB",
+                    "en-GG",
+                    "en-GH",
+                    "en-GI",
+                    "en-GY",
+                    "en-IE",
+                    "en-JM",
+                    "en-KE",
+                    "en-LC",
+                    "en-MW",
+                    "en-NZ",
+                    "en-PG",
+                    "en-TC",
+                    "en-US",
+                    "en-ZM",
+                    "en-ZW",
+                    "eo-EO",
+                    "es-AR",
+                    "es-CL",
+                    "es-DO",
+                    "es-EC",
+                    "es-ES",
+                    "es-GQ",
+                    "es-GT",
+                    "es-HN",
+                    "es-MX",
+                    "es-NI",
+                    "es-PA",
+                    "es-PE",
+                    "es-PY",
+                    "es-SV",
+                    "es-UY",
+                    "et-EE",
+                    "eu-ES",
+                    "fa-IR",
+                    "fi-FI",
+                    "fr-BF",
+                    "fr-CA",
+                    "fr-CD",
+                    "fr-CI",
+                    "fr-FR",
+                    "fr-GF",
+                    "fr-GP",
+                    "fr-MC",
+                    "fr-ML",
+                    "fr-MU",
+                    "fr-PF",
+                    "ga-IE",
+                    "gd-GB",
+                    "gl-ES",
+                    "he-IL",
+                    "hi-IN",
+                    "hr-HR",
+                    "hu-HU",
+                    "hy-AM",
+                    "id-ID",
+                    "it-IT",
+                    "it-VA",
+                    "ja-JP",
+                    "ka-GE",
+                    "kk-KZ",
+                    "kn-IN",
+                    "ko-KR",
+                    "ku-TR",
+                    "ky-KG",
+                    "lt-LT",
+                    "lv-LV",
+                    "ml-IN",
+                    "mr-IN",
+                    "ms-MY",
+                    "ms-SG",
+                    "nb-NO",
+                    "ne-NP",
+                    "nl-BE",
+                    "nl-NL",
+                    "no-NO",
+                    "oc-FR",
+                    "pa-IN",
+                    "pl-PL",
+                    "pt-AO",
+                    "pt-BR",
+                    "pt-MZ",
+                    "pt-PT",
+                    "ro-MD",
+                    "ro-RO",
+                    "ru-RU",
+                    "si-LK",
+                    "sk-SK",
+                    "sl-SI",
+                    "so-SO",
+                    "sq-AL",
+                    "sq-XK",
+                    "sr-ME",
+                    "sr-RS",
+                    "sv-SE",
+                    "sw-TZ",
+                    "ta-IN",
+                    "te-IN",
+                    "th-TH",
+                    "tl-PH",
+                    "tr-TR",
+                    "uk-UA",
+                    "ur-PK",
+                    "uz-UZ",
+                    "vi-VN",
+                    "zh-CN",
+                    "zh-HK",
+                    "zh-SG",
+                    "zh-TW",
+                    "zu-ZA"
+                ],
+                "description": "Metadata language. Non-English locales also prefer matching poster/logo artwork.",
+                "category": "Content"
+            },
+            {
+                "key": "include_adult",
+                "label": "Include Adult Content",
+                "type": "boolean",
+                "default": false,
+                "category": "Content"
+            },
+            {
+                "key": "append_to_response",
+                "label": "Append Metadata",
+                "type": "multiselect",
+                "default": [
+                    "credits",
+                    "videos",
+                    "similar",
+                    "recommendations"
+                ],
+                "options": [
+                    "credits",
+                    "videos",
+                    "similar",
+                    "recommendations",
+                    "images",
+                    "translations"
+                ],
+                "category": "Metadata"
+            },
+            {
+                "key": "cache_enabled",
+                "label": "Enable Caching",
+                "type": "boolean",
+                "default": true,
+                "category": "Performance"
+            },
+            {
+                "key": "cache_duration",
+                "label": "Cache Duration (hours)",
+                "type": "number",
+                "default": 24,
+                "category": "Performance"
+            }
+        ]
+    },
+    "dependencies": [
+        {
+            "id": "com.quickstream.plugin.open-extractors",
+            "version": ">=0.0.0",
+            "methods": [
+                "extractDoodstream",
+                "extractStreamtape",
+                "extractStreamwish"
+            ]
+        },
+        {
+            "id": "com.quickstream.plugin.vixsrc",
+            "version": ">=0.0.0",
+            "methods": [
+                "getStreams",
+                "getStreamSources"
+            ]
+        },
+        {
+            "id": "com.quickstream.plugin.insertunit",
+            "version": ">=0.0.0",
+            "methods": [
+                "getStreams"
+            ]
+        },
+        {
+            "id": "com.quickstream.plugin.primesrc",
+            "version": ">=0.0.0",
+            "methods": [
+                "getStreams",
+                "getStreamSources"
+            ]
+        }
+    ]
+}

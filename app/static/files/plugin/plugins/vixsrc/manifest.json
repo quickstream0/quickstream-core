@@ -1,0 +1,31 @@
+{
+    "id": "com.quickstream.plugin.vixsrc",
+    "name": "VixSrc",
+    "version": "0.0.0",
+    "description": "VixSrc movie and TV show source provider",
+    "language": "javascript",
+    "authors": ["Community"],
+    "runtime": "fjs",
+    "capabilities": ["source"],
+    "methods": {
+        "source": ["getStreams", "getStreamSources"]
+    },
+    "configurable": true,
+    "configSchema": {
+        "fields": [
+            {
+                "key": "lang",
+                "label": "Audio Language",
+                "type": "select",
+                "default": "en",
+                "options": [
+                    "it",
+                    "en",
+                    "ru",
+                    "es"
+                ],
+                "category": "Playback"
+            }
+        ]
+    }
+}

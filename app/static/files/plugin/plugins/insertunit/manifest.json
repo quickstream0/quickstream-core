@@ -1,0 +1,13 @@
+{
+    "id": "com.quickstream.plugin.insertunit",
+    "name": "InsertUnit",
+    "version": "0.0.0",
+    "description": "InsertUnit movie and TV show provider with direct HLS/DASH streams",
+    "language": "javascript",
+    "authors": ["Community"],
+    "runtime": "fjs",
+    "capabilities": ["source"],
+    "methods": {
+        "source": ["getStreams"]
+    }
+}

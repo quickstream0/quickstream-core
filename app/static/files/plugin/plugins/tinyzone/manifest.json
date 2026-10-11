@@ -1,0 +1,31 @@
+{
+    "id": "com.quickstream.plugin.tinyzone",
+    "name": "TinyZone",
+    "version": "0.0.0",
+    "description": "Movies and TV shows from TinyZone with UpCloud + Vidmoly server extraction via Open Extractors.",
+    "language": "javascript",
+    "authors": ["Community"],
+    "runtime": "fjs",
+    "capabilities": ["metadata", "source", "search"],
+    "mediaTypes": [
+        "Movies",
+        "Tv Shows"
+    ],
+    "methods": {
+        "home": ["getHomeContent"],
+        "details": ["getDetails"],
+        "more": ["getMediaItems"],
+        "search": ["search"],
+        "source": ["getStreams", "getStreamSources"]
+    },
+    "dependencies": [
+        {
+            "id": "com.quickstream.plugin.open-extractors",
+            "version": ">=0.0.0",
+            "methods": [
+                "extractUpcloud",
+                "extractVidmoly"
+            ]
+        }
+    ]
+}

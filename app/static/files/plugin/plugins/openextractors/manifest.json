@@ -1,0 +1,40 @@
+{
+    "id": "com.quickstream.plugin.open-extractors",
+    "name": "Open Extractors",
+    "version": "0.0.0",
+    "description": "Extractors for various video hosting services",
+    "language": "javascript",
+    "authors": ["QuickStream Team"],
+    "runtime": "fjs",
+    "capabilities": ["tool"],
+    "methods": {
+        "exposed": [
+            "extractDoodstream",
+            "extractStreamtape",
+            "extractStreamwish",
+            "extractMixdrop",
+            "extractFilelions",
+            "extractUpcloud",
+            "extractVidmoly"
+        ]
+    },
+    "configurable": true,
+    "configSchema": {
+        "fields": [
+            {
+                "key": "user_agent",
+                "label": "User Agent",
+                "type": "text",
+                "default": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "category": "Network"
+            },
+            {
+                "key": "timeout",
+                "label": "Request Timeout (seconds)",
+                "type": "number",
+                "default": 30,
+                "category": "Network"
+            }
+        ]
+    }
+}

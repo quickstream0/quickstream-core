@@ -1,0 +1,25 @@
+{
+    "id": "com.quickstream.plugin.primesrc",
+    "name": "PrimeSrc",
+    "version": "0.0.0",
+    "description": "A video streaming API with a massive library of Movies and TV series.",
+    "language": "javascript",
+    "authors": ["Community"],
+    "runtime": "fjs",
+    "capabilities": ["source"],
+    "methods": {
+        "source": ["getStreams", "getStreamSources"]
+    },
+    "dependencies": [
+        {
+            "id": "com.quickstream.plugin.open-extractors",
+            "version": ">=0.0.0",
+            "methods": [
+                "extractStreamwish",
+                "extractMixdrop",
+                "extractDoodstream",
+                "extractFilelions"
+            ]
+        }
+    ]
+}
