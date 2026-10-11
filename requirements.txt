@@ -7,7 +7,7 @@ Flask-Bcrypt
 python-dotenv
 requests
 Flask-Migrate
-psycopg2-binary
+psycopg[binary]
 gunicorn
 eventlet
 flask-jwt-extended
