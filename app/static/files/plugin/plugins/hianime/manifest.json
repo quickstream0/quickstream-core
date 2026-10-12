@@ -1,0 +1,32 @@
+{
+    "id": "com.quickstream.plugin.hianime",
+    "name": "HiAnime",
+    "version": "0.0.0",
+    "description": "Anime movies and series from HiAnime with MegaPlay (Ryu) stream extraction via Open Extractors.",
+    "language": "javascript",
+    "authors": ["Community"],
+    "runtime": "fjs",
+    "capabilities": ["metadata", "source", "search"],
+    "mediaTypes": [
+        "Anime"
+    ],
+    "defaultCardOrientation": "portrait",
+    "searchHint": "Search anime on HiAnime",
+    "methods": {
+        "home": ["getHomeContent"],
+        "search": ["search"],
+        "details": ["getDetails"],
+        "more": ["getMediaItems"],
+        "season": ["getSeasonEpisodes"],
+        "source": ["getStreams", "getStreamSources"]
+    },
+    "dependencies": [
+        {
+            "id": "com.quickstream.plugin.open-extractors",
+            "version": ">=0.0.0",
+            "methods": [
+                "extractMegaplay"
+            ]
+        }
+    ]
+}

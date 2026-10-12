@@ -1,0 +1,38 @@
+{
+    "id": "com.quickstream.plugin.wlext",
+    "name": "Wlext",
+    "version": "0.0.0",
+    "description": "Movies and TV shows metadata from Wlext (wlext.is).",
+    "language": "javascript",
+    "authors": [
+        "Community"
+    ],
+    "runtime": "fjs",
+    "capabilities": [
+        "metadata",
+        "search"
+    ],
+    "mediaTypes": [
+        "Movies",
+        "Tv Shows"
+    ],
+    "defaultCardOrientation": "portrait",
+    "searchHint": "Search movies & TV shows on Wlext",
+    "methods": {
+        "home": [
+            "getHomeContent"
+        ],
+        "search": [
+            "search"
+        ],
+        "details": [
+            "getDetails"
+        ],
+        "more": [
+            "getMediaItems"
+        ],
+        "season": [
+            "getSeasonEpisodes"
+        ]
+    }
+}

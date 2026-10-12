@@ -1,0 +1,33 @@
+{
+    "id": "com.quickstream.plugin.dramacool",
+    "name": "DramaCool",
+    "version": "0.0.0",
+    "description": "Asian dramas and K-shows from DramaCool with vidbasic + kisskh server extraction via Open Extractors.",
+    "language": "javascript",
+    "authors": ["Community"],
+    "runtime": "fjs",
+    "capabilities": ["metadata", "source", "search"],
+    "mediaTypes": [
+        "Tv Shows"
+    ],
+    "defaultCardOrientation": "portrait",
+    "searchHint": "Search dramas and shows on DramaCool",
+    "methods": {
+        "home": ["getHomeContent"],
+        "search": ["search"],
+        "details": ["getDetails"],
+        "more": ["getMediaItems"],
+        "season": ["getSeasonEpisodes"],
+        "source": ["getStreams", "getStreamSources"]
+    },
+    "dependencies": [
+        {
+            "id": "com.quickstream.plugin.open-extractors",
+            "version": ">=0.0.0",
+            "methods": [
+                "extractVidbasic",
+                "extractKisskh"
+            ]
+        }
+    ]
+}

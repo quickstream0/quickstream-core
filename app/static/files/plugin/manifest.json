@@ -82,6 +82,7 @@
       "runtime": "fjs",
       "capabilities": ["tool"],
       "mediaTypes": ["Other"],
+      "logoUrl": "https://www.quickstream.fyi/static/images/logos/logo_64.png",
       "url": "https://www.quickstream.fyi/static/files/plugin/plugins/openextractors/openextractors.qsp"
     },
     {
@@ -97,6 +98,48 @@
       "configurable": false,
       "logoUrl": "https://tinyzonetv.app/images/logo.png",
       "url": "https://www.quickstream.fyi/static/files/plugin/plugins/tinyzone/tinyzone.qsp"
+    },
+    {
+      "id": "com.quickstream.plugin.wlext",
+      "name": "Wlext",
+      "version": "0.0.0",
+      "description": "Movies and TV shows metadata from Wlext (wlext.is).",
+      "language": "javascript",
+      "authors": ["Community"],
+      "runtime": "fjs",
+      "capabilities": ["metadata", "search"],
+      "mediaTypes": ["Movies", "Tv Shows"],
+      "configurable": false,
+      "logoUrl": "https://wlext.is/favicon.ico",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/wlext/wlext.qsp"
+    },
+    {
+      "id": "com.quickstream.plugin.dramacool",
+      "name": "DramaCool",
+      "version": "0.0.0",
+      "description": "Asian dramas and K-shows from DramaCool with vidbasic + kisskh server extraction via Open Extractors.",
+      "language": "javascript",
+      "authors": ["Community"],
+      "runtime": "fjs",
+      "capabilities": ["metadata", "source", "search"],
+      "mediaTypes": ["Tv Shows"],
+      "configurable": false,
+      "logoUrl": "https://dramacool9.com.ro/favicon.ico",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/dramacool/dramacool.qsp"
+    },
+    {
+      "id": "com.quickstream.plugin.hianime",
+      "name": "HiAnime",
+      "version": "0.0.0",
+      "description": "Anime movies and series from HiAnime with MegaPlay (Ryu) stream extraction via Open Extractors.",
+      "language": "javascript",
+      "authors": ["Community"],
+      "runtime": "fjs",
+      "capabilities": ["metadata", "source", "search"],
+      "mediaTypes": ["Anime"],
+      "configurable": false,
+      "logoUrl": "https://hianime.ms/favicon.ico",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/hianime/hianime.qsp"
     }
   ]
 }
