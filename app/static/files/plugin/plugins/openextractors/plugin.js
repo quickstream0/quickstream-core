@@ -910,6 +910,13 @@ const AES_SBOX = [
 ];
 const AES_RCON = [0x00,0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x1b,0x36];
 
+// Inverse S-box, derived from the forward table so there is one source of truth.
+const AES_INV_SBOX = (() => {
+  const inv = new Array(256);
+  for (let i = 0; i < 256; i++) inv[AES_SBOX[i]] = i;
+  return inv;
+})();
+
 /** Decrypts AES-256-GCM ciphertext bytes via CTR (counter starts at 2). */
 function aes256Ctr(key, iv, data) {
   const { words, rounds } = aesExpandKey(key);
@@ -1001,6 +1008,55 @@ function gfMul(a, b) {
     b >>= 1;
   }
   return p & 0xff;
+}
+
+function aesInvMixColumns(state) {
+  for (let col = 0; col < 4; col++) {
+    const a0 = state[4 * col];
+    const a1 = state[4 * col + 1];
+    const a2 = state[4 * col + 2];
+    const a3 = state[4 * col + 3];
+    state[4 * col] = gfMul(a0, 14) ^ gfMul(a1, 11) ^ gfMul(a2, 13) ^ gfMul(a3, 9);
+    state[4 * col + 1] = gfMul(a0, 9) ^ gfMul(a1, 14) ^ gfMul(a2, 11) ^ gfMul(a3, 13);
+    state[4 * col + 2] = gfMul(a0, 13) ^ gfMul(a1, 9) ^ gfMul(a2, 14) ^ gfMul(a3, 11);
+    state[4 * col + 3] = gfMul(a0, 11) ^ gfMul(a1, 13) ^ gfMul(a2, 9) ^ gfMul(a3, 14);
+  }
+}
+
+/** Inverse AES cipher: one 16-byte block. */
+function aesDecryptBlock(input, words, rounds) {
+  const s = input.slice();
+  aesAddKey(s, words, rounds);
+  for (let round = rounds - 1; round > 0; round--) {
+    const t = s.slice();
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col < 4; col++) s[4 * col + row] = t[4 * ((col - row + 4) % 4) + row];
+    }
+    for (let i = 0; i < 16; i++) s[i] = AES_INV_SBOX[s[i]];
+    aesAddKey(s, words, round);
+    aesInvMixColumns(s);
+  }
+  const t = s.slice();
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) s[4 * col + row] = t[4 * ((col - row + 4) % 4) + row];
+  }
+  for (let i = 0; i < 16; i++) s[i] = AES_INV_SBOX[s[i]];
+  aesAddKey(s, words, 0);
+  return s;
+}
+
+/** AES-CBC decryption (PKCS#7 padding left in place; callers trim as needed). */
+function aes256CbcDecrypt(key, iv, data) {
+  const { words, rounds } = aesExpandKey(key);
+  const out = new Uint8Array(data.length);
+  let prev = iv.slice();
+  for (let offset = 0; offset < data.length; offset += 16) {
+    const block = Array.from(data.slice(offset, offset + 16));
+    const decrypted = aesDecryptBlock(block, words, rounds);
+    for (let i = 0; i < 16; i++) out[offset + i] = decrypted[i] ^ prev[i];
+    prev = block;
+  }
+  return out;
 }
 
 // --- base64url / utf-8 ------------------------------------------------------
@@ -1288,4 +1344,268 @@ export async function extractGDrive(embed) {
     ]);
   }
   throw new Error(`GDrive extraction failed: no file id in ${e.url}`);
+}
+
+// ---------------------------------------------------------------------------
+// VidBasic (vidbasic.top) — AES-256-CBC player
+// ---------------------------------------------------------------------------
+
+// Vidbasic's `/embed/<id>` page renders a `/3rdplayer.html?key=<cipher>&id=<id>
+// &sub=<cipher>` frame. Both `key` and `sub` are URL-encoded base64 blobs of
+// AES-256-CBC ciphertext; `key` decrypts to the HLS manifest and `sub` to a
+// caption track. The key/IV are hard-coded in the player, so the whole thing is
+// reproducible with the pure-JS AES core above.
+const VIDBASIC_KEY = '94588293375053432799222445521289';
+const VIDBASIC_IV = '5259228356829423';
+
+// megaplay.buzz hard-codes these in its player; the literal is shorter than the
+// AES-256 / AES-CBC block size, so it is zero-padded to 32 / 16 bytes.
+const MEGAPLAY_KEY = 'i?LMTAx0Q6,:}50U';
+const MEGAPLAY_IV = "W0;27ToaUpl_P%'c";
+
+/** Zero-pads an ascii string to `length` bytes (AES key/IV sizing). */
+function padKeyBytes(str, length) {
+  const out = new Uint8Array(length);
+  out.set(asciiBytes(str).subarray(0, length));
+  return out;
+}
+
+/** Removes PKCS#7 padding (the pure-JS AES core leaves it in place). */
+function stripPkcs7(bytes) {
+  if (!bytes || bytes.length === 0) return bytes;
+  const pad = bytes[bytes.length - 1];
+  if (pad >= 1 && pad <= 16 && pad <= bytes.length) {
+    let valid = true;
+    for (let i = bytes.length - pad; i < bytes.length; i++) {
+      if (bytes[i] !== pad) { valid = false; break; }
+    }
+    if (valid) return bytes.subarray(0, bytes.length - pad);
+  }
+  return bytes;
+}
+
+/** Decrypts a megaplay base64url `enc` blob → plain utf-8 string. */
+function megaplayDecrypt(cipher) {
+  if (!cipher) return '';
+  const bytes = base64UrlToBytes(cipher);
+  const plain = aes256CbcDecrypt(
+    padKeyBytes(MEGAPLAY_KEY, 32),
+    padKeyBytes(MEGAPLAY_IV, 16),
+    bytes
+  );
+  return utf8Decode(stripPkcs7(plain)).replace(/[\s\u0000]+$/, '').trim();
+}
+
+/** Decodes one `?name=` query parameter from a url (URL-decoded, or ''). */
+function queryParam(url, name) {
+  const match = String(url || '').match(
+    new RegExp(`[?&]${name}=([^&]*)`)
+  );
+  return match ? decodeURIComponent(match[1]) : '';
+}
+
+/** Decrypts a base64 vidbasic blob (url-encoded) → trimmed utf-8 string. */
+function vidbasicDecrypt(cipher) {
+  if (!cipher) return '';
+  const bytes = base64UrlToBytes(decodeURIComponent(cipher));
+  const plain = aes256CbcDecrypt(
+    asciiBytes(VIDBASIC_KEY),
+    asciiBytes(VIDBASIC_IV),
+    bytes
+  );
+  // PKCS#7 padding + occasional trailing newlines survive decryption.
+  return utf8Decode(stripPkcs7(plain)).replace(/[\s\u0000]+$/, '').trim();
+}
+
+/**
+ * Extract a vidbasic.top stream. The embed page hosts a `/3rdplayer.html` frame
+ * whose `key` is an AES-256-CBC blob hiding the HLS playlist (`sub` hides the
+ * English subtitle track).
+ *
+ * @param {{url: string, id?: string, name?: string}} embed - vidbasic embed (or bare url)
+ * @returns {Promise<{id: string, name: string, sources: Array, subtitles: Array}>}
+ */
+export async function extractVidbasic(embed) {
+  const e = normalizeEmbed(embed);
+  if (!e.url) throw new Error('No embed url given');
+
+  // The dramacool embed (`/embed/<id>`) embeds the player; accept a direct
+  // 3rdplayer url too.
+  let playerUrl = /3rdplayer\.html/i.test(e.url) ? e.url : '';
+  if (!playerUrl) {
+    const origin = originOf(e.url) || 'https://vidbasic.top';
+    const page = await fetchWithRetry(e.url, 3, { Referer: `${origin}/` });
+    const html = typeof page?.data === 'string' ? page.data : '';
+    playerUrl =
+      (html.match(/data-video=["']([^"']+)["']/) || [])[1] ||
+      (html.match(/(https?:\/\/[^"']*3rdplayer\.html[^"']*)/) || [])[1] ||
+      '';
+  }
+  if (!playerUrl) throw new Error(`Vidbasic: no player url in ${e.url}`);
+
+  const streamUrl = vidbasicDecrypt(queryParam(playerUrl, 'key'));
+  if (!/^https?:\/\//i.test(streamUrl)) {
+    throw new Error('Vidbasic: could not decrypt stream url');
+  }
+
+  const sources = [
+    {
+      url: streamUrl,
+      quality: 'auto',
+      label: 'VidBasic',
+      stream_type: /\.m3u8|hls/i.test(streamUrl) ? 'hls' : streamTypeOf(streamUrl),
+    },
+  ];
+
+  const subtitles = [];
+  const subUrl = vidbasicDecrypt(queryParam(playerUrl, 'sub'));
+  if (/^https?:\/\//i.test(subUrl)) {
+    subtitles.push({ label: 'English', url: subUrl, language: 'en', format: 'vtt' });
+  }
+
+  return asServer(e, 'VidBasic', sources, subtitles);
+}
+
+/**
+ * Extract a kisskh (megaplay) stream. The embed page carries a
+ * `<script id="player-payload" type="application/json">` blob whose `source` is
+ * the HLS playlist and whose `tracks` are subtitle files. The playlist itself
+ * needs this host as Referer.
+ *
+ * @param {{url: string, id?: string, name?: string}} embed - kisskh embed (or bare url)
+ * @returns {Promise<{id: string, name: string, sources: Array, subtitles: Array}>}
+ */
+export async function extractKisskh(embed) {
+  const e = normalizeEmbed(embed);
+  if (!e.url) throw new Error('No embed url given');
+
+  const origin = originOf(e.url) || 'https://kisskh.megaplay.su';
+  const page = await fetchWithRetry(e.url, 3, { Referer: `${origin}/` });
+  const html = typeof page?.data === 'string' ? page.data : '';
+
+  const match = html.match(
+    /<script[^>]*id=["']player-payload["'][^>]*>([\s\S]*?)<\/script>/i
+  );
+  if (!match) throw new Error(`Kisskh: no player payload in ${e.url}`);
+
+  let payload;
+  try {
+    payload = JSON.parse(match[1]);
+  } catch (_) {
+    throw new Error('Kisskh: invalid player payload');
+  }
+
+  const streamUrl = payload?.source || payload?.file;
+  if (!streamUrl) throw new Error('Kisskh: no source in payload');
+
+  const sources = [
+    {
+      url: streamUrl,
+      quality: 'auto',
+      label: 'Kisskh',
+      stream_type: /\.m3u8|hls/i.test(streamUrl) ? 'hls' : streamTypeOf(streamUrl),
+      headers: { Referer: `${origin}/` },
+      headers_required: true,
+    },
+  ];
+
+  const subtitles = (Array.isArray(payload.tracks) ? payload.tracks : [])
+    .filter((t) => t && typeof (t.file || t.url) === 'string' && (t.file || t.url))
+    .map((t) => {
+      const url = t.file || t.url;
+      return {
+        label: t.label || t.language || 'Subtitle',
+        url,
+        language: t.language ? String(t.language).toLowerCase() : null,
+        format: /\.srt(?:[?#]|$)/i.test(url) ? 'srt' : 'vtt',
+      };
+    });
+
+  return asServer(e, 'Kisskh', sources, subtitles);
+}
+
+/**
+ * Extract a megaplay.buzz stream (the HiAnime "Ryu"/backup server). The embed
+ * page carries a numeric file id (`data-id` / `data-mediaid`); GET
+ * `/stream/getSources?id=<fileId>` returns `enc`, a base64url AES-256-CBC blob
+ * (key/IV hard-coded in the player) that decrypts to `{ file: "<hls>" }`, plus
+ * `tracks` caption files. The playlist host checks the Referer, so the source
+ * carries `Referer: <megaplay origin>/`.
+ *
+ * @param {{url: string, id?: string, name?: string}} embed - megaplay embed (or bare url)
+ * @returns {Promise<{id: string, name: string, sources: Array, subtitles: Array}>}
+ */
+export async function extractMegaplay(embed) {
+  const e = normalizeEmbed(embed);
+  if (!e.url) throw new Error('No embed url given');
+
+  const origin = originOf(e.url) || 'https://megaplay.buzz';
+  const referer = `${origin}/`;
+
+  const page = await fetchWithRetry(e.url, 3, { Referer: referer });
+  const html = typeof page?.data === 'string' ? page.data : '';
+  const fileId =
+    (html.match(/data-id=["'](\d+)["']/) || [])[1] ||
+    (html.match(/data-mediaid=["'](\d+)["']/) || [])[1] ||
+    '';
+  if (!fileId) throw new Error(`Megaplay: no file id in ${e.url}`);
+
+  const res = await fetchWithRetry(
+    `${origin}/stream/getSources?id=${fileId}`,
+    3,
+    { Referer: `${origin}/`, 'X-Requested-With': 'XMLHttpRequest' }
+  );
+  let payload = res?.data;
+  if (typeof payload === 'string') {
+    try {
+      payload = JSON.parse(payload);
+    } catch (_) {
+      throw new Error('Megaplay: invalid getSources payload');
+    }
+  }
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('Megaplay: empty getSources payload');
+  }
+
+  // Preferred path: `enc` is AES-256-CBC and hides the HLS manifest. Older
+  // responses occasionally carry a plaintext `file`.
+  let streamUrl = '';
+  if (typeof payload.enc === 'string' && payload.enc) {
+    try {
+      const decoded = JSON.parse(megaplayDecrypt(payload.enc));
+      streamUrl = decoded?.file || '';
+    } catch (_) {
+      streamUrl = '';
+    }
+  }
+  if (!streamUrl && typeof payload.file === 'string') streamUrl = payload.file;
+  if (!/^https?:\/\//i.test(streamUrl)) {
+    throw new Error('Megaplay: could not resolve stream url');
+  }
+
+  const sources = [
+    {
+      url: streamUrl,
+      quality: 'auto',
+      label: 'MegaPlay',
+      stream_type: /\.m3u8|hls/i.test(streamUrl) ? 'hls' : streamTypeOf(streamUrl),
+      headers: { Referer: `${origin}/` },
+      headers_required: true,
+    },
+  ];
+
+  const subtitles = (Array.isArray(payload.tracks) ? payload.tracks : [])
+    .filter((t) => t && typeof (t.file || t.url) === 'string' && (t.file || t.url))
+    .map((t) => {
+      const url = t.file || t.url;
+      const label = t.label || t.language || 'Subtitle';
+      return {
+        label,
+        url,
+        language: String(label).split(/[\s(/]/)[0].toLowerCase() || null,
+        format: /\.srt(?:[?#]|$)/i.test(url) ? 'srt' : 'vtt',
+      };
+    });
+
+  return asServer(e, 'MegaPlay', sources, subtitles);
 }

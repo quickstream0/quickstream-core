@@ -15,7 +15,10 @@
             "extractMixdrop",
             "extractFilelions",
             "extractUpcloud",
-            "extractVidmoly"
+            "extractVidmoly",
+            "extractVidbasic",
+            "extractKisskh",
+            "extractMegaplay"
         ]
     },
     "configurable": true,
