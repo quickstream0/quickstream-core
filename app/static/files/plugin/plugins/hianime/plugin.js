@@ -2,17 +2,21 @@
 //
 // Metadata + source provider for https://hianime.ms (an anime catalogue). The
 // site is server-rendered HTML (cards, details and watch pages), so every part
-// of the catalogue is scraped from those pages:
+// of the catalogue is scraped from those pages. The 2026 "hianimev2" template
+// uses `hk-` prefixed classes throughout:
 //
 //   • home            → a fixed set of catalogue rows (/top-airing, /most-popular,
 //                        /updates, /movies, /tv, /most-favorite), each paginating
 //                        via ?page=N
-//   • listings        → /<path>?page=N card grids (.flw-item)
+//   • listings        → /<path>?page=N card grids (`article.hk-tile`), 24 per page
 //   • search          → /search?q=<query> (single page, no pagination)
-//   • details         → /details/<slug>-<hash> (.anisc-info + synopsis)
-//   • episodes        → the watch page's #episodes-list (.ws-ep anchors)
-//   • streams         → the "Ryu" (MegaPlay) server on the watch page, whose
-//                        embed is handed to Open Extractors (extractMegaplay).
+//   • details         → /details/<slug>-<hash> (schema.org JSON-LD + `.hk-facts`
+//                        "At a glance" list + `.hk-facts__genres`)
+//   • episodes        → the details page's `.hk-ep` anchors, grouped by the site's
+//                        `data-range` buckets ("Episodes 1–100", …)
+//   • streams         → the "Ryu" (MegaPlay) server, resolved from the watch page's
+//                        inline `data-hk-watch` config (`al` = AniList id) and
+//                        handed to Open Extractors (extractMegaplay).
 //
 // Each title has several servers (Ryu, Volt, Warp, Ayame). Only Ryu/MegaPlay
 // has a plain-HTTP extraction path (getSources + an AES-256-CBC blob); Volt
@@ -20,16 +24,17 @@
 // request-signature checks and are intentionally not served — the same call
 // made for TinyZone's Videasy server.
 //
-// Every title is modelled as `tv` or `movie` (from the card's data-pf-ref
-// prefix, or the details page's Format / breadcrumb). Long-running series are
-// grouped into the site's own episode ranges ("Episodes 1–100", …), surfaced
-// as seasons so the player can page through 1000+ episode shows.
+// Every title is modelled as `tv` or `movie` (from the details JSON-LD type /
+// the card's `data-pf-ref` prefix / format tag). Long-running series are
+// grouped into the site's own episode ranges, surfaced as seasons so the player
+// can page through 1000+ episode shows.
 
 const BASE = 'https://hianime.ms';
 const PLUGIN_ID = 'com.quickstream.plugin.hianime';
 const OFFSITE_PLUGIN = 'com.quickstream.plugin.open-extractors';
 
-// MegaPlay's embed host (`var _hAni = atob('…')` on the watch page).
+// MegaPlay's embed host. The watch page's `data-hk-watch` config carries the
+// AniList id (`al`); MegaPlay still serves `/stream/ani/<al>/<ep>/<lang>`.
 const MEGAPLAY_ORIGIN = 'https://megaplay.buzz';
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
@@ -172,48 +177,45 @@ function parseCards(html) {
   const source = typeof html === 'string' ? html : '';
   const out = [];
   const seen = new Set();
-  const parts = source.split('class="flw-item"');
-  for (let i = 1; i < parts.length; i++) {
-    const block = parts[i];
-    const hrefMatch = block.match(/href="[^"]*\/details\/([^"]+)"/);
+  const re = /<article\b[^>]*class="[^"]*\bhk-tile\b[^"]*"[^>]*>([\s\S]*?)<\/article>/gi;
+  let block;
+  while ((block = re.exec(source))) {
+    const body = block[1];
+    const hrefMatch = body.match(/href="[^"]*\/details\/([^"]+)"/);
     if (!hrefMatch) continue;
     const slug = slugOf(hrefMatch[1]);
     if (!slug || seen.has(slug)) continue;
     seen.add(slug);
 
-    const ref = (block.match(/data-pf-ref="([sm])\d+"/) || [])[1];
-    const mediaType = ref === 'm' ? 'movie' : 'tv';
+    const ref = (body.match(/data-pf-ref="([sm])\d+"/) || [])[1];
 
-    const imgTag = (block.match(/<img[^>]*film-poster-img[^>]*>/i) || [])[0] || '';
+    const imgTag = (body.match(/<img[^>]*>/i) || [])[0] || '';
     let poster = (imgTag.match(/\bsrc="([^"]+)"/) || [])[1] || null;
     if (!poster || /no-poster|placeholder/i.test(poster)) {
       poster = (imgTag.match(/data-src="([^"]+)"/) || [])[1] || poster;
     }
     const alt = (imgTag.match(/\balt="([^"]*)"/) || [])[1] || '';
 
-    let title = decodeEntities((block.match(/data-ename="([^"]*)"/) || [])[1] || '');
-    if (!title) {
-      const h3 = block.match(/<h3[^>]*class="[^"]*film-name[^"]*"[^>]*>([\s\S]*?)<\/h3>/i);
-      title = h3 ? stripHtml(h3[1]) : slug;
-    }
+    // The title link carries `title="Name (Format, Year)"`.
+    const titleAttr = (body.match(/<h3[^>]*class="hk-tile__name"[^>]*>\s*<a[^>]*title="([^"]*)"/) || [])[1] || '';
+    const fy = titleAttr.match(/\(([A-Za-z]+),\s*(\d{4})\)/);
+    const format = fy ? fy[1].toUpperCase() : '';
+    const year = fy ? parseInt(fy[2], 10) : NaN;
 
-    const year = parseInt(
-      (alt.match(/\((\d{4})\)/) || [])[1]
-        || (block.match(/<span class="fdi-item">\s*((?:19|20)\d{2})\s*<\/span>/) || [])[1]
-        || '',
-      10
-    );
-    const episodeCount = parseInt(
-      (block.match(/tick-eps[^>]*>\s*(\d+)\s*</) || [])[1]
-        || (block.match(/(\d+)\s*eps/i) || [])[1]
-        || '',
-      10
-    );
-    const ratingRaw = (block.match(/tick-rate"[^>]*>[\s\S]*?([\d]+\.?[\d]*)\s*</) || [])[1];
-    const rating = parseFloat(ratingRaw);
+    let title = decodeEntities((body.match(/data-en="([^"]*)"/) || [])[1] || '');
+    if (!title && titleAttr) title = decodeEntities(titleAttr.replace(/\s*\([^)]*\)\s*$/, '').trim());
+    if (!title) title = stripHtml((body.match(/<h3[^>]*>([\s\S]*?)<\/h3>/) || [])[1] || '');
+    if (!title && alt) title = decodeEntities(alt.replace(/\s+poster$/i, ''));
+    if (!title) title = slug;
 
-    const hasDub = /tick-dub/.test(block);
-    const hasSub = /tick-sub/.test(block);
+    const mediaType = ref === 'm' || /MOVIE/i.test(format) ? 'movie' : 'tv';
+    const epBlock = body.match(/class="hk-tag hk-tag--sub"[^>]*>([\s\S]*?)<\/span>/);
+    const episodeCount = epBlock ? parseInt((epBlock[1].match(/(\d+)/) || [])[1] || '', 10) : NaN;
+    const scoreBlock = body.match(/class="hk-tile__score"[^>]*>([\s\S]*?)<\/span>/);
+    const rating = parseFloat(scoreBlock ? (scoreBlock[1].match(/(\d+(?:\.\d+)?)/) || [])[1] || '' : '');
+
+    const hasDub = /hk-tag--dub/.test(body);
+    const hasSub = /hk-tag--sub/.test(body);
     const stacked = {};
     if (hasDub) stacked.topLeft = { text: 'DUB' };
     else if (hasSub) stacked.topLeft = { text: 'SUB' };
@@ -364,47 +366,47 @@ export async function getDetails(id, mediaType, prioritySeason) {
   const { data: html } = await fetchText(`${BASE}/details/${slug}`, `${BASE}/`);
   if (!html) return null;
 
-  const title = decodeEntities((html.match(/<h1[^>]*data-ename="([^"]*)"/) || [])[1] || '')
+  const ld = jsonLdOf(html) || {};
+
+  const title = decodeEntities(String(ld.name || ''))
+    || decodeEntities((html.match(/<h1[^>]*class="[^"]*\bhk-dual\b[^"]*"[^>]*data-en="([^"]*)"/) || [])[1] || '')
     || stripHtml((html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || [])[1])
     || slug;
 
-  const poster = (html.match(/<div class="anisc-poster">[\s\S]*?<img[^>]*\bsrc="([^"]+)"/) || [])[1]
-    || (html.match(/<img[^>]*class="film-poster-img"[^>]*\bsrc="([^"]+)"/) || [])[1]
+  const poster = (typeof ld.image === 'string' && ld.image)
+    || (html.match(/class="hk-title__art"[^>]*>[\s\S]*?<img[^>]*\bsrc="([^"]+)"/) || [])[1]
     || null;
-  const backdrop = (html.match(/class="anis-cover"\s*style="background-image:\s*url\(['"]?([^'")]+)['"]?\)/) || [])[1] || poster;
+  const backdrop = (html.match(/class="hk-title__bg"[^>]*>\s*<img[^>]*\bsrc="([^"]+)"/) || [])[1] || poster;
 
-  const overview = stripHtml((html.match(/id="synopsis-text"[^>]*>([\s\S]*?)<\/div>/i) || [])[1] || '');
+  const overview = decodeEntities(String(ld.description || ''))
+    || stripHtml((html.match(/<div[^>]*class="[^"]*\bhk-clamp\b[^"]*"[^>]*itemprop="description"[^>]*>([\s\S]*?)<\/div>/i) || [])[1] || '');
 
+  const formatText = stripHtml((html.match(/class="hk-tag--line"[^>]*>([\s\S]*?)<\/span>/) || [])[1] || '');
   const refPrefix = (html.match(/data-pf-ref="([sm])\d+"/) || [])[1];
-  const formatText = metaText(html, 'Format:');
-  const crumb = (html.match(/<span itemprop="name">(TV|MOVIE|ONA|OVA|SPECIAL)<\/span>/i) || [])[1] || '';
-  const isMovie = refPrefix === 'm'
+  const isMovie = /movie/i.test(String(ld['@type'] || ''))
     || /^movie$/i.test(formatText)
-    || /^movie$/i.test(crumb)
+    || refPrefix === 'm'
     || String(mediaType || '').toLowerCase().includes('movie');
 
   const year = parseInt(
-    (metaText(html, 'Year:').match(/\d{4}/) || [])[0]
-      || (metaText(html, 'Released:').match(/\d{4}/) || [])[1]
-      || (title.match(/\((\d{4})\)/) || [])[1]
-      || (metaText(html, 'Premiered:').match(/\d{4}/) || [])[0]
+    (String(ld.datePublished || '').match(/\d{4}/) || [])[0]
+      || (factValue(html, 'Season').match(/\d{4}/) || [])[0]
+      || (factValue(html, 'Aired').match(/\d{4}/) || [])[0]
       || '',
     10
   );
-  const rating = parseFloat((metaText(html, 'Rating:').match(/([\d.]+)/) || [])[1]);
+  const rating = parseFloat(
+    (ld.aggregateRating && ld.aggregateRating.ratingValue) || factValue(html, 'Score') || ''
+  );
 
-  const genres = metaLinks(html, 'Genres:').map((link) => ({
+  const genres = genreLinks(html).map((link) => ({
     name: link.text,
     title: link.text,
     type: 'genre',
     endpoint: relPath(link.href),
   }));
-  const studios = metaLinks(html, 'Studios:').map((link) => ({
-    name: link.text,
-    title: link.text,
-    type: 'studio',
-    endpoint: relPath(link.href),
-  }));
+  const studio = studioLink(html);
+  const studios = studio ? [studio] : [];
 
   const details = {
     id: slug,
@@ -417,7 +419,7 @@ export async function getDetails(id, mediaType, prioritySeason) {
     release_date: Number.isFinite(year) ? `${year}-01-01` : null,
     release_year: Number.isFinite(year) ? year : null,
     vote_average: Number.isFinite(rating) ? rating : null,
-    status: metaText(html, 'Status:') || null,
+    status: factValue(html, 'Status') || null,
     genres,
     production_companies: studios,
     cast: [],
@@ -455,35 +457,56 @@ export async function getDetails(id, mediaType, prioritySeason) {
   return details;
 }
 
-/** Plain text following a `<span class="item-head">Label</span>`. */
-function metaText(html, label) {
-  const block = metaBlock(html, label);
-  if (!block) return '';
-  return stripHtml(block.replace(/<span[^>]*class="item-head"[^>]*>[\s\S]*?<\/span>/i, ''));
+/** The schema.org `TVSeries` / `Movie` JSON-LD object on a details page. */
+function jsonLdOf(html) {
+  const source = typeof html === 'string' ? html : '';
+  const re = /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi;
+  let match;
+  while ((match = re.exec(source))) {
+    try {
+      const obj = JSON.parse(match[1].trim());
+      const type = String(obj?.['@type'] || '');
+      if (/TVSeries|Movie|CreativeWork/i.test(type) || obj.numberOfEpisodes || obj.datePublished) return obj;
+    } catch (_) {
+      /* ignore malformed blocks */
+    }
+  }
+  return null;
 }
 
-/** `{ href, text }[]` for the `<a>` tags in the item carrying `Label`. */
-function metaLinks(html, label) {
-  const block = metaBlock(html, label);
+/** Text of the `<dd>` paired with a `<dt>Label</dt>` in the "At a glance" list. */
+function factValue(html, label) {
+  const source = typeof html === 'string' ? html : '';
+  const match = source.match(
+    new RegExp(`<dt[^>]*>\\s*${escapeRegExp(label)}\\s*</dt>\\s*<dd[^>]*>([\\s\\S]*?)</dd>`, 'i')
+  );
+  return match ? stripHtml(match[1]) : '';
+}
+
+/** `{ href, text }[]` for the title's genre chips (`.hk-facts__genres`). */
+function genreLinks(html) {
+  const source = typeof html === 'string' ? html : '';
+  const block = source.match(/<div[^>]*class="[^"]*\bhk-facts__genres\b[^"]*"[^>]*>([\s\S]*?)<\/div>/i);
   if (!block) return [];
   const links = [];
   const re = /<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi;
   let match;
-  while ((match = re.exec(block))) {
+  while ((match = re.exec(block[1]))) {
     const text = stripHtml(match[2]);
     if (text) links.push({ href: match[1], text });
   }
   return links;
 }
 
-function metaBlock(html, label) {
+/** `{ name, endpoint }` for the studio link in the "At a glance" list. */
+function studioLink(html) {
   const source = typeof html === 'string' ? html : '';
-  const span = source.match(new RegExp(`<span[^>]*class="item-head"[^>]*>\\s*${escapeRegExp(label)}\\s*</span>`, 'i'));
-  if (!span) return '';
-  const start = span.index;
-  const end = source.indexOf('</div>', start);
-  if (end < 0) return source.slice(start);
-  return source.slice(start, end);
+  const match = source.match(/<dt[^>]*>\s*Studio\s*<\/dt>\s*<dd[^>]*>([\s\S]*?)<\/dd>/i);
+  if (!match) return null;
+  const anchor = match[1].match(/<a[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
+  const name = stripHtml(anchor ? anchor[2] : match[1]);
+  if (!name) return null;
+  return { name, title: name, type: 'studio', endpoint: anchor ? relPath(anchor[1]) : '' };
 }
 
 // ---------------------------------------------------------------------------
@@ -519,36 +542,34 @@ function episodeItem(slug, episode, seasonNumber) {
   };
 }
 
-/** Episode list for a series, fetched from its episode-1 watch page. */
+/** Episode list for a series, read from the details page's `.hk-ep` grid. */
 async function episodesFor(slug) {
-  const watchUrl = await watchHrefFor(slug, 1, false);
-  if (!watchUrl) return [];
-  const { data: html } = await fetchText(watchUrl, `${BASE}/`);
+  const { data: html } = await fetchText(`${BASE}/details/${slug}`, `${BASE}/`);
   return parseEpisodeAnchors(html);
 }
 
-/** `.ws-ep` anchors → `{ number, season, name }[]`, ordered ascending. */
+/** `.hk-ep` anchors → `{ number, season, name }[]`, ordered ascending. */
 function parseEpisodeAnchors(html) {
   const source = typeof html === 'string' ? html : '';
   const out = [];
   const seen = new Set();
-  const re = /<a\b([^>]*\bws-ep\b[^>]*)>([\s\S]*?)<\/a>/gi;
+  const re = /<a\b[^>]*\bhk-ep\b[^>]*>/gi;
   let match;
   while ((match = re.exec(source))) {
-    const attrs = match[1];
-    const number = parseInt((attrs.match(/data-episode="(\d+)"/) || [])[1] || '', 10);
+    const attrs = match[0];
+    const number = parseInt((attrs.match(/data-ep="(\d+)"/) || [])[1] || '', 10);
     if (!Number.isFinite(number) || seen.has(number)) continue;
     seen.add(number);
-    const season = parseInt((attrs.match(/data-season="(\d+)"/) || [])[1] || '0', 10);
-    const titleEl = (match[2].match(/<span[^>]*class="ws-ep__title"[^>]*>([\s\S]*?)<\/span>/) || [])[1] || '';
-    const aria = decodeEntities((attrs.match(/aria-label="([^"]*)"/) || [])[1] || '').replace(/^Episode\s+\d+:\s*/i, '');
-    const name = stripHtml(titleEl) || aria || `Episode ${number}`;
-    out.push({ number, season: Number.isFinite(season) ? season : 0, name });
+    const range = parseInt((attrs.match(/data-range="(\d+)"/) || [])[1] || '0', 10);
+    const raw = decodeEntities((attrs.match(/data-name="([^"]*)"/) || [])[1] || '');
+    const title = decodeEntities((attrs.match(/\btitle="Episode\s+\d+:\s*([^"]*)"/) || [])[1] || '');
+    const name = raw || title || `Episode ${number}`;
+    out.push({ number, season: Number.isFinite(range) ? range : 0, name });
   }
   return out.sort((a, b) => a.number - b.number);
 }
 
-/** Distinct data-season buckets → { dataSeason, seasonNumber, name }. */
+/** Distinct data-range buckets → { dataSeason, seasonNumber, name }. */
 function seasonsOf(episodes) {
   const values = [...new Set(episodes.map((e) => e.season))].sort((a, b) => a - b);
   return values.map((value, index) => {
@@ -565,8 +586,8 @@ function seasonsOf(episodes) {
 /** Watch URL for one episode, derived from the details page's play button. */
 async function watchHrefFor(slug, episode, isMovie) {
   const { data: html } = await fetchText(`${BASE}/details/${slug}`, `${BASE}/`);
-  const href = (html.match(/<a[^>]*href="([^"]+\/watch-[^"]+)"[^>]*class="[^"]*btn-play[^"]*"/i) || [])[1]
-    || (html.match(/<a[^>]*class="[^"]*btn-play[^"]*"[^>]*href="([^"]+)"/i) || [])[1]
+  const href = (html.match(/<a[^>]*class="[^"]*\bhk-btn\b[^"]*"[^>]*href="([^"]*\/watch-[^"]+)"/i) || [])[1]
+    || (html.match(/<a[^>]*href="([^"]*\/watch-[^"]+)"[^>]*class="[^"]*\bhk-btn\b[^"]*"/i) || [])[1]
     || '';
   if (!href) return null;
   if (isMovie) return href;
@@ -645,14 +666,15 @@ async function serversFor(metadata) {
   }
 
   const { data: html } = await fetchText(watchUrl, `${BASE}/`);
-  const anilistId = (html.match(/var anilistId\s*=\s*(\d+)/) || [])[1];
+  const config = parseWatchConfig(html);
+  const anilistId = config?.al;
   if (!anilistId) {
-    console.warn(`HiAnime: no anilistId on ${watchUrl}`);
+    console.warn(`HiAnime: no anilist id on ${watchUrl}`);
     serversCache.set(cacheKey, []);
     return [];
   }
 
-  const streamEp = isMovie ? 1 : episode;
+  const streamEp = isMovie ? 1 : (parseInt(config.ep, 10) || episode);
   const servers = [{ id: 'sub', name: 'Ryu (Sub)', url: `${MEGAPLAY_ORIGIN}/stream/ani/${anilistId}/${streamEp}/sub` }];
   if (hasDub(html, isMovie ? null : episode)) {
     servers.push({ id: 'dub', name: 'Ryu (Dub)', url: `${MEGAPLAY_ORIGIN}/stream/ani/${anilistId}/${streamEp}/dub` });
@@ -662,13 +684,25 @@ async function serversFor(metadata) {
   return servers;
 }
 
-/** True when a DUB MegaPlay track exists for the episode. */
+/** Parses the watch page's inline `data-hk-watch='{…}'` JSON config. */
+function parseWatchConfig(html) {
+  const source = typeof html === 'string' ? html : '';
+  const match = source.match(/data-hk-watch='([^']*)'/);
+  if (!match) return null;
+  try {
+    return JSON.parse(decodeEntities(match[1]));
+  } catch (_) {
+    return null;
+  }
+}
+
+/** True when a DUB track exists for the episode (or title, for movies). */
 function hasDub(html, episode) {
   const source = typeof html === 'string' ? html : '';
   if (episode != null) {
     const anchor = source.match(new RegExp(`<a\\b[^>]*data-episode="${episode}"[^>]*>`, 'i'));
     if (anchor) {
-      const dub = (anchor[0].match(/data-has-dub="(\d)"/) || [])[1];
+      const dub = (anchor[0].match(/data-dub="(\d)"/) || [])[1];
       if (dub != null) return dub === '1';
     }
   }
