@@ -5,13 +5,18 @@
 // of the catalogue is scraped from those pages. The 2026 "hianimev2" template
 // uses `hk-` prefixed classes throughout:
 //
-//   • home            → a fixed set of catalogue rows (/top-airing, /most-popular,
-//                        /updates, /movies, /tv, /most-favorite), each paginating
-//                        via ?page=N
+//   • home            → the site's own /home page supplies a banner carousel
+//                        (`.hk-spot__slide`) plus the editorial rows "Top 10
+//                        today" (`.hk-top10__item`), "Fresh on Hianime"
+//                        (`.hk-fresh` first tab) and "Fan Favourites"
+//                        (`.hk-sec.hk-rail`); a fixed set of catalogue rows
+//                        (/top-airing, /most-popular, /updates, /movies, /tv,
+//                        /most-favorite) backs "see all", each paginating via ?page=N
 //   • listings        → /<path>?page=N card grids (`article.hk-tile`), 24 per page
 //   • search          → /search?q=<query> (single page, no pagination)
 //   • details         → /details/<slug>-<hash> (schema.org JSON-LD + `.hk-facts`
-//                        "At a glance" list + `.hk-facts__genres`)
+//                        "At a glance" list + `.hk-facts__genres`); the "If you
+//                        like this" grid (`#hk-recs-h`) becomes `recommendations`
 //   • episodes        → the details page's `.hk-ep` anchors, grouped by the site's
 //                        `data-range` buckets ("Episodes 1–100", …)
 //   • streams         → the "Ryu" (MegaPlay) server, resolved from the watch page's
@@ -247,12 +252,12 @@ function parseCards(html) {
 // envelopes
 // ---------------------------------------------------------------------------
 
-function rowOf(id, title, endpoint, results) {
+function rowOf(id, title, endpoint, results, cardStyle) {
   return {
     id,
     title,
     endpoint,
-    card_style: { orientation: 'portrait' },
+    card_style: cardStyle || { orientation: 'portrait' },
     results,
     hasMore: false,
     page: 1,
@@ -294,14 +299,141 @@ export async function getHomeContent(page = 1) {
     return { results: [], page: wantPage, hasMore: false, total_pages: 1, total_results: 0 };
   }
 
-  const pages = await Promise.all(HOME_ROWS.map((row) => fetchText(`${BASE}/${row.endpoint}`)));
+  // The site's own home page feeds the banner carousel and the editorial rows;
+  // the catalogue endpoints still back the "see all" browsing rows.
+  const [home, ...catalogue] = await Promise.all([
+    fetchText(`${BASE}/home`),
+    ...HOME_ROWS.map((row) => fetchText(`${BASE}/${row.endpoint}`)),
+  ]);
+  const homeHtml = home?.data || '';
+
   const rows = [];
+
+  const spotlight = parseSpotlight(homeHtml);
+  if (spotlight.length) {
+    rows.push(rowOf('spotlight', 'Spotlight', null, spotlight, { orientation: 'landscape', banner: true }));
+  }
+
+  const top10 = parseTop10(homeHtml);
+  if (top10.length) rows.push(rowOf('top-10', 'Top 10 Today', null, top10));
+
+  const fresh = parseCards(between(homeHtml, 'id="hk-fp-eps"', 'id="hk-fp-add"'));
+  if (fresh.length) rows.push(rowOf('fresh', 'Fresh on HiAnime', 'updates', fresh));
+
+  const fanFavourites = parseCards(sectionOf(homeHtml, 'hk-sec hk-rail'));
+  if (fanFavourites.length) rows.push(rowOf('fan-favourites', 'Fan Favourites', 'most-popular', fanFavourites));
+
   HOME_ROWS.forEach((row, index) => {
-    const cards = parseCards(pages[index]?.data || '');
+    const cards = parseCards(catalogue[index]?.data || '');
     if (cards.length) rows.push(rowOf(row.id, row.title, row.endpoint, cards));
   });
 
   return { results: rows, page: 1, hasMore: false, total_pages: 1, total_results: rows.length };
+}
+
+/** HTML slice from `marker` up to the next `</section>`. */
+function sectionOf(html, marker) {
+  const source = typeof html === 'string' ? html : '';
+  const start = source.indexOf(marker);
+  if (start < 0) return '';
+  const end = source.indexOf('</section>', start);
+  return end < 0 ? source.slice(start) : source.slice(start, end);
+}
+
+/** HTML slice between two markers (exclusive of the second). */
+function between(html, fromMarker, toMarker) {
+  const source = typeof html === 'string' ? html : '';
+  const start = source.indexOf(fromMarker);
+  if (start < 0) return '';
+  const end = source.indexOf(toMarker, start);
+  return end < 0 ? source.slice(start) : source.slice(start, end);
+}
+
+/** Banner carousel (`.hk-spot__slide`) → MediaItem[]. */
+function parseSpotlight(html) {
+  const source = typeof html === 'string' ? html : '';
+  const out = [];
+  const seen = new Set();
+  const re = /<article\b[^>]*class="[^"]*\bhk-spot__slide\b[^"]*"[^>]*>([\s\S]*?)<\/article>/gi;
+  let match;
+  while ((match = re.exec(source))) {
+    const body = match[1];
+    const slug = slugOf((body.match(/href="[^"]*\/details\/([^"]+)"/) || [])[1] || '');
+    if (!slug || seen.has(slug)) continue;
+    seen.add(slug);
+
+    const title = decodeEntities((body.match(/data-en="([^"]*)"/) || [])[1] || '')
+      || decodeEntities((body.match(/<a[^>]*\btitle="([^"]*)"/) || [])[1] || '')
+      || slug;
+
+    const backdrop = (body.match(/class="hk-spot__bg"[\s\S]*?\bsrc="([^"]+)"/) || [])[1] || null;
+    const poster = (body.match(/\bdata-hk-alt="([^"]+)"/) || [])[1] || backdrop;
+
+    const format = stripHtml((body.match(/class="hk-tag--line"[^>]*>([\s\S]*?)<\/span>/) || [])[1] || '');
+    const mediaType = /movie/i.test(format) ? 'movie' : 'tv';
+
+    const meta = body.match(/class="hk-spot__meta"[^>]*>([\s\S]*?)<\/div>/);
+    const year = meta ? parseInt((meta[1].match(/>(\d{4})</) || [])[1] || '', 10) : NaN;
+    const score = body.match(/class="hk-score"[^>]*>([\s\S]*?)<\/span>/);
+    const rating = parseFloat(score ? (score[1].match(/(\d+(?:\.\d+)?)/) || [])[1] || '' : '');
+
+    const overview = stripHtml((body.match(/class="hk-spot__text"[^>]*>([\s\S]*?)<\/p>/) || [])[1] || '');
+
+    out.push({
+      id: slug,
+      title,
+      name: title,
+      media_type: mediaType,
+      poster_url: poster,
+      backdrop_url: backdrop,
+      overview,
+      release_date: Number.isFinite(year) ? `${year}-01-01` : null,
+      release_year: Number.isFinite(year) ? year : null,
+      vote_average: Number.isFinite(rating) ? rating : null,
+    });
+  }
+  return out;
+}
+
+/** "Top 10 today" ranked list (`.hk-top10__item`) → MediaItem[]. */
+function parseTop10(html) {
+  const source = typeof html === 'string' ? html : '';
+  const out = [];
+  const seen = new Set();
+  const re = /<li\b[^>]*class="[^"]*\bhk-top10__item\b[^"]*"[^>]*>([\s\S]*?)<\/li>/gi;
+  let match;
+  while ((match = re.exec(source))) {
+    const body = match[1];
+    const hrefMatch = body.match(/href="[^"]*\/details\/([^"]+)"/);
+    if (!hrefMatch) continue;
+    const slug = slugOf(hrefMatch[1]);
+    if (!slug || seen.has(slug)) continue;
+    seen.add(slug);
+
+    const ref = (match[0].match(/data-pf-ref="([sm])\d+"/) || [])[1];
+    const rank = parseInt((body.match(/class="hk-top10__n"[^>]*>(\d+)</) || [])[1] || '', 10);
+    const title = decodeEntities((body.match(/data-en="([^"]*)"/) || [])[1] || '')
+      || decodeEntities((body.match(/<img[^>]*\balt="([^"]*?)\s*poster"/i) || [])[1] || '')
+      || slug;
+    const poster = (body.match(/<img[^>]*\bsrc="([^"]+)"/) || [])[1] || null;
+
+    out.push({
+      id: slug,
+      title,
+      name: title,
+      media_type: ref === 'm' ? 'movie' : 'tv',
+      poster_url: poster,
+      backdrop_url: poster,
+      overview: '',
+      release_year: null,
+      vote_average: null,
+      card_style: {
+        orientation: 'portrait',
+        stacked: Number.isFinite(rank) ? { topLeft: { text: `#${rank}` } } : undefined,
+      },
+    });
+  }
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -452,6 +584,18 @@ export async function getDetails(id, mediaType, prioritySeason) {
           .map((e) => episodeItem(slug, e, priority.seasonNumber));
       }
     }
+  }
+
+  const recommendations = parseCards(sectionOf(html, 'id="hk-recs-h"'));
+  if (recommendations.length) {
+    details.recommendations = [
+      {
+        id: `${slug}-recommendations`,
+        title: 'If You Like This',
+        card_style: { orientation: 'portrait' },
+        results: recommendations,
+      },
+    ];
   }
 
   return details;
