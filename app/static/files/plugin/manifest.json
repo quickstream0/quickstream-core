@@ -140,6 +140,20 @@
       "configurable": false,
       "logoUrl": "https://hianime.ms/templates/hianimev2/assets/images/favicon/favicon.ico",
       "url": "https://www.quickstream.fyi/static/files/plugin/plugins/hianime/hianime.qsp"
+    },
+    {
+      "id": "com.quickstream.plugin.youtube",
+      "name": "YouTube",
+      "version": "0.0.0",
+      "description": "Videos, playlists and channels from YouTube. Every video is a movie, every playlist and channel (uploads) a series.",
+      "language": "javascript",
+      "authors": ["Community"],
+      "runtime": "fjs",
+      "capabilities": ["metadata", "source", "search"],
+      "mediaTypes": ["Movies", "Tv Shows"],
+      "configurable": false,
+      "logoUrl": "https://www.youtube.com/favicon.ico",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/youtube/youtube.qsp"
     }
   ]
 }

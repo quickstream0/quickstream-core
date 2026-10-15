@@ -1,0 +1,24 @@
+{
+    "id": "com.quickstream.plugin.youtube",
+    "name": "YouTube",
+    "version": "0.0.0",
+    "description": "Videos, playlists and channels from YouTube. Every video is a movie, every playlist and channel (uploads) a series.",
+    "language": "javascript",
+    "authors": ["Community"],
+    "runtime": "fjs",
+    "capabilities": ["metadata", "source", "search"],
+    "mediaTypes": [
+        "Movies",
+        "Tv Shows"
+    ],
+    "defaultCardOrientation": "landscape",
+    "searchHint": "Search videos, playlists and channels on YouTube",
+    "methods": {
+        "home": ["getHomeContent"],
+        "search": ["search"],
+        "details": ["getDetails"],
+        "more": ["getMediaItems"],
+        "season": ["getSeasonEpisodes"],
+        "source": ["getStreams"]
+    }
+}
