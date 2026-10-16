@@ -21,14 +21,19 @@
 //   • next     → POST /youtubei/v1/next     (WEB client)      — related videos
 //
 // Streaming (the reason extractors usually break): we deliberately avoid
-// signature/`n` deciphering and the PO-token dance by asking the **iOS** client
-// for the player response. It hands back `streamingData.hlsManifestUrl` — a
-// standard HLS master playlist with muxed renditions (240p…1080p) plus separate
-// audio groups and subtitle tracks — that plays as-is. As a fallback the
-// **ANDROID** ("androidSdkless") client returns direct `googlevideo` URLs whose
-// `sig` is already applied (no `n`); only itag 18 (360p) is muxed there, so it
-// is offered second. Both are plain HTTP with a matching User-Agent — no
-// visitorData, no cookies, no challenge solving.
+// signature/`n` deciphering and the PO-token dance. The **ANDROID**
+// ("androidSdkless") client returns `adaptiveFormats` whose URLs already carry
+// their `sig` (no `n`), giving video-only and audio-only `googlevideo` tracks up
+// to 4K. YouTube never muxes these (the only muxed format is itag 18, 360p), so
+// we stitch video + audio together in a tiny on-the-fly **DASH manifest**
+// (SegmentBase, one representation per track) and hand it to the player as a
+// `data://application/dash+xml;base64,…` URL. Both playback engines read it
+// (ExoPlayer via its data: source; mpv via libavformat's `data` protocol) and
+// fetch the absolute segment URLs straight from the manifest — no local server,
+// no deciphering, no PO token. The double-slash `data://` form is the one mpv
+// accepts (single-colon `data:` is read as a filename). The iOS client's real
+// `hlsManifestUrl` is used when it exists, and the muxed itag-18 (360p) is the
+// last-resort fallback. All requests are plain HTTP with a matching User-Agent.
 //
 // Home: the anonymous `FEwhat_to_watch` feed is essentially empty, so the home
 // screen is built from a curated table of InnerTube search queries (Trending,
@@ -897,6 +902,155 @@ async function videoIdFor(metadata) {
   return picked?.ytId || '';
 }
 
+const B64_ALPHABET =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+
+/** Base64-encode a Latin-1 string (the runtime exposes no btoa/atob). */
+function base64Encode(input) {
+  const s = String(input);
+  let out = '';
+  for (let i = 0; i < s.length; i += 3) {
+    const c1 = s.charCodeAt(i) & 0xff;
+    const c2 = i + 1 < s.length ? s.charCodeAt(i + 1) & 0xff : NaN;
+    const c3 = i + 2 < s.length ? s.charCodeAt(i + 2) & 0xff : NaN;
+    out += B64_ALPHABET[c1 >> 2];
+    out += B64_ALPHABET[((c1 & 3) << 4) | (Number.isNaN(c2) ? 0 : c2 >> 4)];
+    out += Number.isNaN(c2)
+      ? '='
+      : B64_ALPHABET[((c2 & 15) << 2) | (Number.isNaN(c3) ? 0 : c3 >> 6)];
+    out += Number.isNaN(c3) ? '=' : B64_ALPHABET[c3 & 63];
+  }
+  return out;
+}
+
+function xmlEscape(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function baseMime(mimeType) {
+  return String(mimeType || '').split(';')[0].trim();
+}
+
+function codecsOf(mimeType) {
+  const m = /codecs="([^"]+)"/.exec(mimeType || '');
+  return m ? m[1] : '';
+}
+
+function rangeAttr(range) {
+  if (!range || range.start == null || range.end == null) return null;
+  return `${range.start}-${range.end}`;
+}
+
+/**
+ * YouTube sometimes returns the same `itag` more than once (mirrored audio
+ * tracks/bitrates). DASH requires `Representation@id` to be unique, so keep the
+ * single highest-bitrate entry per itag.
+ */
+function dedupeByItag(formats) {
+  const byItag = new Map();
+  for (const format of formats) {
+    const key = String(format.itag ?? '');
+    const prev = byItag.get(key);
+    if (!prev || (format.bitrate || 0) > (prev.bitrate || 0)) {
+      byItag.set(key, format);
+    }
+  }
+  return [...byItag.values()];
+}
+
+/**
+ * Pair YouTube's separate video-only and audio-only adaptive tracks (each a
+ * DASH `SegmentBase` single file, `sig` already applied) into a minimal DASH
+ * manifest and wrap it as a `data://` URI. YouTube provides no muxed format
+ * above 360p, so this is what unlocks 720p/1080p/4K; the player fetches the
+ * absolute `BaseURL` segments itself.
+ */
+function dashDataUri(adaptive) {
+  const formats = Array.isArray(adaptive) ? adaptive : [];
+  const usable = formats.filter(
+    (f) => f && f.url && rangeAttr(f.initRange) && rangeAttr(f.indexRange)
+  );
+
+  const mp4 = (f) => baseMime(f.mimeType) === 'video/mp4';
+  const mp4Audio = (f) => baseMime(f.mimeType) === 'audio/mp4';
+  const webm = (f) => baseMime(f.mimeType) === 'video/webm';
+  const webmAudio = (f) => baseMime(f.mimeType) === 'audio/webm';
+
+  // Video: prefer H.264 (decodable everywhere), then any MP4, then WebM.
+  let video = usable.filter((f) => mp4(f) && /avc1/i.test(codecsOf(f.mimeType)));
+  if (video.length === 0) video = usable.filter(mp4);
+  if (video.length === 0) video = usable.filter(webm);
+  video = dedupeByItag(video);
+
+  // Audio: prefer AAC in MP4, then any MP4 audio, then WebM/Opus. Sticking to
+  // one codec family per AdaptationSet keeps playback broadly compatible.
+  let audio = usable.filter((f) => mp4Audio(f) && /mp4a/i.test(codecsOf(f.mimeType)));
+  if (audio.length === 0) audio = usable.filter(mp4Audio);
+  if (audio.length === 0) audio = usable.filter(webmAudio);
+  audio = dedupeByItag(audio);
+
+  if (video.length === 0 || audio.length === 0) return null;
+
+  video.sort((a, b) => (b.height || 0) - (a.height || 0));
+  audio.sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0));
+
+  const durationSec = Math.max(1, Math.round((video[0].approxDurationMs || 0) / 1000));
+  const videoMime = baseMime(video[0].mimeType);
+  const audioMime = baseMime(audio[0].mimeType);
+
+  const representation = (f, kind) => {
+    const attributes = [
+      `id="${f.itag}"`,
+      `bandwidth="${Math.max(1, f.bitrate || 1)}"`,
+    ];
+    const codecs = codecsOf(f.mimeType);
+    if (codecs) attributes.push(`codecs="${xmlEscape(codecs)}"`);
+    if (kind === 'video') {
+      if (f.width) attributes.push(`width="${f.width}"`);
+      if (f.height) attributes.push(`height="${f.height}"`);
+      if (f.fps) attributes.push(`frameRate="${f.fps}"`);
+    } else if (f.audioSampleRate) {
+      attributes.push(`audioSamplingRate="${f.audioSampleRate}"`);
+    }
+    return (
+      `<Representation ${attributes.join(' ')}>` +
+      `<BaseURL>${xmlEscape(f.url)}</BaseURL>` +
+      `<SegmentBase indexRange="${rangeAttr(f.indexRange)}">` +
+      `<Initialization range="${rangeAttr(f.initRange)}"/>` +
+      `</SegmentBase></Representation>`
+    );
+  };
+
+  const xml =
+    '<?xml version="1.0" encoding="UTF-8"?>' +
+    '<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" ' +
+    'profiles="urn:mpeg:dash:profile:isoff-on-demand:2011" type="static" ' +
+    `mediaPresentationDuration="PT${durationSec}S" minBufferTime="PT1.5S">` +
+    '<Period>' +
+    `<AdaptationSet contentType="video" mimeType="${videoMime}" ` +
+    `segmentAlignment="true" startWithSAP="1">${video
+      .map((f) => representation(f, 'video'))
+      .join('')}</AdaptationSet>` +
+    `<AdaptationSet contentType="audio" mimeType="${audioMime}" ` +
+    `segmentAlignment="true" startWithSAP="1">${audio
+      .map((f) => representation(f, 'audio'))
+      .join('')}</AdaptationSet>` +
+    '</Period></MPD>';
+
+  // `data://` (double slash), not `data:` — mpv/libavformat only recognises the
+  // double-slash form (single-colon `data:` is treated as a filename). ExoPlayer
+  // is happy with either: its Uri scheme is still "data", so DefaultDataSource
+  // routes it to DataSchemeDataSource and the ";base64," split still matches.
+  return {
+    uri: 'data://application/dash+xml;base64,' + base64Encode(xml),
+    height: video[0].height || 0,
+  };
+}
+
 export async function getStreams(metadata) {
   const videoId = await videoIdFor(metadata);
   if (!videoId) {
@@ -909,25 +1063,53 @@ export async function getStreams(metadata) {
     playerResponse(videoId, 'android'),
   ]);
 
+  const servers = [];
+
+  // 1) Best quality: stitch the separate video-only + audio-only tracks (up to
+  //    4K/HDR) into a DASH manifest delivered as a data: URI.
+  const dash = dashDataUri(android?.streamingData?.adaptiveFormats);
+  if (dash) {
+    servers.push({
+      id: 'dash',
+      name: 'Adaptive',
+      sources: [
+        {
+          url: dash.uri,
+          quality: dash.height ? `${dash.height}p` : 'auto',
+          label: dash.height ? `${dash.height}p (video+audio)` : 'Adaptive (video+audio)',
+          stream_type: 'dash',
+        },
+      ],
+    });
+  }
+
+  // 2) YouTube's own HLS master, when it exposes one for this video.
   const hls = ios?.streamingData?.hlsManifestUrl;
+  if (hls) {
+    servers.push({
+      id: 'hls',
+      name: 'HLS',
+      sources: [{ url: hls, quality: 'auto', label: 'Adaptive HLS', stream_type: 'hls' }],
+    });
+  }
+
+  // 3) Last resort: the only muxed format (itag 18, ≤360p) — always direct.
   const formats = android?.streamingData?.formats || [];
   const muxed =
     formats.find((f) => f.itag === 18 && f.url) ||
     formats.find((f) => /mp4a/i.test(f.mimeType || '') && /avc1/i.test(f.mimeType || '') && f.url);
-
-  const servers = [];
-  if (hls) {
-    servers.push({
-      id: 'hls',
-      name: 'HLS (adaptive)',
-      sources: [{ url: hls, quality: 'auto', label: 'Adaptive HLS', stream_type: 'hls' }],
-    });
-  }
   if (muxed?.url) {
     servers.push({
       id: 'mp4',
-      name: 'MP4 (360p)',
-      sources: [{ url: muxed.url, quality: muxed.qualityLabel || '360p', label: '360p', stream_type: 'other' }],
+      name: 'MP4',
+      sources: [
+        {
+          url: muxed.url,
+          quality: muxed.qualityLabel || '360p',
+          label: `${muxed.qualityLabel || '360p'} (muxed)`,
+          stream_type: 'other',
+        },
+      ],
     });
   }
 
