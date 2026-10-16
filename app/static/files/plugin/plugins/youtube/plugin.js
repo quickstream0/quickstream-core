@@ -460,7 +460,7 @@ function rowOf(row, results, cardStyle) {
     id: row.id,
     title: row.title,
     endpoint: `search:${row.query}`,
-    card_style: cardStyle || { orientation: 'landscape' },
+    card_style: cardStyle || { orientation: 'landscape', has_subtitle: true },
     results,
     hasMore: true,
     page: 1,
@@ -804,7 +804,7 @@ async function videoDetails(ytId) {
   const related = await relatedFor(ytId);
   if (related.length) {
     details.recommendations = [
-      { id: `${ytId}-related`, title: 'Related videos', card_style: { orientation: 'landscape' }, results: related },
+      { id: `${ytId}-related`, title: 'Related videos', card_style: { orientation: 'landscape', has_subtitle: true }, results: related },
     ];
   }
   return details;
