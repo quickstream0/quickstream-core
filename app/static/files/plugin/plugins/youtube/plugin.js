@@ -477,6 +477,7 @@ function listEnvelope(results, page, hasMore, endpoint) {
     total_pages: hasMore ? page + 1 : page,
     total_results: results.length,
     endpoint,
+    card_style: {has_subtitle: true}
   };
 }
 
