@@ -655,9 +655,9 @@ export async function getStreamSources(metadata, providerId, serverId) {
         quality: 'Live',
         label: resolved.label,
         stream_type: 'hls',
-        headers_required: false,
+        headers_required: true,
+        headers: { Origin: 'https://dembed.st', Referer: 'https://dembed.st/'}
       },
     ],
-    subtitles: [],
   };
 }
