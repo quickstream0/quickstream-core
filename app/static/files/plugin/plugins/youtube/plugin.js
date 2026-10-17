@@ -22,18 +22,16 @@
 //
 // Streaming (the reason extractors usually break): we deliberately avoid
 // signature/`n` deciphering and the PO-token dance. The **ANDROID**
-// ("androidSdkless") client returns `adaptiveFormats` whose URLs already carry
-// their `sig` (no `n`), giving video-only and audio-only `googlevideo` tracks up
-// to 4K. YouTube never muxes these (the only muxed format is itag 18, 360p), so
-// we stitch video + audio together in a tiny on-the-fly **DASH manifest**
-// (SegmentBase, one representation per track) and hand it to the player as a
-// `data://application/dash+xml;base64,…` URL. Both playback engines read it
-// (ExoPlayer via its data: source; mpv via libavformat's `data` protocol) and
-// fetch the absolute segment URLs straight from the manifest — no local server,
-// no deciphering, no PO token. The double-slash `data://` form is the one mpv
-// accepts (single-colon `data:` is read as a filename). The iOS client's real
-// `hlsManifestUrl` is used when it exists, and the muxed itag-18 (360p) is the
-// last-resort fallback. All requests are plain HTTP with a matching User-Agent.
+// ("androidSdkless") client returns direct `googlevideo` URLs whose `sig` is
+// already applied (no `n`). The only *muxed* format it offers is itag 18 (360p)
+// — one file, plays anywhere — so that is the default server. For an HD/UHD
+// upgrade we stitch the separate video-only + audio-only `adaptiveFormats` into
+// a tiny on-the-fly **DASH manifest** (SegmentBase, one representation per
+// track, deduped, H.264+AAC preferred) and hand it to the player as a
+// `data://application/dash+xml;base64,…` URL. ExoPlayer (better_player) reads
+// it; libmpv (media_kit) frequently rejects it, so it is offered *after* the
+// muxed file, never as the default. The iOS client's real `hlsManifestUrl` is
+// added when it exists. All requests are plain HTTP with a matching User-Agent.
 //
 // Home: the anonymous `FEwhat_to_watch` feed is essentially empty, so the home
 // screen is built from a curated table of InnerTube search queries (Trending,
@@ -1066,35 +1064,10 @@ export async function getStreams(metadata) {
 
   const servers = [];
 
-  // 1) Best quality: stitch the separate video-only + audio-only tracks (up to
-  //    4K/HDR) into a DASH manifest delivered as a data: URI.
-  const dash = dashDataUri(android?.streamingData?.adaptiveFormats);
-  if (dash) {
-    servers.push({
-      id: 'dash',
-      name: 'Adaptive',
-      sources: [
-        {
-          url: dash.uri,
-          quality: dash.height ? `${dash.height}p` : 'auto',
-          label: dash.height ? `${dash.height}p (video+audio)` : 'Adaptive (video+audio)',
-          stream_type: 'dash',
-        },
-      ],
-    });
-  }
-
-  // 2) YouTube's own HLS master, when it exposes one for this video.
-  const hls = ios?.streamingData?.hlsManifestUrl;
-  if (hls) {
-    servers.push({
-      id: 'hls',
-      name: 'HLS',
-      sources: [{ url: hls, quality: 'auto', label: 'Adaptive HLS', stream_type: 'hls' }],
-    });
-  }
-
-  // 3) Last resort: the only muxed format (itag 18, ≤360p) — always direct.
+  // 1) Default: the only muxed format (itag 18, ≤360p) — one direct file, no
+  //    stitching. Listed first because it is by far the most reliable across
+  //    engines; the adaptive options below are offered as a quality upgrade but
+  //    are known to be flaky (see 2/3).
   const formats = android?.streamingData?.formats || [];
   const muxed =
     formats.find((f) => f.itag === 18 && f.url) ||
@@ -1111,6 +1084,36 @@ export async function getStreams(metadata) {
           stream_type: 'other',
         },
       ],
+    });
+  }
+
+  // 2) Quality upgrade (HD/UHD): stitch the separate video-only + audio-only
+  //    tracks into a DASH manifest delivered as a `data://` URI. Works on
+  //    ExoPlayer (better_player); libmpv often rejects it ("Failed to recognize
+  //    file format"), hence it is not the default.
+  const dash = dashDataUri(android?.streamingData?.adaptiveFormats);
+  if (dash) {
+    servers.push({
+      id: 'dash',
+      name: 'Adaptive (HD)',
+      sources: [
+        {
+          url: dash.uri,
+          quality: dash.height ? `${dash.height}p` : 'auto',
+          label: dash.height ? `${dash.height}p (video+audio)` : 'Adaptive (video+audio)',
+          stream_type: 'dash',
+        },
+      ],
+    });
+  }
+
+  // 3) YouTube's own HLS master, when it exposes one for this video.
+  const hls = ios?.streamingData?.hlsManifestUrl;
+  if (hls) {
+    servers.push({
+      id: 'hls',
+      name: 'HLS (HD)',
+      sources: [{ url: hls, quality: 'auto', label: 'Adaptive HLS', stream_type: 'hls' }],
     });
   }
 
