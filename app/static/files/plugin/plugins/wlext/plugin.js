@@ -11,7 +11,20 @@
 // `media` collection, and term ids are resolved to names via the taxonomy
 // collections. Cards are keyed by slug; `media_type` disambiguates the route.
 //
-// Streams/servers (HYDRA and friends) are intentionally not implemented yet.
+// Streams/servers are intentionally not implemented: the site's servers yield
+// no playable URL.
+//   - SOAP BOX (sobox.top) and ELITE CLOUD (elitecloud.top) share an AES-128-CBC
+//     API (key "kiemtienmua911ca", iv "1234567890oiuytr") but every video record
+//     has been deleted ("Video not found or deleted").
+//   - HYDRA (mobomark2021.com/<id>, a.k.a. abyssplayer.com) is fully
+//     reverse-engineered but undeliverable. The media cipher is AES-256-CTR with
+//     key = ASCII bytes of md5(<basename of the .fd URL>) and counter = key[0:16]
+//     (verified: decrypts to a valid MP4). The page, however, only exposes the
+//     encrypted `.fd` parts to the network; plaintext exists solely inside a
+//     browser service worker (iamcdn.net/player-v2/sw.bundle.js). QuickStream
+//     sources must be plain http(s) URLs played directly (no local proxy /
+//     decrypt hook), so there is nothing playable to return.
+//   - OMMA (omma.top) is gated behind adblock detection + Adscore fingerprinting.
 // ============================================================================
 
 const BASE = 'https://wlext.is';
