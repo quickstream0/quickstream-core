@@ -1,0 +1,22 @@
+{
+  "id": "com.quickstream.plugin.daddylive",
+  "url": "https://www.quickstream.fyi/static/files/plugin/plugins/daddylive/daddylive.qsp",
+  "name": "DaddyLive",
+  "version": "0.0.0",
+  "description": "Live sports schedule and 24/7 channels from DaddyLive (dlive.sx). Includes the day's event catalog, always-on channels, client-side search and channel stream resolution.",
+  "language": "javascript",
+  "authors": ["QuickStream Community"],
+  "logoUrl": "https://dlive.sx/assets/logos/logo.png",
+  "runtime": "fjs",
+  "capabilities": ["metadata", "source", "search"],
+  "mediaTypes": ["Sports"],
+  "defaultCardOrientation": "landscape",
+  "searchHint": "Search live sports and channels",
+  "methods": {
+    "home": ["getHomeContent"],
+    "details": ["getDetails"],
+    "more": ["getMediaItems"],
+    "search": ["search"],
+    "source": ["getStreams", "getStreamSources"]
+  }
+}

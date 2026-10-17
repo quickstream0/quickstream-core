@@ -1126,6 +1126,5 @@ export async function getStreams(metadata) {
     providers: [
       { id: PLUGIN_ID, name: 'YouTube', logo: LOGO, reliable: true, servers },
     ],
-    subtitles: [],
   };
 }
