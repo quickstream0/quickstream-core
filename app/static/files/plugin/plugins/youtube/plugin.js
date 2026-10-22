@@ -61,6 +61,7 @@ const PLAYER_CACHE = new Map(); // `${client}:${videoId}` → { value, at }
 const BROWSE_CACHE = new Map(); // browseId/continuation key → { value, at }
 const COLLECTION_CACHE = new Map(); // `${kind}:${id}` → { value, at }
 const SEARCH_TOKENS = new Map(); // `${query}\u0000${page}` → continuation token
+const AVATAR_CACHE = new Map(); // channelId → { value, at }
 
 // How far to walk a playlist/channel continuation chain when it becomes the
 // episode list for a "series". Kept modest so getDetails stays quick.
@@ -302,13 +303,34 @@ function fromLockup(l) {
   }
 
   const rows = meta?.metadata?.contentMetadataViewModel?.metadataRows || [];
-  const parts = [];
+  const rowParts = [];
   for (const row of rows) {
+    const parts = [];
     for (const part of row?.metadataParts || []) {
       const t = part?.text?.content;
       if (t) parts.push(t);
     }
+    if (parts.length) rowParts.push(parts);
   }
+  const parts = rowParts.flat();
+
+  // Lockup cards (the format the watch page now uses for related videos)
+  // carry the channel in their first metadata row — "George Michael" — with a
+  // second row holding the view count and age. The decorated avatar next to
+  // the title carries the channel id.
+  const avatar =
+    meta?.image?.decoratedAvatarViewModel?.avatar?.avatarViewModel?.image?.sources || [];
+  const avatarUrl = upscaleAvatar(pickThumb(avatar));
+  const channelId =
+    meta?.image?.decoratedAvatarViewModel?.avatar?.avatarViewModel?.rendererContext
+      ?.commandContext?.onTap?.innertubeCommand?.browseEndpoint?.browseId || '';
+  const firstRow = rowParts[0] || [];
+  // The first row holds the channel for videos *and* playlists (the creator
+  // of a playlist); the rows after it hold the view count and the age, which
+  // must not be mistaken for a channel name.
+  const metric = (s) =>
+    /^\d[\d.,]*\s*[KMB]?$/i.test(s) || /\bago\b/i.test(s) || /^(streamed|watching|live)\b/i.test(s);
+  const channelTitle = firstRow[0] && !metric(firstRow[0]) ? firstRow[0] : '';
 
   return {
     kind,
@@ -317,8 +339,9 @@ function fromLockup(l) {
     thumbUrl: pickThumb(sources),
     durationText: duration,
     metaParts: parts,
-    channelTitle: '',
-    channelId: '',
+    channelTitle,
+    channelId,
+    channelAvatar: avatarUrl,
     description: '',
   };
 }
@@ -346,6 +369,7 @@ function fromVideoRenderer(v) {
     publishedText: v.publishedTimeText?.simpleText || '',
     channelTitle: byline?.text || '',
     channelId: byline?.navigationEndpoint?.browseEndpoint?.browseId || '',
+    channelAvatar: '',
     description: snippet || textOf(v.descriptionSnippet),
   };
 }
@@ -360,6 +384,7 @@ function fromPlaylistRenderer(p) {
     channelTitle: textOf(p.shortBylineText) || textOf(p.longBylineText),
     channelId:
       p.shortBylineText?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId || '',
+    channelAvatar: '',
     description: '',
   };
 }
@@ -373,6 +398,7 @@ function fromChannelRenderer(c) {
     countText: c.videoCountText?.simpleText || '',
     channelTitle: textOf(c.title),
     channelId: c.channelId || '',
+    channelAvatar: '',
     description: textOf(c.descriptionSnippet),
   };
 }
@@ -425,6 +451,7 @@ function toVideoItem(item) {
     card_style: {
       orientation: 'landscape',
       subtitle: item.channelTitle || undefined,
+      has_subtitle: !!item.channelTitle,
       stacked: Object.keys(stacked).length ? stacked : undefined,
     },
   };
@@ -444,6 +471,7 @@ function toTvItem(item) {
     card_style: {
       orientation: 'landscape',
       subtitle: item.channelTitle || undefined,
+      has_subtitle: !!item.channelTitle,
       stacked: Object.keys(stacked).length ? stacked : undefined,
     },
   };
@@ -600,12 +628,113 @@ function headerOf(data) {
     findFirst(data, (n) => n?.microformat?.microformatDataRenderer?.ownerChannelName)
       ?.microformat?.microformatDataRenderer?.ownerChannelName || '';
 
-  return { title, description: String(description || '').trim(), thumb, owner };
+  // The page header carries the creator ("by <channel>") together with its
+  // avatar and channel id.
+  const headPart =
+    findFirst(data, (n) => n?.pageHeaderViewModel?.metadata)
+      ?.pageHeaderViewModel?.metadata?.contentMetadataViewModel?.metadataRows?.[0]
+      ?.metadataParts?.[0];
+  // The creator label lives inside the avatar stack, next to the avatars.
+  const creatorText = headPart?.avatarStack?.avatarStackViewModel?.text || headPart?.text;
+  const ownerName = String(creatorText?.content || '').replace(/^by\s+/i, '').trim();
+  const ownerAvatar =
+    pickThumb(
+      headPart?.avatarStack?.avatarStackViewModel?.avatars?.[0]?.avatarViewModel?.image?.sources
+    ) || '';
+  const ownerId =
+    creatorText?.commandRuns?.[0]?.onTap?.innertubeCommand?.browseEndpoint?.browseId || '';
+
+  return {
+    title,
+    description: String(description || '').trim(),
+    thumb,
+    owner,
+    ownerName,
+    ownerAvatar,
+    ownerId,
+  };
 }
 
 /** Uploads playlist id for a channel (`UC…` → `UU…`). */
 function uploadsPlaylistId(channelId) {
   return channelId.startsWith('UC') ? `UU${channelId.slice(2)}` : channelId;
+}
+
+// ---------------------------------------------------------------------------
+// channel identity (cast)
+// ---------------------------------------------------------------------------
+
+/** `@handle` from a channel profile URL (`…/@RickAstleyYT`). */
+function handleFromUrl(url) {
+  const m = /@([^/?#]+)/.exec(String(url || ''));
+  return m ? '@' + m[1] : '';
+}
+
+/**
+ * The video's channel as rendered on the watch page: name, channel id and
+ * avatar. The `next` payload carries it in `videoOwnerRenderer`.
+ */
+function ownerFromNext(data, preferredChannelId) {
+  const owners = [];
+  walkAll(data, (n) => {
+    if (n?.videoOwnerRenderer) owners.push(n.videoOwnerRenderer);
+  });
+  if (owners.length === 0) return null;
+  const idOf = (o) =>
+    o?.navigationEndpoint?.browseEndpoint?.browseId ||
+    o?.title?.runs?.[0]?.navigationEndpoint?.browseEndpoint?.browseId ||
+    '';
+  const picked =
+    owners.find((o) => preferredChannelId && idOf(o) === preferredChannelId) || owners[0];
+  return {
+    name: textOf(picked?.title),
+    id: idOf(picked),
+    avatar: pickThumb(picked?.thumbnail?.thumbnails),
+  };
+}
+
+/**
+ * Channel avatar, cached. The channel page's microformat image is the avatar
+ * (the banner is not exposed there), so this is a reliable fallback when the
+ * watch page did not carry one.
+ */
+async function channelAvatar(channelId) {
+  if (!channelId) return '';
+  const hit = AVATAR_CACHE.get(channelId);
+  if (hit && Date.now() - hit.at < CACHE_TTL_MS) return hit.value;
+
+  let url = '';
+  try {
+    const data = await browse(channelId);
+    const mfr = findFirst(data, (n) => n?.microformat?.microformatDataRenderer?.thumbnail)
+      ?.microformat?.microformatDataRenderer;
+    url = pickThumb(mfr?.thumbnail?.thumbnails) || '';
+  } catch (e) {
+    console.error('YouTube: avatar lookup failed:', e?.message ?? e);
+  }
+
+  AVATAR_CACHE.set(channelId, { value: url, at: Date.now() });
+  return url;
+}
+
+/** yt3 avatars carry their size in the URL; ask for a larger one. */
+function upscaleAvatar(url) {
+  const s = String(url || '');
+  if (!/yt3\.ggpht\.com/.test(s)) return s;
+  return s.replace(/=s\d+-/, '=s176-');
+}
+
+/** A cast entry for the channel behind a video / playlist / channel page. */
+async function channelCast(name, channelId, character, avatar) {
+  const id = channelId || '';
+  const pic = upscaleAvatar(avatar) || (await channelAvatar(id));
+  return {
+    id,
+    name: name || '',
+    character: character || 'Channel',
+    profileUrl: pic || null,
+    order: 0,
+  };
 }
 
 /**
@@ -704,10 +833,11 @@ export async function getHomeContent(page = 1) {
       const results = (res.results || []).slice(0, 15);
       if (row.banner) {
         // Banner rows render as a hero carousel; normalise each card to
-        // landscape so the row-level `banner` flag drives the layout.
+        // landscape so the row-level `banner` flag drives the layout — but
+        // keep the card's own subtitle (channel name) intact.
         const hero = results.map((item) => ({
           ...item,
-          card_style: { orientation: 'landscape' },
+          card_style: { ...(item.card_style || {}), orientation: 'landscape' },
         }));
         return rowOf(row, hero, { banner: true, orientation: 'landscape' });
       }
@@ -780,6 +910,17 @@ async function videoDetails(ytId) {
   const genres = mf.category ? [{ name: mf.category, title: mf.category, type: 'genre' }] : [];
   const companies = owner ? [{ name: owner, title: owner, type: 'channel' }] : [];
 
+  // The watch page (`next`) exposes the channel avatar; the player response
+  // does not (WEB omits `authorThumbnails`), so it is fetched there and reused
+  // for both the cast entry and the related videos.
+  const next = await nextResponse(ytId);
+  const channel = ownerFromNext(next, vd.channelId || mf.externalChannelId || '');
+  const channelName = channel?.name || owner;
+  const channelId = channel?.id || vd.channelId || mf.externalChannelId || '';
+  const cast = channelName
+    ? [await channelCast(channelName, channelId, handleFromUrl(mf.ownerProfileUrl), channel?.avatar)]
+    : [];
+
   const details = {
     id: ID_VIDEO + ytId,
     title: vd.title || '',
@@ -794,13 +935,13 @@ async function videoDetails(ytId) {
     vote_count: vd.viewCount || null,
     runtime: Number.isFinite(lengthSec) ? Math.max(1, Math.round(lengthSec / 60)) : null,
     status: mf.isFamilySafe === false ? 'Restricted' : 'Public',
-    cast: [],
+    cast,
     genres,
     production_companies: companies,
     extra: { web_url: `${WATCH_BASE}${ytId}`, share_text: vd.title || 'YouTube' },
   };
 
-  const related = await relatedFor(ytId);
+  const related = relatedItems(next, ytId);
   if (related.length) {
     details.recommendations = [
       { id: `${ytId}-related`, title: 'Related videos', card_style: { orientation: 'landscape', has_subtitle: true }, results: related },
@@ -809,10 +950,14 @@ async function videoDetails(ytId) {
   return details;
 }
 
-async function relatedFor(ytId) {
-  const data = await innertube('next', { context: { client: webClient() }, videoId: ytId }, webHeaders());
-  if (!data) return [];
-  return extractItems(data)
+/** The watch page payload — owner block, related videos, and its continuations. */
+async function nextResponse(ytId) {
+  return innertube('next', { context: { client: webClient() }, videoId: ytId }, webHeaders());
+}
+
+function relatedItems(next, ytId) {
+  if (!next) return [];
+  return extractItems(next)
     .filter((it) => it.kind === 'video' && it.ytId !== ytId)
     .slice(0, 12)
     .map(toMediaItem);
@@ -844,6 +989,34 @@ async function collectionDetails(parsed) {
       ? `${YT}/channel/${parsed.ytId}`
       : `${YT}/playlist?list=${parsed.ytId}`;
 
+  // Cast: the channel itself for a channel page, the playlist's creator for a
+  // playlist (the header carries "by <channel>" with its avatar).
+  let cast = [];
+  if (parsed.kind === 'channel') {
+    if (header.title) {
+      cast = [await channelCast(header.title, parsed.ytId, 'Channel', header.thumb)];
+    }
+  } else {
+    const creatorName = header.ownerName || header.owner;
+    if (creatorName) {
+      cast = [
+        await channelCast(creatorName, header.ownerId, 'Channel', header.ownerAvatar),
+      ];
+    } else {
+      const first = items[0];
+      if (first && (first.channelTitle || first.channelId)) {
+        cast = [
+          await channelCast(
+            first.channelTitle,
+            first.channelId,
+            'Channel',
+            first.channelAvatar
+          ),
+        ];
+      }
+    }
+  }
+
   return {
     id: idFor(parsed),
     title: header.title || '',
@@ -855,7 +1028,7 @@ async function collectionDetails(parsed) {
     release_date: null,
     release_year: null,
     vote_average: null,
-    cast: [],
+    cast,
     genres: [],
     number_of_episodes: episodes.length,
     number_of_seasons: 1,
@@ -1104,6 +1277,7 @@ export async function getStreams(metadata) {
           stream_type: 'dash',
         },
       ],
+      subtitles: [],
     });
   }
 
