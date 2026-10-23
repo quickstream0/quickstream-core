@@ -10,6 +10,19 @@
   "runtime": "fjs",
   "capabilities": ["metadata", "source", "search"],
   "mediaTypes": ["Sports"],
+  "configurable": true,
+  "configSchema": {
+    "fields": [
+      {
+        "key": "includeAdult",
+        "label": "Include Adult Content",
+        "type": "boolean",
+        "default": false,
+        "description": "Show channels flagged 18+ in listings, search and stream servers.",
+        "category": "Content"
+      }
+    ]
+  },
   "defaultCardOrientation": "landscape",
   "searchHint": "Search live sports and channels",
   "methods": {

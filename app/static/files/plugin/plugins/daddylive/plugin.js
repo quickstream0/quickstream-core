@@ -54,6 +54,37 @@ const CHANNELS_TTL_MS = 10 * 60 * 1000; // 24/7 channel list is fairly static
 const STREAM_TTL_MS = 5 * 60 * 1000; // edge host / token rotates
 
 // ---------------------------------------------------------------------------
+// settings
+// ---------------------------------------------------------------------------
+// The 24/7 catalog carries a block of adult channels whose names start with
+// "18+" (e.g. "18+ (Player-01)"). They are hidden from every listing, search
+// result and server list unless the user turns on "Include Adult Content" in
+// the plugin settings. The setting is read on each call (and defaults to off),
+// so a change applies to the next request without restarting the app. Parsed
+// catalogs are cached unfiltered and filtered on the way out.
+
+const ADULT_KEY = 'includeAdult';
+const ADULT_NAME_RE = /^\s*18\s*\+/;
+
+async function includeAdult() {
+  try {
+    const cfg = (await pluginStorage.get()) || {};
+    const v = cfg[ADULT_KEY];
+    return v === true || v === 1 || v === '1' || v === 'true';
+  } catch (_) {
+    return false;
+  }
+}
+
+function isAdultName(name) {
+  return ADULT_NAME_RE.test(String(name == null ? '' : name));
+}
+
+function visibleChannels(list, allowAdult) {
+  return allowAdult ? list : list.filter((ch) => !isAdultName(ch && ch.name));
+}
+
+// ---------------------------------------------------------------------------
 // session caches
 // ---------------------------------------------------------------------------
 
@@ -240,13 +271,25 @@ function parseChannels(html) {
   if (typeof html !== 'string' || !html) return out;
   const seen = new Set();
   const re =
-    /<a class="card"[^>]*href="\/watch\.php\?id=(\d+)"[^>]*>\s*<div class="card__title">([^<]*)<\/div>/g;
+    /<a class="card"[^>]*href="\/watch\.php\?id=(\d+)"[^>]*>([\s\S]*?)<\/a>/g;
   let m;
   while ((m = re.exec(html)) !== null) {
     const id = m[1];
     if (seen.has(id)) continue;
     seen.add(id);
-    const name = clean(m[2]) || `Channel ${id}`;
+    const block = m[2] || '';
+    let name = '';
+    const titleM = /class="card__title"[^>]*>([^<]*)</.exec(block);
+    if (titleM) name = titleM[1];
+    if (!name) {
+      const dataM = /data-title="([^"]*)"/i.exec(m[0]);
+      if (dataM) name = dataM[1];
+    }
+    if (!name) {
+      const altM = /aria-label="([^"]*)"/i.exec(m[0]);
+      if (altM) name = altM[1];
+    }
+    name = clean(name) || `Channel ${id}`;
     out.push({ id, name });
     channelIndex.set(id, name);
   }
@@ -387,7 +430,12 @@ export async function getHomeContent(page = 1) {
     return { results: [], hasMore: false, page, total_pages: 1, total_results: 0 };
   }
 
-  const [home, channels] = await Promise.all([loadHome(), loadChannels()]);
+  const [home, allChannels, allowAdult] = await Promise.all([
+    loadHome(),
+    loadChannels(),
+    includeAdult(),
+  ]);
+  const channels = visibleChannels(allChannels, allowAdult);
   const rows = [];
 
   if (home.categories.length > 0) {
@@ -453,8 +501,8 @@ export async function getMediaItems(endpoint = 'events', page = 1) {
   }
 
   if (ep === 'channels') {
-    const channels = await loadChannels();
-    return pageEnvelope(channels.map(channelCard), page, ep);
+    const [channels, allowAdult] = await Promise.all([loadChannels(), includeAdult()]);
+    return pageEnvelope(visibleChannels(channels, allowAdult).map(channelCard), page, ep);
   }
 
   const home = await loadHome();
@@ -478,14 +526,18 @@ export async function search(query, page = 1) {
   }
 
   const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-  const [home, channels] = await Promise.all([loadHome(), loadChannels()]);
+  const [home, allChannels, allowAdult] = await Promise.all([
+    loadHome(),
+    loadChannels(),
+    includeAdult(),
+  ]);
 
   const events = home.events.filter((ev) => {
     const hay = `${ev.title} ${ev.category} ${ev.time}`.toLowerCase();
     return words.every((w) => hay.indexOf(w) !== -1);
   });
 
-  const chans = channels.filter((ch) => {
+  const chans = visibleChannels(allChannels, allowAdult).filter((ch) => {
     const hay = ch.name.toLowerCase();
     return words.every((w) => hay.indexOf(w) !== -1);
   });
@@ -510,6 +562,7 @@ export async function getDetails(id, mediaType) {
   if (sid.startsWith('ch_')) {
     const num = sid.slice(3);
     const name = await channelName(num);
+    if (isAdultName(name) && !(await includeAdult())) return null;
     return {
       id: sid,
       media_type: 'channel',
@@ -537,12 +590,15 @@ export async function getDetails(id, mediaType) {
     };
   }
 
-  const cast = (ev.channels || []).map((c, i) => ({
-    id: `ch_${c.id}`,
-    name: c.name,
-    character: 'Channel',
-    order: i,
-  }));
+  const allowAdult = await includeAdult();
+  const cast = (ev.channels || [])
+    .filter((c) => allowAdult || !isAdultName(c.name))
+    .map((c, i) => ({
+      id: `ch_${c.id}`,
+      name: c.name,
+      character: 'Channel',
+      order: i,
+    }));
 
   return {
     id: sid,
@@ -613,14 +669,19 @@ async function serversFor(metadata) {
     servers.push({ id: key, name: name || `Channel ${key}` });
   };
 
+  const allowAdult = await includeAdult();
   if (id.startsWith('ch_')) {
     const num = id.slice(3);
-    push(num, await channelName(num));
+    const name = await channelName(num);
+    if (allowAdult || !isAdultName(name)) push(num, name);
   } else if (id.startsWith('ev_')) {
     const ev = await findEvent(id);
-    for (const ch of (ev && ev.channels) || []) push(ch.id, ch.name);
+    for (const ch of (ev && ev.channels) || []) {
+      if (allowAdult || !isAdultName(ch.name)) push(ch.id, ch.name);
+    }
   } else if (/^\d+$/.test(id)) {
-    push(id, await channelName(id));
+    const name = await channelName(id);
+    if (allowAdult || !isAdultName(name)) push(id, name);
   }
 
   return servers;
@@ -645,6 +706,9 @@ export async function getStreamSources(metadata, providerId, serverId) {
   const num = String(serverId == null ? '' : serverId).replace(/[^0-9]/g, '');
   if (!num) return { sources: [], subtitles: [] };
 
+  const name = await channelName(num);
+  if (isAdultName(name) && !(await includeAdult())) return { sources: [], subtitles: [] };
+
   const resolved = await resolveChannel(num);
   if (!resolved) return { sources: [], subtitles: [] };
 
@@ -655,9 +719,9 @@ export async function getStreamSources(metadata, providerId, serverId) {
         quality: 'Live',
         label: resolved.label,
         stream_type: 'hls',
-        headers_required: true,
-        headers: { Origin: 'https://dembed.st', Referer: 'https://dembed.st/'}
+        headers_required: false,
       },
     ],
+    subtitles: [],
   };
 }
