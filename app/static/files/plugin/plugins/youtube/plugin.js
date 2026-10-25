@@ -21,25 +21,19 @@
 //   • next     → POST /youtubei/v1/next     (WEB client)      — related videos
 //
 // Streaming (the reason extractors usually break): we deliberately avoid
-// signature/`n` deciphering and the PO-token dance. The **ANDROID**
-// ("androidSdkless") client returns direct `googlevideo` URLs whose `sig` is
-// already applied (no `n`). The only *muxed* format it offers is itag 18 (360p)
-// — one file, plays anywhere — so that is the default server. For an HD/UHD
-// upgrade we stitch the separate video-only + audio-only `adaptiveFormats` into
-// a tiny on-the-fly **DASH manifest** (SegmentBase, one representation per
-// track, deduped, H.264+AAC preferred) and hand it to the player as a
-// `data://application/dash+xml;base64,…` URL. ExoPlayer (better_player) reads
-// it; libmpv (media_kit) frequently rejects it, so it is offered *after* the
-// muxed file, never as the default. The iOS client's real `hlsManifestUrl` is
-// added when it exists. All requests are plain HTTP with a matching User-Agent.
-//
-// Home: the anonymous `FEwhat_to_watch` feed is essentially empty, so the home
-// screen is built from a curated table of InnerTube search queries (Trending,
-// Music, Gaming, …), each row backed by `search:<query>` for "see all".
+// signature/`n` deciphering and the PO-token dance. 
+// 1) The **IOS** client provides a direct, native `hlsManifestUrl` (HLS master 
+//    playlist) which contains multi-quality adaptive streams and plays cleanly 
+//    across both MediaKit/MPV and ExoPlayer.
+// 2) The **ANDROID** ("androidSdkless") client returns direct `googlevideo` 
+//    URLs whose `sig` is already applied (no `n`). It offers direct muxed itag 18 
+//    (360p) as a fast, reliable fallback.
+// 3) For an HD/UHD fallback, we stitch separate adaptive tracks into a DASH 
+//    data URI manifest as an option for ExoPlayer.
 
 export const id = 'com.quickstream.plugin.youtube';
 export const name = 'YouTube';
-export const version = '0.0.0';
+export const version = '0.0.1';
 export const type = ['metadata', 'source', 'search'];
 
 const PLUGIN_ID = 'com.quickstream.plugin.youtube';
@@ -202,7 +196,6 @@ async function innertube(endpoint, body, headers) {
 // generic JSON walkers
 // ---------------------------------------------------------------------------
 
-/** Pre-order (document-order) visit of every object node in a JSON tree. */
 function walkAll(node, visit) {
   if (node === null || typeof node !== 'object') return;
   visit(node);
@@ -213,7 +206,6 @@ function walkAll(node, visit) {
   for (const key in node) walkAll(node[key], visit);
 }
 
-/** First node (document order) matching `predicate`, or null. */
 function findFirst(node, predicate) {
   let found = null;
   walkAll(node, (n) => {
@@ -222,7 +214,6 @@ function findFirst(node, predicate) {
   return found;
 }
 
-/** Text out of a `{ runs }` / `{ simpleText }` / plain-string node. */
 function textOf(node) {
   if (node == null) return '';
   if (typeof node === 'string') return node;
@@ -232,7 +223,6 @@ function textOf(node) {
   return '';
 }
 
-/** Largest thumbnail URL in a `{ width, height, url }[]` list. */
 function pickThumb(list) {
   if (!Array.isArray(list) || list.length === 0) return null;
   let best = null;
@@ -249,7 +239,6 @@ function pickThumb(list) {
   return best || list[list.length - 1]?.url || null;
 }
 
-/** First continuation token anywhere in a response (document order). */
 function findContinuation(root) {
   let token = null;
   walkAll(root, (n) => {
@@ -263,7 +252,7 @@ function findContinuation(root) {
 }
 
 // ---------------------------------------------------------------------------
-// renderer normalisation → { kind, ytId, title, thumbUrl, ... }
+// renderer normalisation
 // ---------------------------------------------------------------------------
 
 const VIDEO_ID_RE = /^[A-Za-z0-9_-]{11}$/;
@@ -277,7 +266,6 @@ function kindFromId(cid) {
   return 'video';
 }
 
-/** New "lockup" renderer (used by playlist / channel / home browse pages). */
 function fromLockup(l) {
   const meta = l?.metadata?.lockupMetadataViewModel;
   const cid = l?.contentId || '';
@@ -314,10 +302,6 @@ function fromLockup(l) {
   }
   const parts = rowParts.flat();
 
-  // Lockup cards (the format the watch page now uses for related videos)
-  // carry the channel in their first metadata row — "George Michael" — with a
-  // second row holding the view count and age. The decorated avatar next to
-  // the title carries the channel id.
   const avatar =
     meta?.image?.decoratedAvatarViewModel?.avatar?.avatarViewModel?.image?.sources || [];
   const avatarUrl = upscaleAvatar(pickThumb(avatar));
@@ -325,9 +309,6 @@ function fromLockup(l) {
     meta?.image?.decoratedAvatarViewModel?.avatar?.avatarViewModel?.rendererContext
       ?.commandContext?.onTap?.innertubeCommand?.browseEndpoint?.browseId || '';
   const firstRow = rowParts[0] || [];
-  // The first row holds the channel for videos *and* playlists (the creator
-  // of a playlist); the rows after it hold the view count and the age, which
-  // must not be mistaken for a channel name.
   const metric = (s) =>
     /^\d[\d.,]*\s*[KMB]?$/i.test(s) || /\bago\b/i.test(s) || /^(streamed|watching|live)\b/i.test(s);
   const channelTitle = firstRow[0] && !metric(firstRow[0]) ? firstRow[0] : '';
@@ -403,7 +384,6 @@ function fromChannelRenderer(c) {
   };
 }
 
-/** Every catalogue item in a response, in document order, de-duplicated. */
 function extractItems(root) {
   const out = [];
   const seen = new Set();
@@ -416,9 +396,6 @@ function extractItems(root) {
     else if (node.playlistRenderer) item = fromPlaylistRenderer(node.playlistRenderer);
     else if (node.channelRenderer) item = fromChannelRenderer(node.channelRenderer);
     if (!item || !item.ytId) return;
-    // Auto-generated / authenticated playlists (mixes, Watch Later, Liked,
-    // Favourites) are not browsable anonymously — they resolve to an alert
-    // rather than a video list — so never advertise them as a series.
     if (item.kind === 'playlist' && /^(RD|LM|WL|LL|FL)/.test(item.ytId)) return;
     const key = `${item.kind}:${item.ytId}`;
     if (seen.has(key)) return;
@@ -503,7 +480,7 @@ function listEnvelope(results, page, hasMore, endpoint) {
     total_pages: hasMore ? page + 1 : page,
     total_results: results.length,
     endpoint,
-    card_style: {has_subtitle: true}
+    card_style: { has_subtitle: true },
   };
 }
 
@@ -522,18 +499,12 @@ function emptyList(page, endpoint) {
 // id parsing
 // ---------------------------------------------------------------------------
 
-function typeOf(metadata) {
-  const mt = String(metadata?.media_type || metadata?.mediaType || 'tv').toLowerCase();
-  return mt.includes('movie') ? 'movie' : 'tv';
-}
-
 function episodeOf(metadata) {
   const raw = metadata?.episode ?? metadata?.episode_number;
   const n = parseInt(raw, 10);
   return Number.isFinite(n) && n > 0 ? n : 1;
 }
 
-/** `raw` is either a prefixed id we produced, or a bare YouTube id. */
 function parseId(raw, mediaType) {
   const s = String(raw || '').trim();
   if (s.startsWith(ID_VIDEO)) return { kind: 'video', ytId: s.slice(ID_VIDEO.length) };
@@ -594,7 +565,6 @@ async function browse(browseId, continuation) {
   return data;
 }
 
-/** Header (title/description/thumbnail/owner) of a playlist or channel page. */
 function headerOf(data) {
   const title =
     findFirst(data, (n) => n?.pageHeaderViewModel?.title)
@@ -628,13 +598,10 @@ function headerOf(data) {
     findFirst(data, (n) => n?.microformat?.microformatDataRenderer?.ownerChannelName)
       ?.microformat?.microformatDataRenderer?.ownerChannelName || '';
 
-  // The page header carries the creator ("by <channel>") together with its
-  // avatar and channel id.
   const headPart =
     findFirst(data, (n) => n?.pageHeaderViewModel?.metadata)
       ?.pageHeaderViewModel?.metadata?.contentMetadataViewModel?.metadataRows?.[0]
       ?.metadataParts?.[0];
-  // The creator label lives inside the avatar stack, next to the avatars.
   const creatorText = headPart?.avatarStack?.avatarStackViewModel?.text || headPart?.text;
   const ownerName = String(creatorText?.content || '').replace(/^by\s+/i, '').trim();
   const ownerAvatar =
@@ -655,25 +622,15 @@ function headerOf(data) {
   };
 }
 
-/** Uploads playlist id for a channel (`UC…` → `UU…`). */
 function uploadsPlaylistId(channelId) {
   return channelId.startsWith('UC') ? `UU${channelId.slice(2)}` : channelId;
 }
 
-// ---------------------------------------------------------------------------
-// channel identity (cast)
-// ---------------------------------------------------------------------------
-
-/** `@handle` from a channel profile URL (`…/@RickAstleyYT`). */
 function handleFromUrl(url) {
   const m = /@([^/?#]+)/.exec(String(url || ''));
   return m ? '@' + m[1] : '';
 }
 
-/**
- * The video's channel as rendered on the watch page: name, channel id and
- * avatar. The `next` payload carries it in `videoOwnerRenderer`.
- */
 function ownerFromNext(data, preferredChannelId) {
   const owners = [];
   walkAll(data, (n) => {
@@ -693,11 +650,6 @@ function ownerFromNext(data, preferredChannelId) {
   };
 }
 
-/**
- * Channel avatar, cached. The channel page's microformat image is the avatar
- * (the banner is not exposed there), so this is a reliable fallback when the
- * watch page did not carry one.
- */
 async function channelAvatar(channelId) {
   if (!channelId) return '';
   const hit = AVATAR_CACHE.get(channelId);
@@ -717,14 +669,12 @@ async function channelAvatar(channelId) {
   return url;
 }
 
-/** yt3 avatars carry their size in the URL; ask for a larger one. */
 function upscaleAvatar(url) {
   const s = String(url || '');
   if (!/yt3\.ggpht\.com/.test(s)) return s;
   return s.replace(/=s\d+-/, '=s176-');
 }
 
-/** A cast entry for the channel behind a video / playlist / channel page. */
 async function channelCast(name, channelId, character, avatar) {
   const id = channelId || '';
   const pic = upscaleAvatar(avatar) || (await channelAvatar(id));
@@ -737,10 +687,6 @@ async function channelCast(name, channelId, character, avatar) {
   };
 }
 
-/**
- * Ordered video list for a `VL…` browse target, walking the continuation
- * chain up to [MAX_EPISODES].
- */
 async function paginateVideos(browseId) {
   const data = await browse(browseId);
   let items = extractItems(data).filter((it) => it.kind === 'video');
@@ -759,10 +705,6 @@ async function paginateVideos(browseId) {
   return items.slice(0, MAX_EPISODES);
 }
 
-/**
- * Ordered video list for a playlist or channel, walking the browse
- * continuation chain up to [MAX_EPISODES]. Cached per collection.
- */
 async function collectionItems(parsed) {
   const key = `${parsed.kind}:${parsed.ytId}`;
   const hit = COLLECTION_CACHE.get(key);
@@ -770,9 +712,6 @@ async function collectionItems(parsed) {
 
   let items;
   if (parsed.kind === 'channel') {
-    // Regular channels expose a chronological uploads playlist (`UC…`→`UU…`);
-    // some curated channels (e.g. YouTube hubs) have no uploads playlist, so
-    // fall back to the channel page's own video shelves.
     items = await paginateVideos(`VL${uploadsPlaylistId(parsed.ytId)}`);
     if (items.length === 0) items = await paginateVideos(parsed.ytId);
   } else {
@@ -832,9 +771,6 @@ export async function getHomeContent(page = 1) {
       const res = await search(row.query, 1);
       const results = (res.results || []).slice(0, 15);
       if (row.banner) {
-        // Banner rows render as a hero carousel; normalise each card to
-        // landscape so the row-level `banner` flag drives the layout — but
-        // keep the card's own subtitle (channel name) intact.
         const hero = results.map((item) => ({
           ...item,
           card_style: { ...(item.card_style || {}), orientation: 'landscape' },
@@ -896,9 +832,6 @@ function durationToMinutes(text) {
 }
 
 async function videoDetails(ytId) {
-  // The WEB player response carries the full `microformat` (publish date,
-  // channel, category) even when playback is blocked, so it is the source of
-  // truth for metadata; playback itself is resolved separately via iOS/Android.
   const player = await playerResponse(ytId, 'web');
   const vd = player?.videoDetails || {};
   const mf = player?.microformat?.playerMicroformatRenderer || {};
@@ -910,9 +843,6 @@ async function videoDetails(ytId) {
   const genres = mf.category ? [{ name: mf.category, title: mf.category, type: 'genre' }] : [];
   const companies = owner ? [{ name: owner, title: owner, type: 'channel' }] : [];
 
-  // The watch page (`next`) exposes the channel avatar; the player response
-  // does not (WEB omits `authorThumbnails`), so it is fetched there and reused
-  // for both the cast entry and the related videos.
   const next = await nextResponse(ytId);
   const channel = ownerFromNext(next, vd.channelId || mf.externalChannelId || '');
   const channelName = channel?.name || owner;
@@ -950,7 +880,6 @@ async function videoDetails(ytId) {
   return details;
 }
 
-/** The watch page payload — owner block, related videos, and its continuations. */
 async function nextResponse(ytId) {
   return innertube('next', { context: { client: webClient() }, videoId: ytId }, webHeaders());
 }
@@ -989,8 +918,6 @@ async function collectionDetails(parsed) {
       ? `${YT}/channel/${parsed.ytId}`
       : `${YT}/playlist?list=${parsed.ytId}`;
 
-  // Cast: the channel itself for a channel page, the playlist's creator for a
-  // playlist (the header carries "by <channel>" with its avatar).
   let cast = [];
   if (parsed.kind === 'channel') {
     if (header.title) {
@@ -1048,7 +975,7 @@ async function collectionDetails(parsed) {
 }
 
 // ---------------------------------------------------------------------------
-// season episodes (bare array — the host datasource requires a List)
+// season episodes
 // ---------------------------------------------------------------------------
 
 export async function getSeasonEpisodes(mediaId, seasonNumber) {
@@ -1063,7 +990,6 @@ export async function getSeasonEpisodes(mediaId, seasonNumber) {
 // streams
 // ---------------------------------------------------------------------------
 
-/** Resolve the video id a getStreams(metadata) call refers to. */
 async function videoIdFor(metadata) {
   const parsed = parseId(metadata?.id, metadata?.media_type || metadata?.mediaType);
   if (parsed.kind === 'video') return parsed.ytId;
@@ -1077,7 +1003,6 @@ async function videoIdFor(metadata) {
 const B64_ALPHABET =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
-/** Base64-encode a Latin-1 string (the runtime exposes no btoa/atob). */
 function base64Encode(input) {
   const s = String(input);
   let out = '';
@@ -1117,11 +1042,6 @@ function rangeAttr(range) {
   return `${range.start}-${range.end}`;
 }
 
-/**
- * YouTube sometimes returns the same `itag` more than once (mirrored audio
- * tracks/bitrates). DASH requires `Representation@id` to be unique, so keep the
- * single highest-bitrate entry per itag.
- */
 function dedupeByItag(formats) {
   const byItag = new Map();
   for (const format of formats) {
@@ -1134,13 +1054,6 @@ function dedupeByItag(formats) {
   return [...byItag.values()];
 }
 
-/**
- * Pair YouTube's separate video-only and audio-only adaptive tracks (each a
- * DASH `SegmentBase` single file, `sig` already applied) into a minimal DASH
- * manifest and wrap it as a `data://` URI. YouTube provides no muxed format
- * above 360p, so this is what unlocks 720p/1080p/4K; the player fetches the
- * absolute `BaseURL` segments itself.
- */
 function dashDataUri(adaptive) {
   const formats = Array.isArray(adaptive) ? adaptive : [];
   const usable = formats.filter(
@@ -1152,14 +1065,11 @@ function dashDataUri(adaptive) {
   const webm = (f) => baseMime(f.mimeType) === 'video/webm';
   const webmAudio = (f) => baseMime(f.mimeType) === 'audio/webm';
 
-  // Video: prefer H.264 (decodable everywhere), then any MP4, then WebM.
   let video = usable.filter((f) => mp4(f) && /avc1/i.test(codecsOf(f.mimeType)));
   if (video.length === 0) video = usable.filter(mp4);
   if (video.length === 0) video = usable.filter(webm);
   video = dedupeByItag(video);
 
-  // Audio: prefer AAC in MP4, then any MP4 audio, then WebM/Opus. Sticking to
-  // one codec family per AdaptationSet keeps playback broadly compatible.
   let audio = usable.filter((f) => mp4Audio(f) && /mp4a/i.test(codecsOf(f.mimeType)));
   if (audio.length === 0) audio = usable.filter(mp4Audio);
   if (audio.length === 0) audio = usable.filter(webmAudio);
@@ -1213,10 +1123,6 @@ function dashDataUri(adaptive) {
       .join('')}</AdaptationSet>` +
     '</Period></MPD>';
 
-  // `data://` (double slash), not `data:` — mpv/libavformat only recognises the
-  // double-slash form (single-colon `data:` is treated as a filename). ExoPlayer
-  // is happy with either: its Uri scheme is still "data", so DefaultDataSource
-  // routes it to DataSchemeDataSource and the ";base64," split still matches.
   return {
     uri: 'data://application/dash+xml;base64,' + base64Encode(xml),
     height: video[0].height || 0,
@@ -1237,10 +1143,20 @@ export async function getStreams(metadata) {
 
   const servers = [];
 
-  // 1) Default: the only muxed format (itag 18, ≤360p) — one direct file, no
-  //    stitching. Listed first because it is by far the most reliable across
-  //    engines; the adaptive options below are offered as a quality upgrade but
-  //    are known to be flaky (see 2/3).
+  // 1) HLS Master Playlist (iOS client)
+  // Native adaptive HLS stream hosted directly by Google. Plays cleanly on 
+  // both MediaKit/MPV and BetterPlayer/ExoPlayer without demuxer errors.
+  const hls = ios?.streamingData?.hlsManifestUrl;
+  if (hls) {
+    servers.push({
+      id: 'hls',
+      name: 'HLS (Adaptive HD)',
+      sources: [{ url: hls, quality: 'auto', label: 'Adaptive HLS', stream_type: 'hls' }],
+    });
+  }
+
+  // 2) Single Muxed MP4 (Android client)
+  // Direct, pre-signed 360p (itag 18) file as a universal fallback.
   const formats = android?.streamingData?.formats || [];
   const muxed =
     formats.find((f) => f.itag === 18 && f.url) ||
@@ -1248,27 +1164,25 @@ export async function getStreams(metadata) {
   if (muxed?.url) {
     servers.push({
       id: 'mp4',
-      name: 'MP4',
+      name: 'MP4 (360p)',
       sources: [
         {
           url: muxed.url,
           quality: muxed.qualityLabel || '360p',
-          label: `${muxed.qualityLabel || '360p'} (muxed)`,
+          label: `${muxed.qualityLabel || '360p'} (Muxed)`,
           stream_type: 'other',
         },
       ],
     });
   }
 
-  // 2) Quality upgrade (HD/UHD): stitch the separate video-only + audio-only
-  //    tracks into a DASH manifest delivered as a `data://` URI. Works on
-  //    ExoPlayer (better_player); libmpv often rejects it ("Failed to recognize
-  //    file format"), hence it is not the default.
+  // 3) DASH Data URI (Android adaptive formats)
+  // Inline DASH manifest for engines (e.g. ExoPlayer) that support data URIs.
   const dash = dashDataUri(android?.streamingData?.adaptiveFormats);
   if (dash) {
     servers.push({
       id: 'dash',
-      name: 'Adaptive (HD)',
+      name: 'DASH (ExoPlayer HD)',
       sources: [
         {
           url: dash.uri,
@@ -1278,16 +1192,6 @@ export async function getStreams(metadata) {
         },
       ],
       subtitles: [],
-    });
-  }
-
-  // 3) YouTube's own HLS master, when it exposes one for this video.
-  const hls = ios?.streamingData?.hlsManifestUrl;
-  if (hls) {
-    servers.push({
-      id: 'hls',
-      name: 'HLS (HD)',
-      sources: [{ url: hls, quality: 'auto', label: 'Adaptive HLS', stream_type: 'hls' }],
     });
   }
 

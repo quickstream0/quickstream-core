@@ -1,13 +1,14 @@
 {
     "id": "com.quickstream.plugin.youtube",
     "name": "YouTube",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Videos, playlists and channels from YouTube. Every video is a movie, every playlist and channel (uploads) a series.",
     "language": "javascript",
     "authors": ["Community"],
     "runtime": "fjs",
     "capabilities": ["metadata", "source", "search"],
     "mediaTypes": [
+        "Videos",
         "Movies",
         "Tv Shows"
     ],
