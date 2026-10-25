@@ -98,7 +98,7 @@
       "configurable": false,
       "logoUrl": "https://tinyzonetv.app/images/logo.png",
       "url": "https://www.quickstream.fyi/static/files/plugin/plugins/tinyzone/tinyzone.qsp"
-    },
+    }
     {
       "id": "com.quickstream.plugin.dramacool",
       "name": "DramaCool",
@@ -140,6 +140,6 @@
       "configurable": false,
       "logoUrl": "https://www.youtube.com/favicon.ico",
       "url": "https://www.quickstream.fyi/static/files/plugin/plugins/youtube/youtube.qsp"
-    },
+    }
   ]
 }
