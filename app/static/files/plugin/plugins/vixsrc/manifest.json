@@ -3,6 +3,7 @@
     "name": "VixSrc",
     "version": "0.0.0",
     "description": "VixSrc movie and TV show source provider",
+    "logoUrl": "https://vixsrc.to/favicon.ico",
     "language": "javascript",
     "authors": ["Community"],
     "runtime": "fjs",

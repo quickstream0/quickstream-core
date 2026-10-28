@@ -31,11 +31,6 @@
 // 3) For an HD/UHD fallback, we stitch separate adaptive tracks into a DASH 
 //    data URI manifest as an option for ExoPlayer.
 
-export const id = 'com.quickstream.plugin.youtube';
-export const name = 'YouTube';
-export const version = '0.0.1';
-export const type = ['metadata', 'source', 'search'];
-
 const PLUGIN_ID = 'com.quickstream.plugin.youtube';
 const YT = 'https://www.youtube.com';
 const INNERTUBE = `${YT}/youtubei/v1`;
@@ -1182,7 +1177,7 @@ export async function getStreams(metadata) {
   if (dash) {
     servers.push({
       id: 'dash',
-      name: 'DASH (ExoPlayer HD)',
+      name: 'Adaptive (HD)',
       sources: [
         {
           url: dash.uri,

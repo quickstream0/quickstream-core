@@ -608,8 +608,10 @@ export async function getDetails(id, mediaType) {
 // each entry { source, id } becomes a server stub. Expanding a server calls the
 // Streamed API for its embed records, then walks those records best-first and
 // resolves the FIRST working m3u8 by loading the embed page in the headless
-// WebView and intercepting the first request whose URL ends in `.m3u8`. Stream
-// URLs are just channel links, so they are cached for STREAM_CACHE_TTL_MS.
+// WebView and intercepting the playlist request. The real stream lives on
+// Streamed's own `strmd.*` CDN, so that host is preferred over the ad-heavy
+// page's other `.m3u8` requests. Stream URLs are channel links, so they are
+// cached for STREAM_CACHE_TTL_MS.
 
 const STREAM_CACHE_TTL_MS = 60 * 60 * 1000;
 
@@ -660,8 +662,33 @@ async function cacheStream(embedUrl, entry) {
   } catch (_) {}
 }
 
-/// Loads the embed page headlessly and returns the first `.m3u8` request (the
-/// exact playable link) with the request headers it fired with.
+// ---------- playlist host filtering ----------------------------------------
+// The embed page is ad-heavy and can fire unrelated `.m3u8` requests. The real
+// stream lives on Streamed's own CDN (e.g. https://lb10.strmd.st/secure/…/
+// mono.m3u8), so a `strmd.*` host is preferred and any other `.m3u8` is only
+// used as a last resort.
+
+function hostOf(url) {
+  const m = /^https?:\/\/([^/?#]+)/i.exec(String(url ?? ''));
+  return m ? m[1].toLowerCase() : '';
+}
+
+function originOf(url) {
+  const m = /^(https?:\/\/[^/?#]+)/i.exec(String(url ?? ''));
+  return m ? m[1] : '';
+}
+
+function isM3u8(url) {
+  if (typeof url !== 'string') return false;
+  return url.split('#')[0].split('?')[0].toLowerCase().endsWith('.m3u8');
+}
+
+function isCdnM3u8(url) {
+  return isM3u8(url) && /(^|\.)strmd\.[a-z]/.test(hostOf(url));
+}
+
+/// Loads the embed page headlessly and returns the playable `.m3u8` request
+/// (the exact stream link) with the request headers it fired with.
 async function resolveEmbedM3u8(embedUrl) {
   const hit = await cachedStream(embedUrl);
   if (hit) return hit;
@@ -675,19 +702,31 @@ async function resolveEmbedM3u8(embedUrl) {
     return null;
   }
 
-  const m3u8 = requests.find(
-    (r) => typeof r?.url === 'string' && r.url.endsWith('.m3u8'),
-  );
+  // Prefer the real CDN; fall back to any `.m3u8` only when none was seen.
+  const cdnHit = requests.find((r) => isCdnM3u8(r?.url));
+  const m3u8 = cdnHit || requests.find((r) => isM3u8(r?.url));
   if (!m3u8?.url) {
     console.warn('Streamed: no .m3u8 intercepted for', embedUrl);
     return null;
   }
+  if (!cdnHit) {
+    console.warn('Streamed: using non-CDN m3u8 ->', m3u8.url);
+  }
 
-  const entry = {
-    url: m3u8.url,
-    headers:
-      m3u8.headers && typeof m3u8.headers === 'object' ? m3u8.headers : {},
-  };
+  const headers =
+    m3u8.headers && typeof m3u8.headers === 'object' ? { ...m3u8.headers } : {};
+
+  // The CDN checks the embed Referer/Origin, so guarantee both are present even
+  // if the intercepted request did not surface them.
+  const embedOrigin = originOf(embedUrl);
+  if (embedOrigin) {
+    const has = (name) =>
+      Object.keys(headers).some((k) => k.toLowerCase() === name);
+    if (!has('referer')) headers.Referer = `${embedOrigin}/`;
+    if (!has('origin')) headers.Origin = embedOrigin;
+  }
+
+  const entry = { url: m3u8.url, headers };
   await cacheStream(embedUrl, entry);
   console.log('Streamed: resolved m3u8 ->', entry.url);
   return entry;

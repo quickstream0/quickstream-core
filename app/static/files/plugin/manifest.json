@@ -130,7 +130,7 @@
     {
       "id": "com.quickstream.plugin.youtube",
       "name": "YouTube",
-      "version": "0.0.1",
+      "version": "0.0.0",
       "description": "Videos, playlists and channels from YouTube. Every video is a movie, every playlist and channel (uploads) a series.",
       "language": "javascript",
       "authors": ["Community"],

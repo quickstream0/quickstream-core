@@ -3,6 +3,7 @@
     "name": "TMDb",
     "version": "0.0.0",
     "description": "Provides movie and TV show metadata from The Movie Database",
+    "logoUrl": "https://www.quickstream.fyi/static/files/plugin/plugins/tmdb/assets/tmdb_logo.png",
     "language": "javascript",
     "authors": [
         "QuickStream Team"

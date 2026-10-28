@@ -3,6 +3,7 @@
     "name": "TinyZone",
     "version": "0.0.0",
     "description": "Movies and TV shows from TinyZone with UpCloud + Vidmoly server extraction via Open Extractors.",
+    "logoUrl": "https://tinyzonetv.app/images/logo.png",
     "language": "javascript",
     "authors": ["Community"],
     "runtime": "fjs",

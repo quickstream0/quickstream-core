@@ -10,6 +10,7 @@
     "methods": {
         "source": ["getStreams", "getStreamSources"]
     },
+    "logoUrl": "https://primesrc.me/logo.svg",
     "dependencies": [
         {
             "id": "com.quickstream.plugin.open-extractors",

@@ -3,6 +3,7 @@
     "name": "Wlext",
     "version": "0.0.0",
     "description": "Movies and TV shows metadata from Wlext (wlext.is).",
+    "logoUrl": "https://wlext.is/favicon.ico",
     "language": "javascript",
     "authors": [
         "Community"

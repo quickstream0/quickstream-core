@@ -20,6 +20,7 @@
         "season": ["getSeasonEpisodes"],
         "source": ["getStreams", "getStreamSources"]
     },
+    "logoUrl": "https://dramacool9.com.ro/favicon.ico",
     "dependencies": [
         {
             "id": "com.quickstream.plugin.open-extractors",
