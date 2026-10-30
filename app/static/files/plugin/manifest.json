@@ -20,18 +20,20 @@
       "url": "https://www.quickstream.fyi/static/files/plugin/plugins/tmdb/tmdb.qsp"
     },
     {
-      "id": "com.quickstream.plugin.streamed",
-      "name": "Streamed",
+      "id": "com.quickstream.plugin.ppv",
+      "name": "PPV",
       "version": "0.0.0",
-      "description": "Live sports match from Streamed (football, basketball, American football, hockey, baseball, motor sports, fight nights, tennis, rugby, golf, billiards, AFL, darts, cricket and more).",
+      "description": "Live sports streams and PPV events from PPV (ppv.st) — football, basketball, American football, ice hockey, cricket, rugby, golf, wrestling and 24/7 channels.",
       "language": "javascript",
       "authors": ["QuickStream Community"],
       "runtime": "fjs",
-      "capabilities": ["metadata", "source"],
+      "capabilities": ["metadata", "source", "search"],
       "mediaTypes": ["Sports"],
       "configurable": false,
-      "logoUrl": "https://streamed.st/favicon.png",
-      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/streamed/streamed.qsp"
+      "defaultCardOrientation": "landscape",
+      "searchHint": "Search live sports streams",
+      "logoUrl": "https://ppv.st/favicon.ico",
+      "url": "https://www.quickstream.fyi/static/files/plugin/plugins/ppv/ppv.qsp"
     },
     {
       "id": "com.quickstream.plugin.primesrc",

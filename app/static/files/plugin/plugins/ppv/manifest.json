@@ -1,0 +1,22 @@
+{
+  "id": "com.quickstream.plugin.ppv",
+  "url": "https://www.quickstream.fyi/static/files/plugin/plugins/ppv/ppv.qsp",
+  "name": "PPV",
+  "version": "0.0.0",
+  "description": "Live sports streams and PPV events from PPV (ppv.st) — football, basketball, American football, ice hockey, cricket, rugby, golf, wrestling and 24/7 channels. Includes stream resolution via embedded players.",
+  "language": "javascript",
+  "authors": ["QuickStream Community"],
+  "logoUrl": "https://ppv.st/favicon.ico",
+  "runtime": "fjs",
+  "capabilities": ["metadata", "source", "search"],
+  "mediaTypes": ["Sports"],
+  "defaultCardOrientation": "landscape",
+  "searchHint": "Search live sports streams",
+  "methods": {
+    "home": ["getHomeContent"],
+    "details": ["getDetails"],
+    "more": ["getMediaItems"],
+    "search": ["search"],
+    "source": ["getStreams", "getStreamSources"]
+  }
+}
